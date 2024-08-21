@@ -1,9 +1,11 @@
-package me.modify.tetris;
+package me.modify.tetris.ui;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TetrisSplashScreen extends JWindow {
+
+    // Splash screen duration in milliseconds
     private int duration;
 
     public TetrisSplashScreen(int duration) {
@@ -37,10 +39,5 @@ public class TetrisSplashScreen extends JWindow {
         }
 
         setVisible(false);
-    }
-
-    public void showSplashAndExit() {
-        showSplash();
-        System.exit(0);
     }
 }
