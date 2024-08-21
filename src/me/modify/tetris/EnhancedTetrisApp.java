@@ -20,14 +20,16 @@ public class EnhancedTetrisApp {
 
     public static void main(String[] args) {
 
-        TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
-        splashScreen.showSplash();
+        //TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
+        //splashScreen.showSplash();
 
         SwingUtilities.invokeLater(() -> {
             EnhancedTetrisApp main = new EnhancedTetrisApp();
             MainFrame mainFrame = new MainFrame(main);
             mainFrame.createUI();
             mainFrame.openMainMenu();
+
+
         });
     }
 }

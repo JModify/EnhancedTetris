@@ -13,24 +13,23 @@ public class GameConfiguration {
 
     public final int FIELD_WIDTH_MIN = 5;
     public final int FIELD_WIDTH_MAX = 15;
-    public final int FIELD_WIDTH_DEFAULT = 10;
+    private final int FIELD_WIDTH_DEFAULT = 10;
 
     public final int FIELD_HEIGHT_MIN = 15;
     public final int FIELD_HEIGHT_MAX = 30;
-    public final int FIELD_HEIGHT_DEFAULT = 20;
+    private final int FIELD_HEIGHT_DEFAULT = 20;
 
     public final int GAME_LEVEL_MIN = 1;
     public final int GAME_LEVEL_MAX = 10;
-    public final int GAME_LEVEL_DEFAULT = 1;
+    private final int GAME_LEVEL_DEFAULT = 1;
 
     public final String CHECKBOX_OFF = "OFF";
     public final String CHECKBOX_ON = "ON";
 
     public GameConfiguration() {
-        this.gameLevel = 6;
-
-        this.fieldWidth = 10;
-        this.fieldHeight = 20;
+        this.gameLevel = GAME_LEVEL_DEFAULT;
+        this.fieldWidth = FIELD_WIDTH_DEFAULT;
+        this.fieldHeight = FIELD_HEIGHT_DEFAULT;
 
         this.music = true;
         this.soundEffects = true;

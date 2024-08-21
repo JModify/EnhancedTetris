@@ -1,16 +1,11 @@
 package me.modify.tetris.ui.panel;
 
-import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.ui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenuPanel extends TPanel {
-
-    private JPanel panel;
 
     private final int BUTTON_WIDTH = 300;
     private final int BUTTON_HEIGHT = 50;
@@ -18,11 +13,10 @@ public class MainMenuPanel extends TPanel {
 
     public MainMenuPanel(MainFrame mainFrame) {
         super(mainFrame);
-        this.panel = new JPanel(null);
     }
 
     @Override
-    public void load() {
+    public void paint() {
         JLabel mainMenuTitle = new JLabel("Main Menu");
         mainMenuTitle.setBounds(200, 50, 300, 100);
         mainMenuTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -30,15 +24,15 @@ public class MainMenuPanel extends TPanel {
 
         JButton playButton = new JButton("Play");
         formatMenuButton(120, playButton);
+        playButton.addActionListener(e -> {
+            GamePanel gamePanel = new GamePanel(getMainFrame());
+            gamePanel.paint();
+        });
 
         JButton configButton = new JButton("Configuration");
         formatMenuButton(180, configButton);
-        configButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ConfigurationPanel configurationPanel = new ConfigurationPanel(getMainFrame());
-                configurationPanel.load();
-            }
+        configButton.addActionListener(e -> {
+            getMainFrame().openConfigurationMenu();
         });
 
         JButton scoresButton = new JButton("High Scores");

@@ -33,8 +33,10 @@ public class UIHelper {
         masterPanel.add(subPanelEast, BorderLayout.EAST);
     }
 
-    public static void addCheckbox(int total, int itemYSpacing, JPanel subPanel, JPanel masterPanel) {
-
+    public static JLabel getLabel(String text, Font font) {
+        JLabel label = new JLabel(text);
+        label.setFont(font);
+        return label;
     }
 
     private static void tick(JSlider slider, JLabel label) {

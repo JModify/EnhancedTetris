@@ -5,28 +5,31 @@ import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.ui.MainFrame;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class TPanel {
 
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
+    protected JPanel panel;
 
     public TPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        this.panel = new JPanel(null);
     }
 
     public GameConfiguration getConfiguration() {
         return mainFrame.getTetrisApp().getGameController().getConfiguration();
     }
 
-    public MainFrame getMainFrame() {
-        return mainFrame;
-    }
-
     public EnhancedTetrisApp getApp() {
         return mainFrame.getTetrisApp();
     }
 
-    public abstract void load();
+    public MainFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public abstract void paint();
 
     private void close() {
         getMainFrame().getJFrame().getContentPane().removeAll();
@@ -40,5 +43,16 @@ public abstract class TPanel {
         mainFrame.revalidate();
         mainFrame.repaint();
     }
+
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    public void setPanel(JPanel panel) {
+        this.panel = panel;
+    }
+
+
+
 
 }

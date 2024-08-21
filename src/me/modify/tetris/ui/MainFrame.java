@@ -44,15 +44,15 @@ public class MainFrame {
     }
 
     public void openMainMenu() {
-        mainMenuPanel.load();
+        mainMenuPanel.paint();
     }
 
     public void openConfigurationMenu() {
-        configurationPanel.load();
+        configurationPanel.paint();
     }
 
     public void openHighScoresMenu() {
-        highScoresPanel.load();
+        highScoresPanel.paint();
     }
 
 

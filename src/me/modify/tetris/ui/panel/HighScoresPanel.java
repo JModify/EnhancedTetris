@@ -7,15 +7,13 @@ import javax.swing.*;
 
 public class HighScoresPanel extends TPanel {
 
-    private JPanel panel;
 
     public HighScoresPanel(MainFrame mainFrame) {
         super(mainFrame);
-        this.panel = new JPanel(null);
     }
 
     @Override
-    public void load() {
+    public void paint() {
 
     }
 }
