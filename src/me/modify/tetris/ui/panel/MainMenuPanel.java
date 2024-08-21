@@ -37,6 +37,7 @@ public class MainMenuPanel extends TPanel {
 
         JButton scoresButton = new JButton("High Scores");
         formatMenuButton(240, scoresButton);
+        scoresButton.addActionListener(e -> getMainFrame().openHighScoresMenu());
 
         JButton exitButton = new JButton("Exit");
         formatMenuButton(300, exitButton);

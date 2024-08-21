@@ -49,13 +49,17 @@ public class GamePanel  extends TPanel {
         emptyRight.setBorder(BorderFactory.createLineBorder(Color.RED));
 
         JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
         bottomPanel.setPreferredSize(new Dimension(700, 50));
         bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
         JButton backButton = new JButton("Back");
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bottomPanel.add(backButton);
         backButton.addActionListener(e -> getMainFrame().openMainMenu());
+        bottomPanel.add(backButton);
+        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
+        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottomPanel.add(authorLabel);
 
         panel.add(boardPanel, BorderLayout.CENTER);
 

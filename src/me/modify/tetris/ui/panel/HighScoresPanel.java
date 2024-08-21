@@ -4,9 +4,10 @@ import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.ui.MainFrame;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.*;
 
 public class HighScoresPanel extends TPanel {
-
 
     public HighScoresPanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -14,6 +15,89 @@ public class HighScoresPanel extends TPanel {
 
     @Override
     public void paint() {
+        setPanel(new JPanel(new BorderLayout()));
 
+        JPanel titlePanel = new JPanel();
+        titlePanel.setPreferredSize(new Dimension(700, 50));
+        JLabel titleLabel = new JLabel("High Score");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titlePanel.add(titleLabel);
+
+        JPanel namePanel = new JPanel(new GridBagLayout());
+        //namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        namePanel.setPreferredSize(new Dimension(320, 400));
+       addDummyNamePanel(namePanel);
+
+        JPanel scorePanel = new JPanel(new GridBagLayout());
+        //scorePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        namePanel.setPreferredSize(new Dimension(320, 400));
+        addDummyScoresPanel(scorePanel);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
+        bottomPanel.setPreferredSize(new Dimension(700, 50));
+
+        JButton backButton = new JButton("Back");
+        backButton.setUI(new BasicButtonUI());
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> getMainFrame().openMainMenu());
+        bottomPanel.add(backButton);
+        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
+        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottomPanel.add(authorLabel);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setPreferredSize(new Dimension(50, 400));
+        centerPanel.add(new JLabel("Text"));
+
+        panel.add(titlePanel, BorderLayout.NORTH);
+        panel.add(scorePanel, BorderLayout.EAST);
+        panel.add(centerPanel, BorderLayout.CENTER);
+        panel.add(namePanel, BorderLayout.WEST);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+
+
+        update(panel);
+    }
+
+    private void addDummyNamePanel(JPanel panel) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.ipady = 15;
+
+        JLabel nameTitle = new JLabel("Name");
+        nameTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(nameTitle, gbc);
+        gbc.gridy++;
+
+        for (int i = 0; i < 10; i++) {
+            JLabel name = new JLabel("Josh");
+            panel.add(name, gbc);
+            gbc.gridy++;
+        }
+    }
+
+    private void addDummyScoresPanel(JPanel panel) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.ipady = 15;
+
+        JLabel scoresTitle = new JLabel("Scores");
+        scoresTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(scoresTitle, gbc);
+        gbc.gridy++;
+
+        for (int i = 0; i < 10; i++) {
+            JLabel name = new JLabel("218384");
+            panel.add(name, gbc);
+            gbc.gridy++;
+        }
+
+        // Trick BorderLayout to not make center quadrant prioritise space.
+        JPanel rightSpacer = new JPanel();
+        rightSpacer.setPreferredSize(new Dimension(320, 400));
+        panel.add(rightSpacer);
     }
 }

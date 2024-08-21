@@ -200,12 +200,9 @@ public class ConfigurationPanel extends TPanel {
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         bottomPanel.add(backButton);
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveConfiguration();
-                getMainFrame().openMainMenu();
-            }
+        backButton.addActionListener(e -> {
+            saveConfiguration();
+            getMainFrame().openMainMenu();
         });
 
         bottomPanel.add(Box.createVerticalStrut(10));
