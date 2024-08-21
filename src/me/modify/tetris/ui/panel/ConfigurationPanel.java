@@ -20,6 +20,14 @@ public class ConfigurationPanel extends TPanel {
 
     private JPanel panel;
 
+    private JLabel fieldWidthSelection;
+    private JLabel fieldHeightSelection;
+    private JLabel gameLevelSelection;
+    private JLabel musicSelection;
+    private JLabel soundEffectsSelection;
+    private JLabel aiPlaySelection;
+    private JLabel extendModeSelection;
+
     public ConfigurationPanel(MainFrame main) {
         super(main);
         panel = new JPanel(null);
@@ -60,34 +68,34 @@ public class ConfigurationPanel extends TPanel {
         gbc.ipady = 35;
 
         Font font = new Font("Arial", Font.PLAIN, 16);
-        JLabel fieldWidthSelection = getLabel(
-                String.valueOf(configuration.FIELD_WIDTH_DEFAULT), font);
+        fieldWidthSelection = getLabel(
+                String.valueOf(configuration.getFieldWidth()), font);
         gbc.gridy = 1;
         eastPanel.add(fieldWidthSelection, gbc);
 
-        JLabel fieldHeightSelection = getLabel(
-                String.valueOf(configuration.FIELD_HEIGHT_DEFAULT), font);
+        fieldHeightSelection = getLabel(
+                String.valueOf(configuration.getFieldHeight()), font);
         gbc.gridy = 2;
         eastPanel.add(fieldHeightSelection, gbc);
 
-        JLabel gameLevelSelection = getLabel(
-                String.valueOf(configuration.GAME_LEVEL_DEFAULT), font);
+        gameLevelSelection = getLabel(
+                String.valueOf(configuration.getGameLevel()), font);
         gbc.gridy = 3;
         eastPanel.add(gameLevelSelection, gbc);
 
-        JLabel musicSelection = getLabel(configuration.CHECKBOX_OFF, font);
+        musicSelection = getLabel(configuration.isMusic() ? "ON" : "OFF", font);
         gbc.gridy = 4;
         eastPanel.add(musicSelection, gbc);
 
-        JLabel soundEffectsSelection = getLabel(configuration.CHECKBOX_OFF, font);
+        soundEffectsSelection = getLabel(configuration.isSoundEffects() ? "ON" : "OFF", font);
         gbc.gridy = 5;
         eastPanel.add(soundEffectsSelection, gbc);
 
-        JLabel aiPlaySelection = getLabel(configuration.CHECKBOX_OFF, font);
+        aiPlaySelection = getLabel(configuration.isAiPlay() ? "ON" : "OFF", font);
         gbc.gridy = 6;
         eastPanel.add(aiPlaySelection, gbc);
 
-        JLabel extendModeSelection = getLabel(configuration.CHECKBOX_OFF, font);
+        extendModeSelection = getLabel(configuration.isExtendMode() ? "ON" : "OFF", font);
         gbc.gridy = 7;
         eastPanel.add(extendModeSelection, gbc);
 
@@ -98,41 +106,45 @@ public class ConfigurationPanel extends TPanel {
         JPanel centerPanel = new JPanel(null);
         JSlider fieldWidthSlider = getNumericalSlider(configuration.FIELD_WIDTH_MIN,
                 configuration.FIELD_WIDTH_MAX,
-                configuration.FIELD_WIDTH_DEFAULT);
+                configuration.getFieldWidth());
         fieldWidthSlider.setBounds(20, 13, 300, 40);
         centerPanel.add(fieldWidthSlider);
         fieldWidthSlider.addChangeListener(e -> update(fieldWidthSlider, fieldWidthSelection));
 
         JSlider fieldHeightSlider = getNumericalSlider(configuration.FIELD_HEIGHT_MIN,
                 configuration.FIELD_HEIGHT_MAX,
-                configuration.FIELD_HEIGHT_DEFAULT);
+                configuration.getFieldHeight());
         fieldHeightSlider.setBounds(20, 63, 300, 40);
         centerPanel.add(fieldHeightSlider);
         fieldHeightSlider.addChangeListener(e -> update(fieldHeightSlider, fieldHeightSelection));
 
         JSlider gameLevelSlider = getNumericalSlider(configuration.GAME_LEVEL_MIN,
                 configuration.GAME_LEVEL_MAX,
-                configuration.GAME_LEVEL_DEFAULT);
+                configuration.getGameLevel());
         gameLevelSlider.setBounds(20, 113, 300, 40);
         centerPanel.add(gameLevelSlider);
         gameLevelSlider.addChangeListener(e -> update(gameLevelSlider, gameLevelSelection));
 
         JCheckBox musicCheckBox = new JCheckBox();
+        musicCheckBox.setSelected(configuration.isMusic());
         musicCheckBox.setBounds(20,160, 300, 40);
         centerPanel.add(musicCheckBox);
         musicCheckBox.addChangeListener(e -> update(musicCheckBox, musicSelection));
 
         JCheckBox soundEffectsCheckBox = new JCheckBox();
+        soundEffectsCheckBox.setSelected(configuration.isSoundEffects());
         soundEffectsCheckBox.setBounds(20,215, 300, 40);
         centerPanel.add(soundEffectsCheckBox);
         soundEffectsCheckBox.addChangeListener(e -> update(soundEffectsCheckBox, soundEffectsSelection));
 
         JCheckBox aiCheckBox = new JCheckBox();
+        aiCheckBox.setSelected(configuration.isAiPlay());
         aiCheckBox.setBounds(20,270, 300, 40);
         centerPanel.add(aiCheckBox);
         aiCheckBox.addChangeListener(e -> update(aiCheckBox, aiPlaySelection));
 
         JCheckBox extendModeCheckBox = new JCheckBox();
+        extendModeCheckBox.setSelected(configuration.isExtendMode());
         extendModeCheckBox.setBounds(20,325, 300, 40);
         centerPanel.add(extendModeCheckBox);
         extendModeCheckBox.addChangeListener(e -> update(extendModeCheckBox, extendModeSelection));
@@ -151,6 +163,7 @@ public class ConfigurationPanel extends TPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                saveConfiguration();
                 getMainFrame().openMainMenu();
             }
         });
@@ -229,6 +242,20 @@ public class ConfigurationPanel extends TPanel {
     }
 
     public void saveConfiguration() {
+        GameConfiguration configuration = getConfiguration();
+
+        try {
+            configuration.setFieldWidth(Integer.parseInt(fieldWidthSelection.getText()));
+            configuration.setFieldHeight(Integer.parseInt(fieldHeightSelection.getText()));
+            configuration.setGameLevel(Integer.parseInt(gameLevelSelection.getText()));
+
+            configuration.setMusic(musicSelection.getText().equalsIgnoreCase("ON"));
+            configuration.setSoundEffects(soundEffectsSelection.getText().equalsIgnoreCase("ON"));
+            configuration.setAiPlay(aiPlaySelection.getText().equalsIgnoreCase("ON"));
+            configuration.setExtendMode(extendModeSelection.getText().equalsIgnoreCase("ON"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
     }
 }
