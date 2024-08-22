@@ -2,6 +2,7 @@ package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.ui.MainFrame;
+import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -33,18 +34,7 @@ public class HighScoresPanel extends TPanel {
         namePanel.setPreferredSize(new Dimension(320, 400));
         addDummyScoresPanel(scorePanel);
 
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
-        bottomPanel.setPreferredSize(new Dimension(700, 50));
-
-        JButton backButton = new JButton("Back");
-        backButton.setUI(new BasicButtonUI());
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.addActionListener(e -> getMainFrame().openMainMenu());
-        bottomPanel.add(backButton);
-        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bottomPanel.add(authorLabel);
+        JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), getMainFrame());
 
         JPanel centerPanel = new JPanel();
         centerPanel.setPreferredSize(new Dimension(50, 400));

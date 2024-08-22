@@ -1,7 +1,11 @@
 package me.modify.tetris.ui.panel;
 
+import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
+import me.modify.tetris.game.GameController;
+import me.modify.tetris.game.TetrisGrid;
 import me.modify.tetris.ui.MainFrame;
+import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,20 +25,31 @@ public class GamePanel  extends TPanel {
     public void paint() {
         setPanel(new JPanel(new BorderLayout()));
 
+        GameController gameController = getMainFrame().getTetrisApp().getGameController();
+
         GameConfiguration configuration = getConfiguration();
         int rows = configuration.getFieldHeight();
         int columns = configuration.getFieldWidth();
 
         JPanel boardPanel = new JPanel(new GridLayout(rows,
                 columns, 0, 0));
-        //boardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         for(int i = 0; i < (rows * columns); i++) {
-            JPanel cell = new JPanel(null);
-            //cell.setBackground(new Color(0, 168, 255, 255));
-            cell.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-            boardPanel.add(cell);
+            JPanel jCell = new JPanel(null);
+            jCell.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+            jCell.setBackground(Color.WHITE);
+            boardPanel.add(jCell);
+
+            int x = i % columns; // column
+            int y = i / columns; // row
+
+//            System.out.println("X: " + x + " | Y: " + y);
+
+            Cell cell = new Cell(x, y, 0, jCell);
+            gameController.getGrid().addCell(cell);
         }
+
+        gameController.getGrid().printGrid();
 
         JPanel emptyTop = new JPanel(null);
         emptyTop.setPreferredSize(new Dimension(700, 50));
@@ -48,18 +63,8 @@ public class GamePanel  extends TPanel {
         emptyRight.setPreferredSize(new Dimension(225, 400));
         emptyRight.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
-        bottomPanel.setPreferredSize(new Dimension(700, 50));
-        bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
-        JButton backButton = new JButton("Back");
-        backButton.setUI(new BasicButtonUI());
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.addActionListener(e -> getMainFrame().openMainMenu());
-        bottomPanel.add(backButton);
-        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bottomPanel.add(authorLabel);
+
+        JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), getMainFrame());
 
         panel.add(boardPanel, BorderLayout.CENTER);
 
@@ -68,6 +73,7 @@ public class GamePanel  extends TPanel {
         panel.add(emptyRight, BorderLayout.EAST);
         panel.add(bottomPanel, BorderLayout.SOUTH);
 
+        gameController.startGame();
         update(panel);
     }
 

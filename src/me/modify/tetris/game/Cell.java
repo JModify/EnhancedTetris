@@ -1,16 +1,19 @@
 package me.modify.tetris.game;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Cell {
 
     private int x;
     private int y;
+    private int data;
     private JPanel panel;
 
-    public Cell(int x, int y, JPanel panel) {
+    public Cell(int x, int y, int data, JPanel panel) {
         this.x = x;
         this.y = y;
+        this.data = data;
         this.panel = panel;
     }
 
@@ -34,7 +37,29 @@ public class Cell {
         return panel;
     }
 
+    public int getData() {
+        return data;
+    }
+
+    public void setData(int data) {
+        this.data = data;
+    }
+
     public void setPanel(JPanel panel) {
         this.panel = panel;
+    }
+
+    public Color getColor() {
+        return panel.getBackground();
+    }
+
+    public void setColor(Color color) {
+        if (data != 80) {
+            panel.setBackground(color);
+        }
+    }
+
+    public void setFixed() {
+        setData(data * -1);
     }
 }
