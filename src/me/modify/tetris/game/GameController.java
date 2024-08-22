@@ -1,24 +1,41 @@
 package me.modify.tetris.game;
 
+import me.modify.tetris.EnhancedTetrisApp;
+
 import javax.swing.*;
 
 public class GameController {
 
     private final GameConfiguration configuration;
     private final TetrisGrid grid;
+    private EnhancedTetrisApp app;
 
     private Timer timer;
 
-    public GameController() {
+    public GameController(EnhancedTetrisApp app) {
+        this.app = app;
         this.configuration = new GameConfiguration();
-        this.grid = new TetrisGrid(configuration.getFieldWidth(), configuration.getFieldHeight());
+        this.grid = new TetrisGrid(this, configuration.getFieldWidth(), configuration.getFieldHeight());
 
         timer = new Timer(1000, e -> updateGame());
     }
 
     public void updateGame() {
-        grid.shiftGridDown();
+        if (grid.allCellsFixed()) {
+            grid.clearPlaceholders();
+            grid.insertTetromino(Tetromino.randomTetromino());
+            resumeMovementInput();
+        }
+
+        grid.shiftDown();
+
         grid.printGrid();
+    }
+
+    public void endGame() {
+        if (timer.isRunning()) {
+            timer.stop();
+        }
     }
 
     public void startGame() {
@@ -26,7 +43,7 @@ public class GameController {
 
         grid.insertTetromino(Tetromino.randomTetromino());
         grid.printGrid();
-
+        app.getMainFrame().getJFrame().requestFocus();
         timer.start();
     }
 
@@ -50,5 +67,13 @@ public class GameController {
 
     public TetrisGrid getGrid() {
         return this.grid;
+    }
+
+    public void blockMovementInput() {
+        app.getMainFrame().getMovementListener().setBlockInput(true);
+    }
+
+    public void resumeMovementInput() {
+        app.getMainFrame().getMovementListener().setBlockInput(false);
     }
 }

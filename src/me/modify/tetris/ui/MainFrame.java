@@ -1,6 +1,7 @@
 package me.modify.tetris.ui;
 
 import me.modify.tetris.EnhancedTetrisApp;
+import me.modify.tetris.game.control.MovementListener;
 import me.modify.tetris.ui.panel.ConfigurationPanel;
 import me.modify.tetris.ui.panel.HighScoresPanel;
 import me.modify.tetris.ui.panel.MainMenuPanel;
@@ -16,12 +17,15 @@ public class MainFrame {
     private HighScoresPanel highScoresPanel;
     private MainMenuPanel mainMenuPanel;
 
+    private MovementListener movementListener;
+
     public MainFrame(EnhancedTetrisApp tetrisApp) {
         this.frame = new JFrame("Enhanced Tetris");
         this.configurationPanel = new ConfigurationPanel(this);
         this.highScoresPanel = new HighScoresPanel(this);
         this.mainMenuPanel = new MainMenuPanel(this);
         this.tetrisApp = tetrisApp;
+        this.movementListener = new MovementListener(tetrisApp.getGameController());
     }
 
     public void createUI() {
@@ -29,7 +33,7 @@ public class MainFrame {
         frame.setSize(700, 500);
         frame.setResizable(false);
         frame.setIconImage(new ImageIcon("resources/icon.png").getImage());
-
+        frame.addKeyListener(movementListener);
         // Centers Main Frame to open in the center of the screen.
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -44,6 +48,7 @@ public class MainFrame {
     }
 
     public void openMainMenu() {
+        tetrisApp.getGameController().endGame();
         mainMenuPanel.paint();
     }
 
@@ -55,5 +60,7 @@ public class MainFrame {
         highScoresPanel.paint();
     }
 
-
+    public MovementListener getMovementListener() {
+        return movementListener;
+    }
 }

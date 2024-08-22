@@ -29,27 +29,29 @@ public class ConfigurationPanel extends TPanel {
 
     @Override
     public void paint() {
-        setPanel(new JPanel(new BorderLayout()));
+        SwingUtilities.invokeLater(() -> {
+            setPanel(new JPanel(new BorderLayout()));
 
-        // Draw Configuration Panel title.
-        JLabel configurationTitle = new JLabel("Configuration");
-        configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
-        panel.add(configurationTitle, BorderLayout.NORTH);
+            // Draw Configuration Panel title.
+            JLabel configurationTitle = new JLabel("Configuration");
+            configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
+            panel.add(configurationTitle, BorderLayout.NORTH);
 
-        // Draws labels / titles for given configuration.
-        drawConfigLabels();
+            // Draws labels / titles for given configuration.
+            drawConfigLabels();
 
-        // Draws selections panel which displays current selection for a given configuration.
-        drawConfigSelections();
+            // Draws selections panel which displays current selection for a given configuration.
+            drawConfigSelections();
 
-        // Draws interactive configuration. Includes sliders and checkboxes.
-        drawConfigInteractives();
+            // Draws interactive configuration. Includes sliders and checkboxes.
+            drawConfigInteractives();
 
-        // Draws back button (return to main menu) and author name below it.
-        drawBackButton();
+            // Draws back button (return to main menu) and author name below it.
+            drawBackButton();
 
-        update(panel);
+            update(panel);
+        });
     }
 
     private JSlider getNumericalSlider(int min, int max, int init) {

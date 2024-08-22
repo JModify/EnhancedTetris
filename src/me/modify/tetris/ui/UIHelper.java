@@ -38,7 +38,7 @@ public class UIHelper {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
         bottomPanel.setPreferredSize(dimension);
-        bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        //bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
         JButton backButton = new JButton("Back");
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);

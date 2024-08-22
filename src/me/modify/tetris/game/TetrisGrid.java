@@ -13,10 +13,15 @@ public class TetrisGrid {
     // Number of rows
     private int height;
 
-    public TetrisGrid(int width, int height) {
+    public final int FIXED_PLACEHOLDER = -80;
+    public final int PLACEHOLDER = 80;
+
+    private GameController gameController;
+    public TetrisGrid(GameController gameController, int width, int height) {
         grid = new Cell[height][width];
         this.height = height;
         this.width = width;
+        this.gameController = gameController;
     }
 
     public void updateSize(int width, int height) {
@@ -66,11 +71,88 @@ public class TetrisGrid {
         }
     }
 
-    public void turnCellFixed(Cell cell) {
-        cell.setData(cell.getData() * -1);
+    public void shiftRight() {
+        // Loop through rows / columns from right to left
+        for (int i = 0; i < height; i++) {
+            for (int j = width - 2; j >= 0; j--) {
+
+                Cell cell = grid[i][j];
+                if (cell == null) {
+                    continue;
+                }
+
+                // Skip current iteration if data of current cell is 0.
+                // Does not need to be moved down.
+                if (cell.getData() == 0) {
+                    continue; // Skip if cell data is 0
+                }
+
+                if (cell.getData() < 0 && cell.getData() != PLACEHOLDER) {
+                    continue;
+                }
+
+                // Handle case where next column is out of bounds.
+                int nextColumn = j + 1;
+                if (nextColumn >= width || grid[i][nextColumn] == null) {
+                    continue;
+                }
+
+                // Move current cell data to next cell
+                Cell nextCell = grid[i][nextColumn];
+//                nextCell.setData(cell.getData());
+//                nextCell.setColor(cell.getColor());
+                if (nextCell.getData() == 0) {
+                    nextCell.setData(cell.getData());
+                    nextCell.setColor(cell.getColor());
+                    cell.setData(0);
+                    cell.setColor(Color.WHITE);
+                }
+            }
+        }
     }
 
-    public void shiftGridDown() {
+    public void shiftLeft() {
+        // Loop through rows / columns from left to right
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+
+                Cell cell = grid[i][j];
+                if (cell == null) {
+                    continue;
+                }
+
+                // Skip current iteration if data of current cell is 0.
+                // Does not need to be moved down.
+                if (cell.getData() == 0) {
+                    continue; // Skip if cell data is 0
+                }
+
+                if (cell.getData() < 0 && cell.getData() != PLACEHOLDER) {
+                    continue;
+                }
+
+                // Handle case where next column is out of bounds.
+                int nextColumn = j - 1;
+                if (nextColumn < 0 || grid[i][nextColumn] == null) {
+                    continue;
+                }
+
+                // Move current cell data to next cell
+                Cell nextCell = grid[i][nextColumn];
+//                nextCell.setData(cell.getData());
+//                nextCell.setColor(cell.getColor());
+                if (nextCell.getData() == 0) {
+                    nextCell.setData(cell.getData());
+                    nextCell.setColor(cell.getColor());
+                    cell.setData(0);
+                    cell.setColor(Color.WHITE);
+                }
+            }
+        }
+    }
+
+    public void shiftDown() {
+        boolean fixAll = false;
 
         // Loop through rows / columns from top to bottom.
         for (int i = height - 1; i >= 0; i--) {
@@ -87,9 +169,14 @@ public class TetrisGrid {
                     continue; // Skip if cell data is 0
                 }
 
+                if (cell.getData() < 0 && cell.getData() != PLACEHOLDER) {
+                    continue;
+                }
+
                 // Handle case where next row is out of bounds.
                 int nextRow = i + 1;
                 if (nextRow >= height || grid[nextRow][j] == null) {
+                    cell.setFixed();
                     continue;
                 }
 
@@ -101,46 +188,52 @@ public class TetrisGrid {
                     cell.setData(0);
                     cell.setColor(Color.WHITE);
                 } else {
-                    // Handle cases where the next cell is not empty (e.g., if the grid is full)
-                    // You may want to add additional logic here if needed
+                    gameController.blockMovementInput();
+                    fixAll = true;
+                    break;
                 }
             }
         }
 
-//        for (int i = 0; i < height; i++) {
-//            for (int j = 0; j < width; j++) {
-//                Cell cell = grid[i][j];
-//
-//                if (cell.getData() == 0) {
-//                    continue;
-//                }
-//
-//                int nextRow = i + 1;
-//                if (grid[nextRow][j] == null || nextRow >= height) {
-//                    continue;
-//                }
-//
-//                Cell nextCell = grid[nextRow][j];
-//                nextCell.setData(cell.getData());
-//
-//                int aboveRow = i - 1;
-//                if (aboveRow < 0) {
-//                    cell.setData(0);
-//                    cell.setColor(Color.WHITE);
-//                    continue;
-//                }
-//
-//                Cell aboveCell = grid[aboveRow][j];
-//                cell.setData(aboveCell.getData());
-//                cell.setColor(aboveCell.getColor());
-//            }
-//        }
+        if(fixAll) {
+            setAllFixed();
+        }
     }
 
-    public void getCellAt(int x, int y) {
+    public boolean allCellsFixed() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Cell cell = grid[i][j];
+                if (!cell.isFixed()) {
+                    System.out.println("False");
+                    return false;
 
+                }
+            }
+        }
+        System.out.println("True");
+        return true;
     }
 
-    
+    public void clearPlaceholders() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Cell cell = grid[i][j];
+                if (cell.getData() == FIXED_PLACEHOLDER) {
+                    cell.setData(0);
+                }
+            }
+        }
+    }
 
+    public void setAllFixed() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Cell cell = grid[i][j];
+                if (!cell.isFixed()) {
+                    cell.setFixed();
+                }
+            }
+        }
+    }
 }

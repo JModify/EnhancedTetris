@@ -17,45 +17,47 @@ public class MainMenuPanel extends TPanel {
 
     @Override
     public void paint() {
-        JLabel mainMenuTitle = new JLabel("Main Menu");
-        mainMenuTitle.setBounds(200, 50, 300, 100);
-        mainMenuTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        mainMenuTitle.setFont(new Font("Arial", Font.BOLD, 32));
+        SwingUtilities.invokeLater(() -> {
+            JLabel mainMenuTitle = new JLabel("Main Menu");
+            mainMenuTitle.setBounds(200, 50, 300, 100);
+            mainMenuTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            mainMenuTitle.setFont(new Font("Arial", Font.BOLD, 32));
 
-        JButton playButton = new JButton("Play");
-        formatMenuButton(120, playButton);
-        playButton.addActionListener(e -> {
-            GamePanel gamePanel = new GamePanel(getMainFrame());
-            gamePanel.paint();
+            JButton playButton = new JButton("Play");
+            formatMenuButton(120, playButton);
+            playButton.addActionListener(e -> {
+                GamePanel gamePanel = new GamePanel(getMainFrame());
+                gamePanel.paint();
+            });
+
+            JButton configButton = new JButton("Configuration");
+            formatMenuButton(180, configButton);
+            configButton.addActionListener(e -> {
+                getMainFrame().openConfigurationMenu();
+            });
+
+            JButton scoresButton = new JButton("High Scores");
+            formatMenuButton(240, scoresButton);
+            scoresButton.addActionListener(e -> getMainFrame().openHighScoresMenu());
+
+            JButton exitButton = new JButton("Exit");
+            formatMenuButton(300, exitButton);
+            exitButton.addActionListener(e -> System.exit(0));
+
+            JLabel appAuthorTitle = new JLabel("Author: Joshua Lavagna-Slater");
+            appAuthorTitle.setBounds(200, 360, 300, 50);
+            appAuthorTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            mainMenuTitle.setFont(new Font("Arial", Font.BOLD, 20));
+
+            panel.add(mainMenuTitle);
+            panel.add(playButton);
+            panel.add(configButton);
+            panel.add(scoresButton);
+            panel.add(exitButton);
+            panel.add(appAuthorTitle);
+
+            update(panel);
         });
-
-        JButton configButton = new JButton("Configuration");
-        formatMenuButton(180, configButton);
-        configButton.addActionListener(e -> {
-            getMainFrame().openConfigurationMenu();
-        });
-
-        JButton scoresButton = new JButton("High Scores");
-        formatMenuButton(240, scoresButton);
-        scoresButton.addActionListener(e -> getMainFrame().openHighScoresMenu());
-
-        JButton exitButton = new JButton("Exit");
-        formatMenuButton(300, exitButton);
-        exitButton.addActionListener(e -> System.exit(0));
-
-        JLabel appAuthorTitle = new JLabel("Author: Joshua Lavagna-Slater");
-        appAuthorTitle.setBounds(200, 360, 300, 50);
-        appAuthorTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        mainMenuTitle.setFont(new Font("Arial", Font.BOLD, 20));
-
-        panel.add(mainMenuTitle);
-        panel.add(playButton);
-        panel.add(configButton);
-        panel.add(scoresButton);
-        panel.add(exitButton);
-        panel.add(appAuthorTitle);
-
-        update(panel);
     }
 
     private void formatMenuButton(int offsetY, JButton button) {

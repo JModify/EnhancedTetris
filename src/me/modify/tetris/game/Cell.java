@@ -59,7 +59,13 @@ public class Cell {
         }
     }
 
+    public boolean isFixed() {
+        return data <= 0;
+    }
+
     public void setFixed() {
-        setData(data * -1);
+        if (data > 0) {
+            setData(data * -1);
+        }
     }
 }

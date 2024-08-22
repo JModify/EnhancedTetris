@@ -6,6 +6,7 @@ import me.modify.tetris.ui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 public abstract class TPanel {
 
@@ -40,8 +41,14 @@ public abstract class TPanel {
 
         JFrame mainFrame = getMainFrame().getJFrame();
         mainFrame.add(panel);
+
+//        KeyListener[] listeners = mainFrame.getKeyListeners();
         mainFrame.revalidate();
         mainFrame.repaint();
+
+//        for (KeyListener listener : listeners) {
+//            mainFrame.addKeyListener(listener);
+//        }
     }
 
     public JPanel getPanel() {
