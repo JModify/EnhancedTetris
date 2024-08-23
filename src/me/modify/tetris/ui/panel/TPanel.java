@@ -41,14 +41,8 @@ public abstract class TPanel {
 
         JFrame mainFrame = getMainFrame().getJFrame();
         mainFrame.add(panel);
-
-//        KeyListener[] listeners = mainFrame.getKeyListeners();
         mainFrame.revalidate();
         mainFrame.repaint();
-
-//        for (KeyListener listener : listeners) {
-//            mainFrame.addKeyListener(listener);
-//        }
     }
 
     public JPanel getPanel() {

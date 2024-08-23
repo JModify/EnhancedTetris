@@ -31,6 +31,7 @@ public class GameController {
             if (!grid.canInsertTetromino(tetromino)) {
                 gameState = GameState.LOST;
                 endGame();
+                return;
             }
 
             grid.insertTetromino(Tetromino.randomTetromino());

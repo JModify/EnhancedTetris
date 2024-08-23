@@ -5,6 +5,8 @@ import java.awt.*;
 
 public class Cell {
 
+    public static final Color EMPTY_CELL = Color.WHITE;
+
     private int x;
     private int y;
     private int data;

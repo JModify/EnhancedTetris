@@ -7,10 +7,14 @@ import me.modify.tetris.ui.MainFrame;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 public class GamePanel  extends TPanel {
+
+    private final Color BOARD_BORDER_COLOR = Color.BLACK;
 
     public GamePanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -22,6 +26,7 @@ public class GamePanel  extends TPanel {
 
         SwingUtilities.invokeLater(() -> {
             setPanel(new JPanel(new BorderLayout()));
+            //panel.setBounds(0, 0, 700, 500);
 
             GameConfiguration configuration = getConfiguration();
 
@@ -32,12 +37,11 @@ public class GamePanel  extends TPanel {
 
             JPanel boardPanel = new JPanel(new GridLayout(rows,
                     columns, 0, 0));
-            boardPanel.setBorder(new LineBorder(Color.BLACK));
 
             for (int i = 0; i < (rows * columns); i++) {
                 JPanel jCell = new JPanel(null);
                 //jCell.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-                jCell.setBackground(Color.WHITE);
+                jCell.setBackground(Cell.EMPTY_CELL);
                 boardPanel.add(jCell);
 
                 int x = i % columns; // column
@@ -51,24 +55,29 @@ public class GamePanel  extends TPanel {
 
             //gameController.getGrid().printGrid();
 
-            JPanel emptyTop = new JPanel(null);
-            emptyTop.setPreferredSize(new Dimension(700, 50));
+            Color veryLightGray = new Color(227, 227, 227, 255);
+
+            JPanel topPanel = new JPanel(null);
+            topPanel.setPreferredSize(new Dimension(700, 50));
+            topPanel.setBackground(veryLightGray);
             //emptyTop.setBorder(BorderFactory.createLineBorder(Color.RED));
 
             JPanel emptyLeft = new JPanel(null);
             emptyLeft.setPreferredSize(new Dimension(225, 400));
+            emptyLeft.setBackground(veryLightGray);
             //emptyLeft.setBorder(BorderFactory.createLineBorder(Color.RED));
 
             JPanel emptyRight = new JPanel(null);
             emptyRight.setPreferredSize(new Dimension(225, 400));
+            emptyRight.setBackground(veryLightGray);
             //emptyRight.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-
-            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), getMainFrame());
+            JPanel bottomPanel = getBottomPanel(new Dimension(700, 50));
+            bottomPanel.setBackground(veryLightGray);
 
             panel.add(boardPanel, BorderLayout.CENTER);
 
-            panel.add(emptyTop, BorderLayout.NORTH);
+            panel.add(topPanel, BorderLayout.NORTH);
             panel.add(emptyLeft, BorderLayout.WEST);
             panel.add(emptyRight, BorderLayout.EAST);
             panel.add(bottomPanel, BorderLayout.SOUTH);
@@ -78,7 +87,21 @@ public class GamePanel  extends TPanel {
         });
     }
 
-    public void colourCells() {
+    public JPanel getBottomPanel(Dimension dimension) {
 
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
+        bottomPanel.setPreferredSize(dimension);
+
+        JButton backButton = new JButton("Back");
+        backButton.setUI(new BasicButtonUI());
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> getMainFrame().openMainMenu());
+        bottomPanel.add(backButton);
+
+        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
+        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottomPanel.add(authorLabel);
+        return bottomPanel;
     }
 }

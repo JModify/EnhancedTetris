@@ -26,19 +26,18 @@ public class MainMenuPanel extends TPanel {
             JButton playButton = new JButton("Play");
             formatMenuButton(120, playButton);
             playButton.addActionListener(e -> {
-                GamePanel gamePanel = new GamePanel(getMainFrame());
-                gamePanel.paint();
+                getMainFrame().openGamePanel();
             });
 
             JButton configButton = new JButton("Configuration");
             formatMenuButton(180, configButton);
             configButton.addActionListener(e -> {
-                getMainFrame().openConfigurationMenu();
+                getMainFrame().openConfigurationPanel();
             });
 
             JButton scoresButton = new JButton("High Scores");
             formatMenuButton(240, scoresButton);
-            scoresButton.addActionListener(e -> getMainFrame().openHighScoresMenu());
+            scoresButton.addActionListener(e -> getMainFrame().openHighScoresPanel());
 
             JButton exitButton = new JButton("Exit");
             formatMenuButton(300, exitButton);

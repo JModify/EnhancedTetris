@@ -3,19 +3,23 @@ package me.modify.tetris.ui;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.listeners.MovementListener;
 import me.modify.tetris.ui.panel.ConfigurationPanel;
+import me.modify.tetris.ui.panel.GamePanel;
 import me.modify.tetris.ui.panel.HighScoresPanel;
 import me.modify.tetris.ui.panel.MainMenuPanel;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame {
 
     private EnhancedTetrisApp tetrisApp;
 
     private JFrame frame;
+
     private ConfigurationPanel configurationPanel;
     private HighScoresPanel highScoresPanel;
     private MainMenuPanel mainMenuPanel;
+    private GamePanel gamePanel;
 
     private MovementListener movementListener;
 
@@ -26,6 +30,7 @@ public class MainFrame {
         this.mainMenuPanel = new MainMenuPanel(this);
         this.tetrisApp = tetrisApp;
         this.movementListener = new MovementListener(tetrisApp.getGameController());
+        this.gamePanel = new GamePanel(this);
     }
 
     public void createUI() {
@@ -52,12 +57,20 @@ public class MainFrame {
         mainMenuPanel.paint();
     }
 
-    public void openConfigurationMenu() {
+    public void openConfigurationPanel() {
         configurationPanel.paint();
     }
 
-    public void openHighScoresMenu() {
+    public void openHighScoresPanel() {
         highScoresPanel.paint();
+    }
+
+    public void openGamePanel() {
+        gamePanel.paint();
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 
     public MovementListener getMovementListener() {

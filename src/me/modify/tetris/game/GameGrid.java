@@ -60,7 +60,6 @@ public class GameGrid {
             for (int j = 0; j < shape[i].length; j++) {
                 if (shape[i][j] != 0) {
                     int x = xCenter + j;
-
                     int y = yStart + i;
                     if (x >= 0 && x < width && y >= 0 && y < height) {
                         Cell cell = grid[y][x];
@@ -189,7 +188,7 @@ public class GameGrid {
 
             Cell cell = grid[row][column];
             cell.setData(0);
-            cell.setColor(Color.WHITE);
+            cell.setColor(Cell.EMPTY_CELL);
         }
 
         // Place the new rotated tetromino, but skip placeholder cells in the new positions.
@@ -202,7 +201,7 @@ public class GameGrid {
             // Only update cells that are empty or placeholders (not fixed cells)
             if (rotatedPoint.isPlaceholder()) {
                 cell.setData(80);
-                cell.setColor(Color.WHITE);
+                cell.setColor(Cell.EMPTY_CELL);
                 continue;
             }
 
@@ -377,7 +376,7 @@ public class GameGrid {
             otherCell.setData(cell.getData());
             otherCell.setColor(cell.getColor());
             cell.setData(0);
-            cell.setColor(Color.WHITE);
+            cell.setColor(Cell.EMPTY_CELL);
         }
     }
 
@@ -464,7 +463,7 @@ public class GameGrid {
     private void clearRow(int rowIndex) {
         for (int j = 0; j < width; j++) {
             grid[rowIndex][j].setData(0);
-            grid[rowIndex][j].setColor(Color.WHITE);
+            grid[rowIndex][j].setColor(Cell.EMPTY_CELL);
         }
     }
 }
