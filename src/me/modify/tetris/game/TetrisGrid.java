@@ -3,6 +3,7 @@ package me.modify.tetris.game;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.BinaryOperator;
 
 public class TetrisGrid {
 
@@ -18,6 +19,7 @@ public class TetrisGrid {
     public final int PLACEHOLDER = 80;
 
     private GameController gameController;
+
     public TetrisGrid(GameController gameController, int width, int height) {
         grid = new Cell[height][width];
         this.height = height;
@@ -51,6 +53,10 @@ public class TetrisGrid {
         System.out.println(Arrays.deepToString(tempGrid).replace("], ", "]\n"));
     }
 
+    /**
+     * Insert a tetromino into the grid at the top (centered).
+     * @param tetromino tetromino to insert
+     */
     public void insertTetromino(Tetromino tetromino) {
         int xCenter = (width - tetromino.getShape()[0].length) / 2;
         int yStart = 0;
@@ -73,7 +79,7 @@ public class TetrisGrid {
     }
 
     public List<Point> getCurrentTetromino() {
-        List<Point> coords = new ArrayList<>();
+        List<Point> points = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -87,24 +93,43 @@ public class TetrisGrid {
                     continue;
                 }
 
-                coords.add(new Point(i, j));
+                points.add(new Point(i, j));
             }
         }
-        return coords;
+        return points;
     }
 
-    public boolean canMoveDown() {
-        List<Point> currentTetromino = getCurrentTetromino();
-        for (Point point : currentTetromino) {
+    /**
+     * Checks movement in a specific direction defined by provided offset values.
+     * Possible Values:
+     * RIGHT: 0, 1
+     * LEFT: 0, -1
+     * DOWN: 1, 0
+     *
+     * @param rowOffset - row offset value
+     * @param columnOffset - column offset
+     * @return true if tetromino can move in that direction otherwise false.
+     */
+    public boolean canMoveDirection(int rowOffset, int columnOffset) {
+        for (Point point : getCurrentTetromino()) {
             int row = (int) point.getX();
             int column = (int) point.getY();
 
-            int nextRow = row + 1;
-            if (nextRow >= height || grid[nextRow][column] == null) {
+            int nextRow = row + rowOffset;
+            int nextColumn = column + columnOffset;
+
+            if (nextRow >= height || nextColumn >= width ||
+                    nextColumn < 0 || grid[nextRow][nextColumn] == null) {
                 return false;
             }
 
-            if (grid[nextRow][column].getData() < 0) {
+            // If cell is a placeholder and the direction is going down. Disregard check.
+            Cell cell = grid[row][column];
+            if (cell.getData() == PLACEHOLDER && rowOffset == 1) {
+                continue;
+            }
+
+            if (grid[nextRow][nextColumn].getData() < 0) {
                 return false;
             }
         }
@@ -112,7 +137,7 @@ public class TetrisGrid {
     }
 
     public void shiftDown() {
-        if (!canMoveDown()) {
+        if (!canMoveDirection(1, 0)) {
             setAllFixed();
         }
 
@@ -121,58 +146,35 @@ public class TetrisGrid {
             for (int j = 0; j < width; j++) {
 
                 Cell cell = grid[i][j];
-                if (cell == null) {
-                    continue;
-                }
-
-                // Skip current iteration if data of current cell is 0.
-                // Does not need to be moved down.
-                if (cell.getData() == 0) {
-                    continue; // Skip if cell data is 0
-                }
-
-                if (cell.getData() < 0 && cell.getData() != PLACEHOLDER) {
+                if (!isCellDynamic(cell)) {
                     continue;
                 }
 
                 // Handle case where next row is out of bounds.
                 int nextRow = i + 1;
                 if (nextRow >= height || grid[nextRow][j] == null) {
-                    cell.setFixed();
+                    //cell.setFixed();
                     continue;
                 }
 
                 // Move current cell data to next cell if it is empty
                 Cell nextCell = grid[nextRow][j];
-                if (nextCell.getData() == 0) {
-                    nextCell.setData(cell.getData());
-                    nextCell.setColor(cell.getColor());
-                    cell.setData(0);
-                    cell.setColor(Color.WHITE);
-                } else {
-                    break;
-                }
+                swapCells(cell, nextCell);
             }
         }
     }
 
-        public void shiftLeft() {
+    public void shiftLeft() {
+        if (!canMoveDirection(0, -1)) {
+            return;
+        }
+
         // Loop through rows / columns from left to right
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
 
                 Cell cell = grid[i][j];
-                if (cell == null) {
-                    continue;
-                }
-
-                // Skip current iteration if data of current cell is 0.
-                // Does not need to be moved down.
-                if (cell.getData() == 0) {
-                    continue; // Skip if cell data is 0
-                }
-
-                if (cell.getData() < 0 && cell.getData() != PLACEHOLDER) {
+                if (!isCellDynamic(cell)) {
                     continue;
                 }
 
@@ -184,33 +186,22 @@ public class TetrisGrid {
 
                 // Move current cell data to next cell
                 Cell nextCell = grid[i][nextColumn];
-                if (nextCell.getData() == 0) {
-                    nextCell.setData(cell.getData());
-                    nextCell.setColor(cell.getColor());
-                    cell.setData(0);
-                    cell.setColor(Color.WHITE);
-                }
+                swapCells(cell, nextCell);
             }
         }
     }
 
-        public void shiftRight() {
+    public void shiftRight() {
+        if (!canMoveDirection(0, 1)) {
+            return;
+        }
+
         // Loop through rows / columns from right to left
         for (int i = 0; i < height; i++) {
             for (int j = width - 2; j >= 0; j--) {
 
                 Cell cell = grid[i][j];
-                if (cell == null) {
-                    continue;
-                }
-
-                // Skip current iteration if data of current cell is 0.
-                // Does not need to be moved down.
-                if (cell.getData() == 0) {
-                    continue; // Skip if cell data is 0
-                }
-
-                if (cell.getData() < 0 && cell.getData() != PLACEHOLDER) {
+                if (!isCellDynamic(cell)) {
                     continue;
                 }
 
@@ -222,16 +213,47 @@ public class TetrisGrid {
 
                 // Move current cell data to next cell
                 Cell nextCell = grid[i][nextColumn];
-                if (nextCell.getData() == 0) {
-                    nextCell.setData(cell.getData());
-                    nextCell.setColor(cell.getColor());
-                    cell.setData(0);
-                    cell.setColor(Color.WHITE);
-                }
+                swapCells(cell, nextCell);
             }
         }
     }
 
+    /**
+     * Helper method used to swap the properties of two given cells.
+     * @param cell - cell swapping from.
+     * @param otherCell - cell swapping too.
+     */
+    private void swapCells(Cell cell, Cell otherCell) {
+        if (otherCell.getData() == 0 || otherCell.getData() == PLACEHOLDER) {
+            otherCell.setData(cell.getData());
+            otherCell.setColor(cell.getColor());
+            cell.setData(0);
+            cell.setColor(Color.WHITE);
+        }
+    }
+
+    /**
+     * Helper method used to check if a cell is dynamic and requires shifting.
+     * @param cell - cell to check
+     */
+    private boolean isCellDynamic(Cell cell) {
+        // Handle case where cell does not exist.
+        if (cell == null) {
+            return false;
+        }
+
+        // Handle case where cell is empty.
+        if (cell.getData() == 0) {
+            return false;
+        }
+
+        // Handle case where cell is a fixed piece or placeholder.
+        if (cell.getData() < 0 /*&& cell.getData() != PLACEHOLDER*/) {
+            return false;
+        }
+
+        return true;
+    }
 
     public void clearPlaceholders() {
         for (int i = 0; i < height; i++) {
@@ -255,18 +277,16 @@ public class TetrisGrid {
         }
     }
 
-        public boolean allCellsFixed() {
+    public boolean allCellsFixed() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
                 if (!cell.isFixed()) {
-                    System.out.println("False");
                     return false;
 
                 }
             }
         }
-        System.out.println("True");
         return true;
     }
 }
