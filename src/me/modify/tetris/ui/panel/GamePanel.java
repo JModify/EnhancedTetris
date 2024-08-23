@@ -3,18 +3,12 @@ package me.modify.tetris.ui.panel;
 import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.game.GameController;
-import me.modify.tetris.game.TetrisGrid;
-import me.modify.tetris.game.control.MovementListener;
 import me.modify.tetris.ui.MainFrame;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GamePanel  extends TPanel {
 
@@ -31,10 +25,10 @@ public class GamePanel  extends TPanel {
 
             GameConfiguration configuration = getConfiguration();
 
-            int rows = configuration.getFieldHeight();
-            int columns = configuration.getFieldWidth();
-
-            gameController.getGrid().updateSize(columns, rows);
+            //int rows = configuration.getFieldHeight();
+            //int columns = configuration.getFieldWidth();
+            int rows = configuration.FIELD_HEIGHT_DEFAULT;
+            int columns = configuration.FIELD_WIDTH_DEFAULT;
 
             JPanel boardPanel = new JPanel(new GridLayout(rows,
                     columns, 0, 0));
@@ -55,7 +49,7 @@ public class GamePanel  extends TPanel {
                 gameController.getGrid().addCell(cell);
             }
 
-            gameController.getGrid().printGrid();
+            //gameController.getGrid().printGrid();
 
             JPanel emptyTop = new JPanel(null);
             emptyTop.setPreferredSize(new Dimension(700, 50));

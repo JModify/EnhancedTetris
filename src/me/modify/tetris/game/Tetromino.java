@@ -78,8 +78,6 @@ public enum Tetromino {
     public static Tetromino randomTetromino() {
         Random random = new Random();
         int randId = random.nextInt(Tetromino.values().length) + 1;
-        System.out.println(randId);
-
         return Arrays.stream(Tetromino.values()).filter(
                 t -> t.getId() == randId).findFirst().get();
     }

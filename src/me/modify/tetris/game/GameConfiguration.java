@@ -13,11 +13,11 @@ public class GameConfiguration {
 
     public final int FIELD_WIDTH_MIN = 5;
     public final int FIELD_WIDTH_MAX = 15;
-    private final int FIELD_WIDTH_DEFAULT = 10;
+    public final int FIELD_WIDTH_DEFAULT = 10;
 
     public final int FIELD_HEIGHT_MIN = 15;
     public final int FIELD_HEIGHT_MAX = 30;
-    private final int FIELD_HEIGHT_DEFAULT = 20;
+    public final int FIELD_HEIGHT_DEFAULT = 20;
 
     public final int GAME_LEVEL_MIN = 1;
     public final int GAME_LEVEL_MAX = 10;

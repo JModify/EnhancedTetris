@@ -10,12 +10,14 @@ public class GameController {
     private final TetrisGrid grid;
     private EnhancedTetrisApp app;
 
-    private Timer timer;
+    private GameState gameState;
 
+    private Timer timer;
     public GameController(EnhancedTetrisApp app) {
         this.app = app;
         this.configuration = new GameConfiguration();
-        this.grid = new TetrisGrid(this, configuration.getFieldWidth(), configuration.getFieldHeight());
+        this.grid = new TetrisGrid(configuration.getFieldWidth(), configuration.getFieldHeight());
+        this.gameState = GameState.IDLE;
 
         timer = new Timer(1000, e -> updateGame());
     }
@@ -23,13 +25,19 @@ public class GameController {
     public void updateGame() {
         if (grid.allCellsFixed()) {
             grid.clearPlaceholders();
+            grid.clearRows();
+
+            Tetromino tetromino = Tetromino.randomTetromino();
+            if (!grid.canInsertTetromino(tetromino)) {
+                gameState = GameState.LOST;
+                endGame();
+            }
+
             grid.insertTetromino(Tetromino.randomTetromino());
-            resumeMovementInput();
         }
 
-        grid.shiftDown();
-
-        grid.printGrid();
+        grid.shiftDown(false);
+        //grid.printGrid();
     }
 
     public void endGame() {
@@ -39,12 +47,15 @@ public class GameController {
     }
 
     public void startGame() {
-        updateGridSize();
+
+        //TODO: Implement configuration to have affect on grid size later.
+        //updateGridSize();
 
         grid.insertTetromino(Tetromino.randomTetromino());
-        grid.printGrid();
         app.getMainFrame().getJFrame().requestFocus();
         timer.start();
+
+        gameState = GameState.RUNNING;
     }
 
     public void pauseGame() {
@@ -55,7 +66,7 @@ public class GameController {
 
     }
 
-    private void updateGridSize() {
+    public void updateGridSize() {
         int fieldWidth = configuration.getFieldWidth();
         int fieldHeight = configuration.getFieldHeight();
         grid.updateSize(fieldWidth, fieldHeight);

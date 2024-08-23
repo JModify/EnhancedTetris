@@ -17,7 +17,7 @@ public class TetrisGrid {
     public final int FIXED_PLACEHOLDER = -80;
     public final int PLACEHOLDER = 80;
 
-    public TetrisGrid(GameController gameController, int width, int height) {
+    public TetrisGrid(int width, int height) {
         grid = new Cell[height][width];
         this.height = height;
         this.width = width;
@@ -47,6 +47,33 @@ public class TetrisGrid {
         }
 
         System.out.println(Arrays.deepToString(tempGrid).replace("], ", "]\n"));
+    }
+
+    public boolean canInsertTetromino(Tetromino tetromino) {
+        int xCenter = (width - tetromino.getShape()[0].length) / 2;
+        int yStart = 0;
+
+        int[][] shape = tetromino.getShape();
+
+        boolean doesFit = true;
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[i].length; j++) {
+                if (shape[i][j] != 0) {
+                    int x = xCenter + j;
+
+                    int y = yStart + i;
+                    if (x >= 0 && x < width && y >= 0 && y < height) {
+                        Cell cell = grid[y][x];
+                        if (cell.getData() != 0) {
+                            doesFit = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return doesFit;
     }
 
     /**
@@ -258,8 +285,8 @@ public class TetrisGrid {
         return true;
     }
 
-    public void shiftDown() {
-        if (!canMoveDirection(1, 0)) {
+    public void shiftDown(boolean shiftFixedCells) {
+        if (!canMoveDirection(1, 0) && !shiftFixedCells) {
             setAllFixed();
         }
 
@@ -268,7 +295,7 @@ public class TetrisGrid {
             for (int j = 0; j < width; j++) {
 
                 Cell cell = grid[i][j];
-                if (!isCellDynamic(cell)) {
+                if (!isCellDynamic(cell) && !shiftFixedCells) {
                     continue;
                 }
 
@@ -405,10 +432,39 @@ public class TetrisGrid {
                 Cell cell = grid[i][j];
                 if (!cell.isFixed()) {
                     return false;
-
                 }
             }
         }
         return true;
+    }
+
+    public void clearRows() {
+        // Loop through every row
+        for (int i = 0; i < height; i++) {
+
+            boolean full = true;
+
+            // Loop through each column
+            for (int j = 0; j < width; j++) {
+                Cell cell = grid[i][j];
+
+                if (cell.getData() == 0) {
+                    full = false;
+                    break;
+                }
+            }
+
+            if (full) {
+                clearRow(i);
+                shiftDown(true);
+            }
+        }
+    }
+
+    private void clearRow(int rowIndex) {
+        for (int j = 0; j < width; j++) {
+            grid[rowIndex][j].setData(0);
+            grid[rowIndex][j].setColor(Color.WHITE);
+        }
     }
 }

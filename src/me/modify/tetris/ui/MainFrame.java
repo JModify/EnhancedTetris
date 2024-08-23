@@ -1,7 +1,7 @@
 package me.modify.tetris.ui;
 
 import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.game.control.MovementListener;
+import me.modify.tetris.listeners.MovementListener;
 import me.modify.tetris.ui.panel.ConfigurationPanel;
 import me.modify.tetris.ui.panel.HighScoresPanel;
 import me.modify.tetris.ui.panel.MainMenuPanel;

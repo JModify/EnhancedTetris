@@ -1,4 +1,4 @@
-package me.modify.tetris.game.control;
+package me.modify.tetris.listeners;
 
 import me.modify.tetris.game.GameController;
 
@@ -42,7 +42,7 @@ public class MovementListener implements KeyListener {
                 gameController.getGrid().shiftRight();
             }
             case MOVE_DOWN -> {
-                gameController.getGrid().shiftDown();
+                gameController.getGrid().shiftDown(false);
             }
         }
     }
