@@ -7,7 +7,7 @@ import javax.swing.*;
 public class GameController {
 
     private final GameConfiguration configuration;
-    private final TetrisGrid grid;
+    private final GameGrid grid;
     private EnhancedTetrisApp app;
 
     private GameState gameState;
@@ -16,7 +16,7 @@ public class GameController {
     public GameController(EnhancedTetrisApp app) {
         this.app = app;
         this.configuration = new GameConfiguration();
-        this.grid = new TetrisGrid(configuration.getFieldWidth(), configuration.getFieldHeight());
+        this.grid = new GameGrid(configuration.getFieldWidth(), configuration.getFieldHeight());
         this.gameState = GameState.IDLE;
 
         timer = new Timer(1000, e -> updateGame());
@@ -58,14 +58,26 @@ public class GameController {
         gameState = GameState.RUNNING;
     }
 
+    public boolean isPaused() {
+        return gameState == GameState.PAUSED;
+    }
+
     public void pauseGame() {
+        if (!isPaused()) {
+            gameState = GameState.PAUSED;
+            if (timer.isRunning()) {
+                timer.stop();
+            }
+            return;
+        }
 
+        gameState = GameState.RUNNING;
+        if (!timer.isRunning()) {
+            timer.start();
+        }
     }
 
-    public void unpauseGame() {
-
-    }
-
+    @Deprecated
     public void updateGridSize() {
         int fieldWidth = configuration.getFieldWidth();
         int fieldHeight = configuration.getFieldHeight();
@@ -76,14 +88,16 @@ public class GameController {
         return configuration;
     }
 
-    public TetrisGrid getGrid() {
+    public GameGrid getGrid() {
         return this.grid;
     }
 
+    @Deprecated
     public void blockMovementInput() {
         app.getMainFrame().getMovementListener().setBlockInput(true);
     }
 
+    @Deprecated
     public void resumeMovementInput() {
         app.getMainFrame().getMovementListener().setBlockInput(false);
     }

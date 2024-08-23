@@ -12,6 +12,8 @@ public class MovementListener implements KeyListener {
     private final char MOVE_RIGHT = 'd';
     private final char MOVE_DOWN = 's';
 
+    private final char PAUSE_GAME = 'p';
+
     private boolean blockInput;
 
     private GameController gameController;
@@ -43,6 +45,9 @@ public class MovementListener implements KeyListener {
             }
             case MOVE_DOWN -> {
                 gameController.getGrid().shiftDown(false);
+            }
+            case PAUSE_GAME -> {
+                gameController.pauseGame();
             }
         }
     }

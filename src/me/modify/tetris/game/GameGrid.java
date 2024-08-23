@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class TetrisGrid {
+public class GameGrid {
 
     private final Cell[][] grid;
 
@@ -17,7 +17,7 @@ public class TetrisGrid {
     public final int FIXED_PLACEHOLDER = -80;
     public final int PLACEHOLDER = 80;
 
-    public TetrisGrid(int width, int height) {
+    public GameGrid(int width, int height) {
         grid = new Cell[height][width];
         this.height = height;
         this.width = width;
