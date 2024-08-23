@@ -3,7 +3,6 @@ package me.modify.tetris.game;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.BinaryOperator;
 
 public class TetrisGrid {
 
@@ -18,13 +17,10 @@ public class TetrisGrid {
     public final int FIXED_PLACEHOLDER = -80;
     public final int PLACEHOLDER = 80;
 
-    private GameController gameController;
-
     public TetrisGrid(GameController gameController, int width, int height) {
         grid = new Cell[height][width];
         this.height = height;
         this.width = width;
-        this.gameController = gameController;
     }
 
     public void updateSize(int width, int height) {
@@ -78,6 +74,116 @@ public class TetrisGrid {
         }
     }
 
+    public void rotateTetromino(){
+        List<Point> points = getCurrentTetromino();
+        Point pivot = getPivot(points);
+
+        List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
+
+        if(!isRotationValid(rotatedPoints)) {
+            return;
+        }
+
+        Tetromino identifiedTetromino = identifyTetromino();
+        replaceTetromino(points, rotatedPoints, identifiedTetromino);
+    }
+
+    private boolean isRotationValid(List<RotatedPoint> rotatedPoints) {
+        for(RotatedPoint rotatedPoint : rotatedPoints) {
+            int row = (int) rotatedPoint.getPoint().getX();
+            int column = (int) rotatedPoint.getPoint().getY();
+
+            if (row >= height || row < 0) {
+                return false;
+            }
+
+            if (column >= width || column < 0) {
+                return false;
+            }
+
+            Cell cell = grid[row][column];
+            if (cell == null) {
+                return false;
+            }
+
+            if (cell.getData() < 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private Point getPivot(List<Point> points) {
+        int minX = points.stream().mapToInt(p -> p.x).min().orElse(0);
+        int maxX = points.stream().mapToInt(p -> p.x).max().orElse(0);
+        int minY = points.stream().mapToInt(p -> p.y).min().orElse(0);
+        int maxY = points.stream().mapToInt(p -> p.y).max().orElse(0);
+
+        int centerX = minX + (maxX - minX) / 2;
+        int centerY = minY + (maxY - minY) / 2;
+
+        return new Point(centerX, centerY);
+    }
+
+//    private Point getPivot(List<Point> points) {
+//        int sumX = 0;
+//        int sumY = 0;
+//
+//        for (Point p : points) {
+//            sumX += p.x;
+//            sumY += p.y;
+//        }
+//
+//        int centerX = sumX / points.size();
+//        int centerY = sumY / points.size();
+//
+//        return new Point(centerX, centerY);
+//    }
+
+    private RotatedPoint rotatePoint(Point point, Point pivot) {
+        int x = point.x - pivot.x;
+        int y = point.y - pivot.y;
+
+        boolean placeholder = grid[(int) point.getX()][(int) point.getY()].getData() == PLACEHOLDER;
+
+        int rotatedX = pivot.x + y;
+        int rotatedY = pivot.y - x;
+
+        return new RotatedPoint(new Point(rotatedX, rotatedY), placeholder);
+    }
+
+    private void replaceTetromino(List<Point> tetrominoPoints, List<RotatedPoint> replacementPoints, Tetromino tetromino) {
+
+        // Clear tetromino at current points, but preserve placeholders.
+        for (Point point : tetrominoPoints) {
+            int row = (int) point.getX();
+            int column = (int) point.getY();
+
+            Cell cell = grid[row][column];
+            cell.setData(0);
+            cell.setColor(Color.WHITE);
+        }
+
+        // Place the new rotated tetromino, but skip placeholder cells in the new positions.
+        for (RotatedPoint rotatedPoint : replacementPoints) {
+            int row = (int) rotatedPoint.getPoint().getX();
+            int column = (int) rotatedPoint.getPoint().getY();
+
+            Cell cell = grid[row][column];
+
+            // Only update cells that are empty or placeholders (not fixed cells)
+            if (rotatedPoint.isPlaceholder()) {
+                cell.setData(80);
+                cell.setColor(Color.WHITE);
+                continue;
+            }
+
+            cell.setData(tetromino.getId());
+            cell.setColor(tetromino.getColor());
+        }
+    }
+
     public List<Point> getCurrentTetromino() {
         List<Point> points = new ArrayList<>();
 
@@ -97,6 +203,22 @@ public class TetrisGrid {
             }
         }
         return points;
+    }
+
+    private Tetromino identifyTetromino() {
+        List<Point> points = getCurrentTetromino();
+        for (Point point : points) {
+            int row = (int) point.getX();
+            int column = (int) point.getY();
+
+            int cellData = getCell(row, column).getData();
+            if (cellData == PLACEHOLDER) {
+                continue;
+            }
+
+            return Tetromino.getByID(cellData);
+        }
+        return null;
     }
 
     /**

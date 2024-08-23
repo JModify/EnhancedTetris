@@ -25,15 +25,20 @@ public class GamePanel  extends TPanel {
     @Override
     public void paint() {
         GameController gameController = getMainFrame().getTetrisApp().getGameController();
+
         SwingUtilities.invokeLater(() -> {
             setPanel(new JPanel(new BorderLayout()));
 
             GameConfiguration configuration = getConfiguration();
+
             int rows = configuration.getFieldHeight();
             int columns = configuration.getFieldWidth();
 
+            gameController.getGrid().updateSize(columns, rows);
+
             JPanel boardPanel = new JPanel(new GridLayout(rows,
                     columns, 0, 0));
+            boardPanel.setBorder(new LineBorder(Color.BLACK));
 
             for (int i = 0; i < (rows * columns); i++) {
                 JPanel jCell = new JPanel(null);

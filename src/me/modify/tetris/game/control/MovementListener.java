@@ -33,7 +33,7 @@ public class MovementListener implements KeyListener {
         char pressed = e.getKeyChar();
         switch(pressed) {
             case ROTATE_CLOCKWISE -> {
-                return;
+                gameController.getGrid().rotateTetromino();
             }
             case MOVE_LEFT -> {
                 gameController.getGrid().shiftLeft();
