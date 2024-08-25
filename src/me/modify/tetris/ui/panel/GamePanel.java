@@ -3,18 +3,19 @@ package me.modify.tetris.ui.panel;
 import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.game.GameController;
-import me.modify.tetris.ui.MainFrame;
-import me.modify.tetris.ui.UIHelper;
+import me.modify.tetris.ui.frames.GameQuitConfirmation;
+import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.util.Arrays;
 
 public class GamePanel  extends TPanel {
 
     private final Color BOARD_BORDER_COLOR = Color.BLACK;
+
+    private JPanel leftPanel;
 
     public GamePanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -62,9 +63,9 @@ public class GamePanel  extends TPanel {
             topPanel.setBackground(veryLightGray);
             //emptyTop.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-            JPanel emptyLeft = new JPanel(null);
-            emptyLeft.setPreferredSize(new Dimension(225, 400));
-            emptyLeft.setBackground(veryLightGray);
+            leftPanel = new JPanel(null);
+            leftPanel.setPreferredSize(new Dimension(225, 400));
+            leftPanel.setBackground(veryLightGray);
             //emptyLeft.setBorder(BorderFactory.createLineBorder(Color.RED));
 
             JPanel emptyRight = new JPanel(null);
@@ -78,7 +79,7 @@ public class GamePanel  extends TPanel {
             panel.add(boardPanel, BorderLayout.CENTER);
 
             panel.add(topPanel, BorderLayout.NORTH);
-            panel.add(emptyLeft, BorderLayout.WEST);
+            panel.add(leftPanel, BorderLayout.WEST);
             panel.add(emptyRight, BorderLayout.EAST);
             panel.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -86,6 +87,14 @@ public class GamePanel  extends TPanel {
             gameController.startGame();
         });
     }
+
+//    public void showPauseMessage() {
+//        Arrays.stream(leftPanel.getComponents()).anyMatch(c -> c.get)
+//    }
+//
+//    public void hidePauseMessage() {
+//
+//    }
 
     public JPanel getBottomPanel(Dimension dimension) {
 
@@ -96,7 +105,24 @@ public class GamePanel  extends TPanel {
         JButton backButton = new JButton("Back");
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.addActionListener(e -> getMainFrame().openMainMenu());
+
+        backButton.addActionListener(e -> {
+            GameController gameController = getMainFrame().getTetrisApp().getGameController();
+            if (gameController.isGameOver()) {
+                getMainFrame().openMainMenu();
+                return;
+            }
+
+            if (!gameController.isPaused()) {
+                gameController.setTempPause(true);
+                gameController.pauseGame();
+            }
+
+            GameQuitConfirmation gameQuitConfirmation = new GameQuitConfirmation(getMainFrame());
+            gameQuitConfirmation.open();
+        });
+
+
         bottomPanel.add(backButton);
 
         JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");

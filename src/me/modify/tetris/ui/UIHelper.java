@@ -1,14 +1,10 @@
 package me.modify.tetris.ui;
 
+import me.modify.tetris.ui.frames.MainFrame;
+
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicButtonUI;
-import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class UIHelper {
 

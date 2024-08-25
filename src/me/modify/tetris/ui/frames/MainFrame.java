@@ -1,4 +1,4 @@
-package me.modify.tetris.ui;
+package me.modify.tetris.ui.frames;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.listeners.MovementListener;

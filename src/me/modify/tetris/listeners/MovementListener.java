@@ -47,6 +47,10 @@ public class MovementListener implements KeyListener {
                 gameController.getGrid().shiftDown(false);
             }
             case PAUSE_GAME -> {
+                if (gameController.isPaused()) {
+                    gameController.unpauseGame();
+                    return;
+                }
                 gameController.pauseGame();
             }
         }

@@ -1,11 +1,9 @@
 package me.modify.tetris.ui.panel;
 
-import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.ui.MainFrame;
+import me.modify.tetris.ui.frames.MainFrame;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 public class HighScoresPanel extends TPanel {

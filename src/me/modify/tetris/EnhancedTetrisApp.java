@@ -1,8 +1,7 @@
 package me.modify.tetris;
 
 import me.modify.tetris.game.GameController;
-import me.modify.tetris.ui.MainFrame;
-import me.modify.tetris.ui.TetrisSplashScreen;
+import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
 

@@ -1,6 +1,7 @@
 package me.modify.tetris.ui.panel;
 
-import me.modify.tetris.ui.MainFrame;
+import me.modify.tetris.ui.frames.ExitConfirmation;
+import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +42,8 @@ public class MainMenuPanel extends TPanel {
 
             JButton exitButton = new JButton("Exit");
             formatMenuButton(300, exitButton);
-            exitButton.addActionListener(e -> System.exit(0));
+            ExitConfirmation exitConfirmation = new ExitConfirmation();
+            exitButton.addActionListener(e -> exitConfirmation.open());
 
             JLabel appAuthorTitle = new JLabel("Author: Joshua Lavagna-Slater");
             appAuthorTitle.setBounds(200, 360, 300, 50);

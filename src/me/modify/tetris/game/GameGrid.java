@@ -6,36 +6,67 @@ import java.util.List;
 
 public class GameGrid {
 
+    /** Enhanced Tetris game grid */
     private final Cell[][] grid;
 
-    // Number of columns
+    /** Number of columns */
     private int width;
 
-    // Number of rows
+    /** Number of rows */
     private int height;
 
+    /** Fixed cell placeholder */
     public final int FIXED_PLACEHOLDER = -80;
+
+    /** Cell placeholder. */
     public final int PLACEHOLDER = 80;
 
+    /**
+     * Constructor for game grid.
+     * Defines the game grid using the given width and height parameters.
+     * For reference:
+     *   - width = column
+     *   - height = row
+     * @param width number of columns in game grid
+     * @param height number of rows in game grid
+     */
     public GameGrid(int width, int height) {
         grid = new Cell[height][width];
         this.height = height;
         this.width = width;
     }
 
+    /**
+     * Updates the size of the game grid using a given width and height.
+     * @param width new width of game grid
+     * @param height new heigh of game grid
+     */
     public void updateSize(int width, int height) {
         this.height = height;
         this.width = width;
     }
 
+    /**
+     * Retrieves a given cell object by x and y values where x = row and y = column
+     * @param x
+     * @param y
+     * @return
+     */
     public Cell getCell(int x, int y) {
         return grid[x][y];
     }
 
+    /**
+     * Adds a given cell to the grid based on it's X and Y value.
+     * @param cell cell to add
+     */
     public void addCell(Cell cell) {
         grid[cell.getY()][cell.getX()] = cell;
     }
 
+    /**
+     * Debugging method which prints the game grid to console.
+     */
     public void printGrid() {
         int[][] tempGrid = new int[height][width];
 
@@ -49,6 +80,11 @@ public class GameGrid {
         System.out.println(Arrays.deepToString(tempGrid).replace("], ", "]\n"));
     }
 
+    /**
+     * Determines if there is space for the given tetromino to be inserted into the grid.
+     * @param tetromino tetromino to check
+     * @return true if it can be inserted, else false.
+     */
     public boolean canInsertTetromino(Tetromino tetromino) {
         int xCenter = (width - tetromino.getShape()[0].length) / 2;
         int yStart = 0;
@@ -85,7 +121,9 @@ public class GameGrid {
 
         int[][] shape = tetromino.getShape();
 
+        // Loop shape rows.
         for (int i = 0; i < shape.length; i++) {
+            // Loop through shape columns
             for (int j = 0; j < shape[i].length; j++) {
                 if (shape[i][j] != 0) {
                     int x = xCenter + j;
@@ -100,20 +138,34 @@ public class GameGrid {
         }
     }
 
+    /**
+     *
+     */
     public void rotateTetromino(){
-        List<Point> points = getCurrentTetromino();
-        Point pivot = getPivot(points);
+        Tetromino identifiedTetromino = getTetromino();
 
-        List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
-
-        if(!isRotationValid(rotatedPoints)) {
+        if (identifiedTetromino == null) {
             return;
         }
 
-        Tetromino identifiedTetromino = identifyTetromino();
+        List<Point> points = getTetrominoAsPoints();
+        Point pivot = getPivot(points);
+        System.out.println(pivot);
+
+        List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
+        if(!isRotationValid(rotatedPoints)) {
+            return;
+        }
         replaceTetromino(points, rotatedPoints, identifiedTetromino);
     }
 
+    /**
+     * Helper method which determines if the rotation of a Tetromino is valid. A rotation is valid if and only if:
+     * 1. No rotated points are outside the range of the grid.
+     * 2. No rotated points collide with fixed cells in the grid
+     * @param rotatedPoints list of rotated points
+     * @return true if rotation is valid, else false.
+     */
     private boolean isRotationValid(List<RotatedPoint> rotatedPoints) {
         for(RotatedPoint rotatedPoint : rotatedPoints) {
             int row = (int) rotatedPoint.getPoint().getX();
@@ -140,33 +192,31 @@ public class GameGrid {
         return true;
     }
 
+    /**
+     * Helper method which retrieves the best possible pivot point for a given set of points.
+     * @param points set of points
+     * @return a central pivot point.
+     */
     private Point getPivot(List<Point> points) {
         int minX = points.stream().mapToInt(p -> p.x).min().orElse(0);
         int maxX = points.stream().mapToInt(p -> p.x).max().orElse(0);
         int minY = points.stream().mapToInt(p -> p.y).min().orElse(0);
         int maxY = points.stream().mapToInt(p -> p.y).max().orElse(0);
 
-        int centerX = minX + (maxX - minX) / 2;
-        int centerY = minY + (maxY - minY) / 2;
+//        int centerX = minX + (maxX - minX) / 2;
+//        int centerY = minY + (maxY - minY) / 2;
+        int centerX = (minX + (maxX - minX) / 2);
+        int centerY = (minY + (maxY - minY) / 2) + 1;
 
         return new Point(centerX, centerY);
     }
 
-//    private Point getPivot(List<Point> points) {
-//        int sumX = 0;
-//        int sumY = 0;
-//
-//        for (Point p : points) {
-//            sumX += p.x;
-//            sumY += p.y;
-//        }
-//
-//        int centerX = sumX / points.size();
-//        int centerY = sumY / points.size();
-//
-//        return new Point(centerX, centerY);
-//    }
-
+    /**
+     * Helper method which rotates a given point using a pivot.
+     * @param point point to rotate
+     * @param pivot pivot point
+     * @return the rotated point
+     */
     private RotatedPoint rotatePoint(Point point, Point pivot) {
         int x = point.x - pivot.x;
         int y = point.y - pivot.y;
@@ -179,6 +229,12 @@ public class GameGrid {
         return new RotatedPoint(new Point(rotatedX, rotatedY), placeholder);
     }
 
+    /**
+     * Replaces the falling tetromino on the grid with the rotated version of it.
+     * @param tetrominoPoints original tetromino as points
+     * @param replacementPoints rotated tetromino as points
+     * @param tetromino tetromino object, used to preserve placeholders.
+     */
     private void replaceTetromino(List<Point> tetrominoPoints, List<RotatedPoint> replacementPoints, Tetromino tetromino) {
 
         // Clear tetromino at current points, but preserve placeholders.
@@ -210,7 +266,11 @@ public class GameGrid {
         }
     }
 
-    public List<Point> getCurrentTetromino() {
+    /**
+     * Retrieves the falling tetromino as a list of points.
+     * @return the falling tetromino as a list of points.
+     */
+    private List<Point> getTetrominoAsPoints() {
         List<Point> points = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {
@@ -231,8 +291,12 @@ public class GameGrid {
         return points;
     }
 
-    private Tetromino identifyTetromino() {
-        List<Point> points = getCurrentTetromino();
+    /**
+     * Retrieves the current falling tetromino.
+     * @return Tetromino enum object of the current tetromino.
+     */
+    private Tetromino getTetromino() {
+        List<Point> points = getTetrominoAsPoints();
         for (Point point : points) {
             int row = (int) point.getX();
             int column = (int) point.getY();
@@ -258,8 +322,8 @@ public class GameGrid {
      * @param columnOffset - column offset
      * @return true if tetromino can move in that direction otherwise false.
      */
-    public boolean canMoveDirection(int rowOffset, int columnOffset) {
-        for (Point point : getCurrentTetromino()) {
+    private boolean canMoveDirection(int rowOffset, int columnOffset) {
+        for (Point point : getTetrominoAsPoints()) {
             int row = (int) point.getX();
             int column = (int) point.getY();
 
@@ -312,6 +376,10 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Shifts the current falling tetromino one cell to the left
+     * Checks if it can move in that direction before hand using canMoveDirection().
+     */
     public void shiftLeft() {
         if (!canMoveDirection(0, -1)) {
             return;
@@ -339,6 +407,10 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Shifts the current falling tetromino one cell to the right.
+     * Checks if it can move in that direction before hand using canMoveDirection().
+     */
     public void shiftRight() {
         if (!canMoveDirection(0, 1)) {
             return;
@@ -403,6 +475,9 @@ public class GameGrid {
         return true;
     }
 
+    /**
+     * Clears any placeholders currently on the grid (sets them to be empty).
+     */
     public void clearPlaceholders() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -414,6 +489,9 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Sets all cells in the grid to be fixed.
+     */
     public void setAllFixed() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -425,6 +503,10 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Determines if all cells in the grid are fixed.
+     * @return true if all are fixed, else false.
+     */
     public boolean allCellsFixed() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -437,6 +519,9 @@ public class GameGrid {
         return true;
     }
 
+    /**
+     * Loops through entire grid and clears any rows which are full.
+     */
     public void clearRows() {
         // Loop through every row
         for (int i = 0; i < height; i++) {
@@ -460,6 +545,10 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Helper method which clears a row from the grid at the specified index.
+     * @param rowIndex index or row to clear
+     */
     private void clearRow(int rowIndex) {
         for (int j = 0; j < width; j++) {
             grid[rowIndex][j].setData(0);

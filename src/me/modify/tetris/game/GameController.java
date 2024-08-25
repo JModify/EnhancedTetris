@@ -12,12 +12,16 @@ public class GameController {
 
     private GameState gameState;
 
+    private boolean tempPause;
+
     private Timer timer;
+
     public GameController(EnhancedTetrisApp app) {
         this.app = app;
         this.configuration = new GameConfiguration();
         this.grid = new GameGrid(configuration.getFieldWidth(), configuration.getFieldHeight());
         this.gameState = GameState.IDLE;
+        this.tempPause = false;
 
         timer = new Timer(1000, e -> updateGame());
     }
@@ -35,6 +39,7 @@ public class GameController {
             }
 
             grid.insertTetromino(Tetromino.randomTetromino());
+            return;
         }
 
         grid.shiftDown(false);
@@ -48,7 +53,6 @@ public class GameController {
     }
 
     public void startGame() {
-
         //TODO: Implement configuration to have affect on grid size later.
         //updateGridSize();
 
@@ -64,18 +68,25 @@ public class GameController {
     }
 
     public void pauseGame() {
-        if (!isPaused()) {
-            gameState = GameState.PAUSED;
-            if (timer.isRunning()) {
-                timer.stop();
-            }
-            return;
+        gameState = GameState.PAUSED;
+        if (timer.isRunning()) {
+            timer.stop();
         }
+    }
 
+    public void unpauseGame() {
         gameState = GameState.RUNNING;
         if (!timer.isRunning()) {
             timer.start();
         }
+    }
+
+    public void setTempPause(boolean tempPause) {
+        this.tempPause = tempPause;
+    }
+
+    public boolean isTempPause() {
+        return this.tempPause;
     }
 
     @Deprecated
@@ -91,6 +102,10 @@ public class GameController {
 
     public GameGrid getGrid() {
         return this.grid;
+    }
+
+    public boolean isGameOver() {
+        return gameState == GameState.LOST;
     }
 
     @Deprecated

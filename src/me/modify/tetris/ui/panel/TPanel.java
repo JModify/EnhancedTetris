@@ -2,11 +2,9 @@ package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameConfiguration;
-import me.modify.tetris.ui.MainFrame;
+import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyListener;
 
 public abstract class TPanel {
 

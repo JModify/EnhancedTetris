@@ -6,7 +6,7 @@ import java.util.Random;
 
 public enum Tetromino {
 
-    I(1, new Point(0, 2), "I", Color.CYAN, new int[][]{
+    I(1, new Point(0, 1), "I", Color.CYAN, new int[][]{
             {1, 1, 1, 1}
     }),
 

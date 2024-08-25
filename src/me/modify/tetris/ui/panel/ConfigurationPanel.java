@@ -1,15 +1,13 @@
 package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.game.GameConfiguration;
-import me.modify.tetris.ui.MainFrame;
+import me.modify.tetris.ui.frames.MainFrame;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
