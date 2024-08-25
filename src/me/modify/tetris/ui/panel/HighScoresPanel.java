@@ -5,6 +5,7 @@ import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class HighScoresPanel extends TPanel {
 
@@ -19,7 +20,7 @@ public class HighScoresPanel extends TPanel {
 
             JPanel titlePanel = new JPanel();
             titlePanel.setPreferredSize(new Dimension(700, 50));
-            JLabel titleLabel = new JLabel("High Score");
+            JLabel titleLabel = new JLabel("High Scores");
             titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
             titlePanel.add(titleLabel);
 
@@ -80,7 +81,7 @@ public class HighScoresPanel extends TPanel {
         gbc.gridy++;
 
         for (int i = 0; i < 10; i++) {
-            JLabel name = new JLabel("218384");
+            JLabel name = new JLabel(String.valueOf(new Random().nextInt(100000 - 1000 + 1)));
             panel.add(name, gbc);
             gbc.gridy++;
         }

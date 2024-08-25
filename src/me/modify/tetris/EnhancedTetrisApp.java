@@ -2,6 +2,7 @@ package me.modify.tetris;
 
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.ui.frames.MainFrame;
+import me.modify.tetris.ui.panel.TetrisSplashScreen;
 
 import javax.swing.*;
 
@@ -24,8 +25,8 @@ public class EnhancedTetrisApp {
 
     public static void main(String[] args) {
 
-        //TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
-        //splashScreen.showSplash();
+        TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
+        splashScreen.showSplash();
 
         SwingUtilities.invokeLater(() -> {
             EnhancedTetrisApp main = new EnhancedTetrisApp();

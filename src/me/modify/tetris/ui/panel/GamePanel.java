@@ -15,7 +15,8 @@ public class GamePanel  extends TPanel {
 
     private final Color BOARD_BORDER_COLOR = Color.BLACK;
 
-    private JPanel leftPanel;
+    private JPanel boardPanel;
+    private JPanel pausePanel;
 
     public GamePanel(MainFrame mainFrame) {
         super(mainFrame);
@@ -27,57 +28,60 @@ public class GamePanel  extends TPanel {
 
         SwingUtilities.invokeLater(() -> {
             setPanel(new JPanel(new BorderLayout()));
-            //panel.setBounds(0, 0, 700, 500);
 
             GameConfiguration configuration = getConfiguration();
 
-            //int rows = configuration.getFieldHeight();
-            //int columns = configuration.getFieldWidth();
             int rows = configuration.FIELD_HEIGHT_DEFAULT;
             int columns = configuration.FIELD_WIDTH_DEFAULT;
 
-            JPanel boardPanel = new JPanel(new GridLayout(rows,
+            boardPanel = new JPanel(new GridLayout(rows,
                     columns, 0, 0));
+            boardPanel.setBounds(0, 0, 250, 400);
 
             for (int i = 0; i < (rows * columns); i++) {
                 JPanel jCell = new JPanel(null);
-                //jCell.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
                 jCell.setBackground(Cell.EMPTY_CELL);
                 boardPanel.add(jCell);
 
                 int x = i % columns; // column
                 int y = i / columns; // row
 
-//            System.out.println("X: " + x + " | Y: " + y);
 
                 Cell cell = new Cell(x, y, 0, jCell);
                 gameController.getGrid().addCell(cell);
             }
 
-            //gameController.getGrid().printGrid();
+            pausePanel = new JPanel(null);
+            pausePanel.setOpaque(false);
+            pausePanel.setVisible(false);
+            pausePanel.setBounds(0, 0, 250, 400);
+            pausePanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+
+            addPauseLabels();
+
+            JPanel overlayPanel = new JPanel();
+            overlayPanel.setLayout(new OverlayLayout(overlayPanel));
+            overlayPanel.add(boardPanel);
+            overlayPanel.add(pausePanel);
 
             Color veryLightGray = new Color(227, 227, 227, 255);
-
             JPanel topPanel = new JPanel(null);
             topPanel.setPreferredSize(new Dimension(700, 50));
             topPanel.setBackground(veryLightGray);
-            //emptyTop.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-            leftPanel = new JPanel(null);
+            JPanel leftPanel = new JPanel(null);
             leftPanel.setPreferredSize(new Dimension(225, 400));
             leftPanel.setBackground(veryLightGray);
-            //emptyLeft.setBorder(BorderFactory.createLineBorder(Color.RED));
 
             JPanel emptyRight = new JPanel(null);
             emptyRight.setPreferredSize(new Dimension(225, 400));
             emptyRight.setBackground(veryLightGray);
-            //emptyRight.setBorder(BorderFactory.createLineBorder(Color.RED));
 
             JPanel bottomPanel = getBottomPanel(new Dimension(700, 50));
             bottomPanel.setBackground(veryLightGray);
 
-            panel.add(boardPanel, BorderLayout.CENTER);
 
+            panel.add(overlayPanel, BorderLayout.CENTER);
             panel.add(topPanel, BorderLayout.NORTH);
             panel.add(leftPanel, BorderLayout.WEST);
             panel.add(emptyRight, BorderLayout.EAST);
@@ -88,15 +92,24 @@ public class GamePanel  extends TPanel {
         });
     }
 
-//    public void showPauseMessage() {
-//        Arrays.stream(leftPanel.getComponents()).anyMatch(c -> c.get)
-//    }
-//
-//    public void hidePauseMessage() {
-//
-//    }
+    private void addPauseLabels() {
+        JLabel pauseLabel = new JLabel("PAUSED");
+        pauseLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        pauseLabel.setForeground(Color.RED);
+        pauseLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        pauseLabel.setBounds(70, 100, 100, 50);
 
-    public JPanel getBottomPanel(Dimension dimension) {
+        JLabel unpauseLabel = new JLabel("Press p to unpause");
+        unpauseLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        unpauseLabel.setForeground(new Color(255, 101, 101, 255));
+        unpauseLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        unpauseLabel.setBounds(20, 120, 200, 50);
+
+        pausePanel.add(pauseLabel);
+        pausePanel.add(unpauseLabel);
+    }
+
+    private JPanel getBottomPanel(Dimension dimension) {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
@@ -129,5 +142,15 @@ public class GamePanel  extends TPanel {
         authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         bottomPanel.add(authorLabel);
         return bottomPanel;
+    }
+
+    public void showPauseMessage() {
+        pausePanel.setVisible(true);
+        boardPanel.setVisible(false);
+    }
+
+    public void hidePauseMessage() {
+        pausePanel.setVisible(false);
+        boardPanel.setVisible(true);
     }
 }

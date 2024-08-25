@@ -72,6 +72,8 @@ public class GameController {
         if (timer.isRunning()) {
             timer.stop();
         }
+
+        app.getMainFrame().getGamePanel().showPauseMessage();
     }
 
     public void unpauseGame() {
@@ -79,6 +81,8 @@ public class GameController {
         if (!timer.isRunning()) {
             timer.start();
         }
+
+        app.getMainFrame().getGamePanel().hidePauseMessage();
     }
 
     public void setTempPause(boolean tempPause) {

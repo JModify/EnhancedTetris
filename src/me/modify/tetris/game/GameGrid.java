@@ -206,7 +206,7 @@ public class GameGrid {
 //        int centerX = minX + (maxX - minX) / 2;
 //        int centerY = minY + (maxY - minY) / 2;
         int centerX = (minX + (maxX - minX) / 2);
-        int centerY = (minY + (maxY - minY) / 2) + 1;
+        int centerY = (minY + (maxY - minY) / 2);
 
         return new Point(centerX, centerY);
     }
