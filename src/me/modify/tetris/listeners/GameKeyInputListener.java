@@ -12,19 +12,19 @@ import java.awt.event.KeyListener;
 public class GameKeyInputListener implements KeyListener {
 
     /** Rotate Tetromino clockwise key */
-    private final char ROTATE_CLOCKWISE = 'w';
+    private final char ROTATE_CLOCKWISE = KeyEvent.VK_UP;
 
     /** Move Tetromino to the left key */
-    private final char MOVE_LEFT = 'a';
+    private final char MOVE_LEFT = KeyEvent.VK_LEFT;
 
     /** Move Tetromino to the right key */
-    private final char MOVE_RIGHT = 'd';
+    private final char MOVE_RIGHT = KeyEvent.VK_RIGHT;
 
     /** Move Tetromino downwards key */
-    private final char MOVE_DOWN = 's';
+    private final char MOVE_DOWN = KeyEvent.VK_DOWN;
 
     /** Pause the game key */
-    private final char PAUSE_GAME = 'p';
+    private final char PAUSE_GAME = KeyEvent.VK_P;
 
     /** Blocks the listener from listening */
     @Deprecated
@@ -56,7 +56,7 @@ public class GameKeyInputListener implements KeyListener {
             return;
         }
 
-        char pressed = e.getKeyChar();
+        int pressed = e.getKeyCode();
         switch(pressed) {
             case ROTATE_CLOCKWISE -> {
                 gameController.getGrid().rotateTetromino();

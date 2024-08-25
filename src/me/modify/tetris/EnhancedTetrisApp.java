@@ -13,7 +13,7 @@ import javax.swing.*;
 public class EnhancedTetrisApp {
 
     /** Game controller for the game itself */
-    private GameController gameController;
+    private final GameController gameController;
 
     /** Main frame of the application */
     private MainFrame mainFrame;
