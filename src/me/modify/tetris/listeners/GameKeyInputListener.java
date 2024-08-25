@@ -5,19 +5,39 @@ import me.modify.tetris.game.GameController;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class MovementListener implements KeyListener {
+/**
+ * Listens for all game related keyboard inputs.
+ * Executes action upon pressing them respectively.
+ */
+public class GameKeyInputListener implements KeyListener {
 
+    /** Rotate Tetromino clockwise key */
     private final char ROTATE_CLOCKWISE = 'w';
+
+    /** Move Tetromino to the left key */
     private final char MOVE_LEFT = 'a';
+
+    /** Move Tetromino to the right key */
     private final char MOVE_RIGHT = 'd';
+
+    /** Move Tetromino downwards key */
     private final char MOVE_DOWN = 's';
 
+    /** Pause the game key */
     private final char PAUSE_GAME = 'p';
 
+    /** Blocks the listener from listening */
+    @Deprecated
     private boolean blockInput;
 
-    private GameController gameController;
-    public MovementListener(GameController gameController) {
+    /** Game controller for the current game */
+    private final GameController gameController;
+
+    /**
+     * Creates a new GameKeyInputListener instance.
+     * @param gameController game controller for current game.
+     */
+    public GameKeyInputListener(GameController gameController) {
         this.gameController = gameController;
         this.blockInput = false;
     }
@@ -26,6 +46,10 @@ public class MovementListener implements KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * Event where a key is pressed down.
+     * @param e the event to be processed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         if (blockInput) {
@@ -61,6 +85,7 @@ public class MovementListener implements KeyListener {
 
     }
 
+    @Deprecated
     public void setBlockInput(boolean blockInput) {
         this.blockInput = blockInput;
     }

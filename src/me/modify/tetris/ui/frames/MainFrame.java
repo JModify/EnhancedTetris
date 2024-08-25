@@ -1,14 +1,13 @@
 package me.modify.tetris.ui.frames;
 
 import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.listeners.MovementListener;
+import me.modify.tetris.listeners.GameKeyInputListener;
 import me.modify.tetris.ui.panel.ConfigurationPanel;
 import me.modify.tetris.ui.panel.GamePanel;
 import me.modify.tetris.ui.panel.HighScoresPanel;
 import me.modify.tetris.ui.panel.MainMenuPanel;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MainFrame {
 
@@ -21,7 +20,7 @@ public class MainFrame {
     private MainMenuPanel mainMenuPanel;
     private GamePanel gamePanel;
 
-    private MovementListener movementListener;
+    private GameKeyInputListener gameKeyInputListener;
 
     public MainFrame(EnhancedTetrisApp tetrisApp) {
         this.frame = new JFrame("Enhanced Tetris");
@@ -29,7 +28,7 @@ public class MainFrame {
         this.highScoresPanel = new HighScoresPanel(this);
         this.mainMenuPanel = new MainMenuPanel(this);
         this.tetrisApp = tetrisApp;
-        this.movementListener = new MovementListener(tetrisApp.getGameController());
+        this.gameKeyInputListener = new GameKeyInputListener(tetrisApp.getGameController());
         this.gamePanel = new GamePanel(this);
     }
 
@@ -38,7 +37,7 @@ public class MainFrame {
         frame.setSize(700, 500);
         frame.setResizable(false);
         frame.setIconImage(new ImageIcon("resources/icon.png").getImage());
-        frame.addKeyListener(movementListener);
+        frame.addKeyListener(gameKeyInputListener);
         // Centers Main Frame to open in the center of the screen.
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -73,7 +72,7 @@ public class MainFrame {
         return gamePanel;
     }
 
-    public MovementListener getMovementListener() {
-        return movementListener;
+    public GameKeyInputListener getMovementListener() {
+        return gameKeyInputListener;
     }
 }

@@ -61,7 +61,7 @@ public class GameGrid {
      * @param cell cell to add
      */
     public void addCell(Cell cell) {
-        grid[cell.getY()][cell.getX()] = cell;
+        grid[cell.getColumn()][cell.getRow()] = cell;
     }
 
     /**
@@ -92,11 +92,16 @@ public class GameGrid {
         int[][] shape = tetromino.getShape();
 
         boolean doesFit = true;
+
+        // Uses same logic here as insertTetromino() but does not actually insert.
+        // Just checks if the cell it is trying to insert at is EMPTY. If all
+        // cells it wants to insert into are empty, then the tetromino fits.
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[i].length; j++) {
                 if (shape[i][j] != 0) {
                     int x = xCenter + j;
                     int y = yStart + i;
+
                     if (x >= 0 && x < width && y >= 0 && y < height) {
                         Cell cell = grid[y][x];
                         if (cell.getData() != 0) {
@@ -116,19 +121,27 @@ public class GameGrid {
      * @param tetromino tetromino to insert
      */
     public void insertTetromino(Tetromino tetromino) {
+
+        // Determines the approximate center of the shape for this tetromino.
         int xCenter = (width - tetromino.getShape()[0].length) / 2;
+
+        // Row for which this tetromino should be spawned in at.
         int yStart = 0;
 
         int[][] shape = tetromino.getShape();
 
-        // Loop shape rows.
+        // Loop shape's rows.
         for (int i = 0; i < shape.length; i++) {
-            // Loop through shape columns
+
+            // Loop through shape's columns
             for (int j = 0; j < shape[i].length; j++) {
                 if (shape[i][j] != 0) {
                     int x = xCenter + j;
                     int y = yStart + i;
 
+                    // Set the data values of the cells where the shape is
+                    // being spawned to the ID of the shape. Also changes color
+                    // of cell panel to match shape's color.
                     if (x >= 0 && x < width && y >= 0 && y < height) {
                         grid[y][x].setData(shape[i][j]);
                         grid[y][x].setColor(tetromino.getColor());
@@ -139,7 +152,8 @@ public class GameGrid {
     }
 
     /**
-     *
+     * Rotates the current falling tetromino by 90 degrees (clockwise).
+     * Does nothing if the rotation is not valid (outside game board or collides with another fixed cell).
      */
     public void rotateTetromino(){
         Tetromino identifiedTetromino = getTetromino();
@@ -153,6 +167,8 @@ public class GameGrid {
         System.out.println(pivot);
 
         List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
+
+        // If the rotation is not valid, return the method and do nothing.
         if(!isRotationValid(rotatedPoints)) {
             return;
         }
@@ -171,19 +187,23 @@ public class GameGrid {
             int row = (int) rotatedPoint.getPoint().getX();
             int column = (int) rotatedPoint.getPoint().getY();
 
+            // Check row is inside bounds of game board.
             if (row >= height || row < 0) {
                 return false;
             }
 
+            // Check column is inside bounds of game board.
             if (column >= width || column < 0) {
                 return false;
             }
 
+            // Check cell in question is not somehow null.
             Cell cell = grid[row][column];
             if (cell == null) {
                 return false;
             }
 
+            // Check Cell in question is not fixed (stuck in place at the bottom).
             if (cell.getData() < 0) {
                 return false;
             }
@@ -203,8 +223,6 @@ public class GameGrid {
         int minY = points.stream().mapToInt(p -> p.y).min().orElse(0);
         int maxY = points.stream().mapToInt(p -> p.y).max().orElse(0);
 
-//        int centerX = minX + (maxX - minX) / 2;
-//        int centerY = minY + (maxY - minY) / 2;
         int centerX = (minX + (maxX - minX) / 2);
         int centerY = (minY + (maxY - minY) / 2);
 
@@ -301,6 +319,7 @@ public class GameGrid {
             int row = (int) point.getX();
             int column = (int) point.getY();
 
+            // If the checked cell is a placeholder, ignore it.
             int cellData = getCell(row, column).getData();
             if (cellData == PLACEHOLDER) {
                 continue;
@@ -330,6 +349,7 @@ public class GameGrid {
             int nextRow = row + rowOffset;
             int nextColumn = column + columnOffset;
 
+            // Check if next row and column is not outside the game board.
             if (nextRow >= height || nextColumn >= width ||
                     nextColumn < 0 || grid[nextRow][nextColumn] == null) {
                 return false;
@@ -440,6 +460,7 @@ public class GameGrid {
 
     /**
      * Helper method used to swap the properties of two given cells.
+     * Only does so under the condition that the other cell is empty.
      * @param cell - cell swapping from.
      * @param otherCell - cell swapping too.
      */
@@ -468,7 +489,7 @@ public class GameGrid {
         }
 
         // Handle case where cell is a fixed piece or placeholder.
-        if (cell.getData() < 0 /*&& cell.getData() != PLACEHOLDER*/) {
+        if (cell.getData() < 0) {
             return false;
         }
 
@@ -482,6 +503,9 @@ public class GameGrid {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
+
+                // If the cell is a fixed place holder (-80) then
+                // Set it to be empty as it's no longer needed.
                 if (cell.getData() == FIXED_PLACEHOLDER) {
                     cell.setData(0);
                 }
@@ -496,6 +520,8 @@ public class GameGrid {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
+
+                // If a cell is not fixed, set it to be fixed.
                 if (!cell.isFixed()) {
                     cell.setFixed();
                 }
@@ -511,6 +537,9 @@ public class GameGrid {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
+
+                // If a cell is not fixed, then the assumption
+                // that ALL cells are fixed cannot be true.
                 if (!cell.isFixed()) {
                     return false;
                 }
@@ -532,12 +561,15 @@ public class GameGrid {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
 
+                // If a single cell is empty for this row, the row is NOT full
+                // and should not be cleared.
                 if (cell.getData() == 0) {
                     full = false;
                     break;
                 }
             }
 
+            // If the row is full, clear it and shift entire grid down.
             if (full) {
                 clearRow(i);
                 shiftDown(true);

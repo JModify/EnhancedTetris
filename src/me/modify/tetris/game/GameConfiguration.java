@@ -1,5 +1,9 @@
 package me.modify.tetris.game;
 
+/**
+ * GameConfiguration holds all data for the configuration of the game.
+ * Saves across switching menus but currently has no effect on the game.
+ */
 public class GameConfiguration {
     private int gameLevel;
 
