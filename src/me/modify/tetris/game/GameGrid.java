@@ -367,6 +367,11 @@ public class GameGrid {
         return true;
     }
 
+    /**
+     * Shifts the current falling tetromino downwards.
+     * Game automatically does this every second but player can also use it to make it fall faster.
+     * @param shiftFixedCells whether or not fixed cells should ALSO be shifted down.
+     */
     public void shiftDown(boolean shiftFixedCells) {
         if (!canMoveDirection(1, 0) && !shiftFixedCells) {
             setAllFixed();
