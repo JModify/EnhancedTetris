@@ -20,7 +20,6 @@ public class TetrisSplashScreen extends JWindow {
      * Displays the splash screen for the given amount of time (duration).
      */
     public void showSplash() {
-        SwingUtilities.invokeLater(() -> {
             JPanel content = (JPanel) getContentPane();
 
             content.setBackground(Color.white);
@@ -47,6 +46,5 @@ public class TetrisSplashScreen extends JWindow {
             }
 
             setVisible(false);
-        });
     }
 }
