@@ -164,7 +164,6 @@ public class GameGrid {
 
         List<Point> points = getTetrominoAsPoints();
         Point pivot = getPivot(points);
-        System.out.println(pivot);
 
         List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
 
