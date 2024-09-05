@@ -16,9 +16,6 @@ public class GameController {
     /** Grid for the game */
     private final GameGrid grid;
 
-    /** Reference to main class */
-    private EnhancedTetrisApp main;
-
     /** Current state the game is in */
     private GameState gameState;
 
@@ -26,15 +23,13 @@ public class GameController {
     private boolean tempPause;
 
     /** Timer executing the flow of the game */
-    private Timer timer;
+    private final Timer timer;
 
     /**
      * Creates a new game controller and initializes the grid.
      * Constructor also sets th game state to be IDLE and creates a timer instance.
-     * @param main main class for the application
      */
-    public GameController(EnhancedTetrisApp main) {
-        this.main = main;
+    public GameController() {
         this.configuration = new GameConfiguration();
         this.grid = new GameGrid(configuration.getFieldWidth(), configuration.getFieldHeight());
         this.gameState = GameState.IDLE;
@@ -90,10 +85,11 @@ public class GameController {
         //updateGridSize();
 
         grid.insertTetromino(Tetromino.randomTetromino());
-        main.getMainFrame().getJFrame().requestFocus();
+        EnhancedTetrisApp.getInstance().getMainFrame().getJFrame().requestFocus();
         timer.start();
 
         gameState = GameState.RUNNING;
+        resumeMovementInput();
     }
 
     /**
@@ -113,7 +109,8 @@ public class GameController {
             timer.stop();
         }
 
-        main.getMainFrame().getGamePanel().showPauseMessage();
+        blockMovementInput();
+        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().showPauseMessage();
     }
 
     /**
@@ -125,7 +122,8 @@ public class GameController {
             timer.start();
         }
 
-        main.getMainFrame().getGamePanel().hidePauseMessage();
+        resumeMovementInput();
+        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().hidePauseMessage();
     }
 
     /**
@@ -175,13 +173,11 @@ public class GameController {
         return gameState == GameState.LOST;
     }
 
-    @Deprecated
     public void blockMovementInput() {
-        main.getMainFrame().getMovementListener().setBlockInput(true);
+        EnhancedTetrisApp.getInstance().getMainFrame().getMovementListener().setBlockInput(true);
     }
 
-    @Deprecated
     public void resumeMovementInput() {
-        main.getMainFrame().getMovementListener().setBlockInput(false);
+        EnhancedTetrisApp.getInstance().getMainFrame().getMovementListener().setBlockInput(false);
     }
 }

@@ -1,5 +1,6 @@
 package me.modify.tetris.ui.panel;
 
+import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.game.GameController;
@@ -24,7 +25,7 @@ public class GamePanel  extends TPanel {
 
     @Override
     public void paint() {
-        GameController gameController = getMainFrame().getTetrisApp().getGameController();
+        GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
 
         SwingUtilities.invokeLater(() -> {
             setPanel(new JPanel(new BorderLayout()));
@@ -120,7 +121,7 @@ public class GamePanel  extends TPanel {
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         backButton.addActionListener(e -> {
-            GameController gameController = getMainFrame().getTetrisApp().getGameController();
+            GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
             if (gameController.isGameOver()) {
                 getMainFrame().openMainMenu();
                 return;

@@ -27,7 +27,6 @@ public class GameKeyInputListener implements KeyListener {
     private final char PAUSE_GAME = KeyEvent.VK_P;
 
     /** Blocks the listener from listening */
-    @Deprecated
     private boolean blockInput;
 
     /** Game controller for the current game */
@@ -85,7 +84,6 @@ public class GameKeyInputListener implements KeyListener {
 
     }
 
-    @Deprecated
     public void setBlockInput(boolean blockInput) {
         this.blockInput = blockInput;
     }

@@ -11,8 +11,6 @@ import javax.swing.*;
 
 public class MainFrame {
 
-    private EnhancedTetrisApp tetrisApp;
-
     private JFrame frame;
 
     private ConfigurationPanel configurationPanel;
@@ -22,13 +20,12 @@ public class MainFrame {
 
     private GameKeyInputListener gameKeyInputListener;
 
-    public MainFrame(EnhancedTetrisApp tetrisApp) {
+    public MainFrame() {
         this.frame = new JFrame("Enhanced Tetris");
         this.configurationPanel = new ConfigurationPanel(this);
         this.highScoresPanel = new HighScoresPanel(this);
         this.mainMenuPanel = new MainMenuPanel(this);
-        this.tetrisApp = tetrisApp;
-        this.gameKeyInputListener = new GameKeyInputListener(tetrisApp.getGameController());
+        this.gameKeyInputListener = new GameKeyInputListener(EnhancedTetrisApp.getInstance().getGameController());
         this.gamePanel = new GamePanel(this);
     }
 
@@ -43,16 +40,12 @@ public class MainFrame {
         frame.setVisible(true);
     }
 
-    public EnhancedTetrisApp getTetrisApp() {
-        return this.tetrisApp;
-    }
-
     public JFrame getJFrame() {
         return this.frame;
     }
 
     public void openMainMenu() {
-        tetrisApp.getGameController().endGame();
+        EnhancedTetrisApp.getInstance().getGameController().endGame();
         mainMenuPanel.paint();
     }
 

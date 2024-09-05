@@ -31,7 +31,7 @@ public abstract class TPanel {
      * @return the game configuration
      */
     public GameConfiguration getConfiguration() {
-        return mainFrame.getTetrisApp().getGameController().getConfiguration();
+        return EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
     }
 
     /**
@@ -50,7 +50,7 @@ public abstract class TPanel {
     /**
      * Method first clears the main frame by removing all elements in it's content pane.
      * Following this, the method adds this panel to the main frame, revalidates the main frame and then reprints it.
-     * @param panel
+     * @param panel panel of which to update
      */
     public void update(JPanel panel) {
         getMainFrame().getJFrame().getContentPane().removeAll();

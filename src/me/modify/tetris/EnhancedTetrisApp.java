@@ -12,17 +12,22 @@ import javax.swing.*;
  */
 public class EnhancedTetrisApp {
 
+    /** Instance for this main class */
+    private static EnhancedTetrisApp instance;
+
     /** Game controller for the game itself */
     private final GameController gameController;
 
     /** Main frame of the application */
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
 
     /**
      * Constructs a new EnhancedTetrisApp and initializes the game controller.
      */
     public EnhancedTetrisApp() {
-        this.gameController = new GameController(this);
+        setInstance(this);
+        this.gameController = new GameController();
+        this.mainFrame = new MainFrame();
     }
 
     /**
@@ -50,12 +55,24 @@ public class EnhancedTetrisApp {
         // Instantiate main frame and open main menu panel.
         SwingUtilities.invokeLater(() -> {
             EnhancedTetrisApp main = new EnhancedTetrisApp();
-            MainFrame mainFrame = new MainFrame(main);
-            main.mainFrame = mainFrame;
-            mainFrame.createUI();
-            mainFrame.openMainMenu();
+            main.getMainFrame().createUI();
+            main.getMainFrame().openMainMenu();
         });
     }
 
+    /**
+     * Retrieves the main class instance (this).
+     * @return main class instance.
+     */
+    public static EnhancedTetrisApp getInstance() {
+        return instance;
+    }
 
+    /**
+     * Sets the main class instance.
+     * @param instance instance to set too.
+     */
+    public void setInstance(EnhancedTetrisApp instance) {
+        EnhancedTetrisApp.instance = instance;
+    }
 }

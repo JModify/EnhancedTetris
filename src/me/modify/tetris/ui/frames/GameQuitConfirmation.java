@@ -1,5 +1,6 @@
 package me.modify.tetris.ui.frames;
 
+import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.ui.panel.MainMenuPanel;
 
@@ -40,7 +41,7 @@ public class GameQuitConfirmation extends PopupFrame {
         noButton.setBackground(Color.WHITE);
         noButton.addActionListener(e -> {
 
-            GameController gameController = mainFrame.getTetrisApp().getGameController();
+            GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
             if (gameController.isTempPause()) {
                 gameController.setTempPause(false);
                 gameController.unpauseGame();
