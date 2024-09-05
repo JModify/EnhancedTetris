@@ -51,29 +51,28 @@ public class GameKeyInputListener implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if (blockInput) {
+        int pressed = e.getKeyCode();
+
+        if (blockInput && pressed != PAUSE_GAME) {
             return;
         }
 
-        int pressed = e.getKeyCode();
         switch(pressed) {
-            case ROTATE_CLOCKWISE -> {
-                gameController.getGrid().rotateTetromino();
-            }
-            case MOVE_LEFT -> {
-                gameController.getGrid().shiftLeft();
-            }
-            case MOVE_RIGHT -> {
-                gameController.getGrid().shiftRight();
-            }
-            case MOVE_DOWN -> {
-                gameController.getGrid().shiftDown(false);
-            }
+            case ROTATE_CLOCKWISE -> gameController.getGrid().rotateTetromino();
+
+            case MOVE_LEFT -> gameController.getGrid().shiftLeft();
+
+            case MOVE_RIGHT -> gameController.getGrid().shiftRight();
+
+            case MOVE_DOWN -> gameController.getGrid().shiftDown(false);
+
             case PAUSE_GAME -> {
+                System.out.println("Triggered");
                 if (gameController.isPaused()) {
                     gameController.unpauseGame();
                     return;
                 }
+
                 gameController.pauseGame();
             }
         }
