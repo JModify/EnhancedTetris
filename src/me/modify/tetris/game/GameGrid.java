@@ -21,6 +21,12 @@ public class GameGrid {
     /** Cell placeholder. */
     public final int PLACEHOLDER = 80;
 
+    /** Current x position of the falling tetromino */
+    private int x;
+
+    /** Current y position of the falling tetromino */
+    private int y;
+
     /**
      * Constructor for game grid.
      * Defines the game grid using the given width and height parameters.
@@ -149,6 +155,9 @@ public class GameGrid {
                 }
             }
         }
+
+        this.x = xCenter;
+        this.y = 0;
     }
 
     /**
@@ -163,7 +172,7 @@ public class GameGrid {
         }
 
         List<Point> points = getTetrominoAsPoints();
-        Point pivot = getPivot(points);
+        Point pivot = new Point(y, x);
 
         List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
 
@@ -209,23 +218,6 @@ public class GameGrid {
         }
 
         return true;
-    }
-
-    /**
-     * Helper method which retrieves the best possible pivot point for a given set of points.
-     * @param points set of points
-     * @return a central pivot point.
-     */
-    private Point getPivot(List<Point> points) {
-        int minX = points.stream().mapToInt(p -> p.x).min().orElse(0);
-        int maxX = points.stream().mapToInt(p -> p.x).max().orElse(0);
-        int minY = points.stream().mapToInt(p -> p.y).min().orElse(0);
-        int maxY = points.stream().mapToInt(p -> p.y).max().orElse(0);
-
-        int centerX = (minX + (maxX - minX) / 2);
-        int centerY = (minY + (maxY - minY) / 2);
-
-        return new Point(centerX, centerY);
     }
 
     /**
@@ -398,6 +390,8 @@ public class GameGrid {
                 swapCells(cell, nextCell);
             }
         }
+
+        this.y++;
     }
 
     /**
@@ -429,6 +423,8 @@ public class GameGrid {
                 swapCells(cell, nextCell);
             }
         }
+
+        this.x--;
     }
 
     /**
@@ -460,6 +456,8 @@ public class GameGrid {
                 swapCells(cell, nextCell);
             }
         }
+
+        this.x++;
     }
 
     /**

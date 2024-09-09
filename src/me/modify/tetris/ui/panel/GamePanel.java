@@ -88,7 +88,7 @@ public class GamePanel  extends TPanel {
             panel.add(emptyRight, BorderLayout.EAST);
             panel.add(bottomPanel, BorderLayout.SOUTH);
 
-            update(panel);
+            update();
             gameController.startGame();
         });
     }

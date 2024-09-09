@@ -48,7 +48,7 @@ public class ConfigurationPanel extends TPanel {
             // Draws back button (return to main menu) and author name below it.
             drawBackButton();
 
-            update(panel);
+            update();
         });
     }
 

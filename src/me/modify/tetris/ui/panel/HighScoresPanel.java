@@ -47,7 +47,7 @@ public class HighScoresPanel extends TPanel {
             panel.add(bottomPanel, BorderLayout.SOUTH);
 
 
-            update(panel);
+            update();
         });
     }
 

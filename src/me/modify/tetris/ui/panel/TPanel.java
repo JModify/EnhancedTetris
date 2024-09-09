@@ -50,9 +50,8 @@ public abstract class TPanel {
     /**
      * Method first clears the main frame by removing all elements in it's content pane.
      * Following this, the method adds this panel to the main frame, revalidates the main frame and then reprints it.
-     * @param panel panel of which to update
      */
-    public void update(JPanel panel) {
+    public void update() {
         getMainFrame().getJFrame().getContentPane().removeAll();
 
         JFrame mainFrame = getMainFrame().getJFrame();
@@ -68,8 +67,4 @@ public abstract class TPanel {
     public void setPanel(JPanel panel) {
         this.panel = panel;
     }
-
-
-
-
 }

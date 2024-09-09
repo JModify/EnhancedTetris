@@ -57,7 +57,7 @@ public class MainMenuPanel extends TPanel {
             panel.add(exitButton);
             panel.add(appAuthorTitle);
 
-            update(panel);
+            update();
         });
     }
 
