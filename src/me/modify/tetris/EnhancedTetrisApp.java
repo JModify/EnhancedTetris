@@ -1,8 +1,10 @@
 package me.modify.tetris;
 
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.ui.MenuFacade;
+import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.panel.TetrisSplashScreen;
+import me.modify.tetris.ui.panel.*;
 
 import javax.swing.*;
 
@@ -20,6 +22,10 @@ public class EnhancedTetrisApp {
 
     /** Main frame of the application */
     private final MainFrame mainFrame;
+    private ConfigurationPanel configurationPanel;
+    private HighScoresPanel highScoresPanel;
+    private MainMenuPanel mainMenuPanel;
+    private GamePanel gamePanel;
 
     /**
      * Constructs a new EnhancedTetrisApp and initializes the game controller.
@@ -28,6 +34,10 @@ public class EnhancedTetrisApp {
         setInstance(this);
         this.gameController = new GameController();
         this.mainFrame = new MainFrame();
+        this.configurationPanel = new ConfigurationPanel();
+        this.highScoresPanel = new HighScoresPanel();
+        this.mainMenuPanel = new MainMenuPanel();
+        this.gamePanel = new GamePanel();
     }
 
     /**
@@ -56,7 +66,8 @@ public class EnhancedTetrisApp {
         SwingUtilities.invokeLater(() -> {
             EnhancedTetrisApp main = new EnhancedTetrisApp();
             main.getMainFrame().createUI();
-            main.getMainFrame().openMainMenu();
+
+            MenuFacade.openPanel(MenuType.MAIN_MENU);
         });
     }
 
@@ -74,5 +85,21 @@ public class EnhancedTetrisApp {
      */
     public void setInstance(EnhancedTetrisApp instance) {
         EnhancedTetrisApp.instance = instance;
+    }
+
+    public ConfigurationPanel getConfigurationPanel() {
+        return configurationPanel;
+    }
+
+    public HighScoresPanel getHighScoresPanel() {
+        return highScoresPanel;
+    }
+
+    public MainMenuPanel getMainMenuPanel() {
+        return mainMenuPanel;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

@@ -10,21 +10,11 @@ public class MainFrame {
 
     private JFrame frame;
 
-    private ConfigurationPanel configurationPanel;
-    private HighScoresPanel highScoresPanel;
-    private MainMenuPanel mainMenuPanel;
-    private GamePanel gamePanel;
-
     private GameKeyInputListener gameKeyInputListener;
-
 
     public MainFrame() {
         this.frame = new JFrame("Enhanced Tetris");
-        this.configurationPanel = new ConfigurationPanel();
-        this.highScoresPanel = new HighScoresPanel();
-        this.mainMenuPanel = new MainMenuPanel();
         this.gameKeyInputListener = new GameKeyInputListener(EnhancedTetrisApp.getInstance().getGameController());
-        this.gamePanel = new GamePanel();
     }
 
     public void createUI() {
@@ -43,26 +33,6 @@ public class MainFrame {
         return this.frame;
     }
 
-    public void openMainMenu() {
-        EnhancedTetrisApp.getInstance().getGameController().endGame();
-        mainMenuPanel.paint();
-    }
-
-    public void openConfigurationPanel() {
-        configurationPanel.paint();
-    }
-
-    public void openHighScoresPanel() {
-        highScoresPanel.paint();
-    }
-
-    public void openGamePanel() {
-        gamePanel.paint();
-    }
-
-    public GamePanel getGamePanel() {
-        return gamePanel;
-    }
 
     public GameKeyInputListener getMovementListener() {
         return gameKeyInputListener;

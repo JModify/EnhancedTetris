@@ -2,6 +2,8 @@ package me.modify.tetris.ui.frames;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.ui.MenuFacade;
+import me.modify.tetris.ui.MenuType;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -9,11 +11,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 public class GameQuitConfirmation extends PopupFrame {
-
-    private MainFrame mainFrame;
-    public GameQuitConfirmation(MainFrame mainFrame) {
+    public GameQuitConfirmation() {
         super("Stop Game");
-        this.mainFrame = mainFrame;
     }
 
     @Override
@@ -23,23 +22,15 @@ public class GameQuitConfirmation extends PopupFrame {
         text.setHorizontalAlignment(SwingConstants.CENTER);
         text.setBounds(0, 10, 300, 20);
 
-        JButton yesButton = new JButton("Yes");
-        yesButton.setUI(new BasicButtonUI());
-        yesButton.setBounds(50, 50, 75, 40);
-        yesButton.setBorder(new BevelBorder(BevelBorder.RAISED));
-        yesButton.setBackground(Color.WHITE);
-        yesButton.addActionListener(e -> {
-            mainFrame.openMainMenu();
+        MainFrame mainFrame = EnhancedTetrisApp.getInstance().getMainFrame();
+
+        frame.add(text);
+        frame.add(getYesButton(e -> {
+            MenuFacade.openPanel(MenuType.MAIN_MENU);
             frame.dispose();
-        });
+        }));
 
-        JButton noButton = new JButton("No");
-        noButton.setUI(new BasicButtonUI());
-        noButton.setBounds(160, 50, 75, 40);
-        noButton.setBorder(new BevelBorder(BevelBorder.RAISED));
-        noButton.setBackground(Color.WHITE);
-        noButton.addActionListener(e -> {
-
+        frame.add(getNoButton(e -> {
             GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
             if (gameController.isTempPause()) {
                 gameController.setTempPause(false);
@@ -48,11 +39,7 @@ public class GameQuitConfirmation extends PopupFrame {
 
             frame.dispose();
             mainFrame.getJFrame().requestFocus();
-        });
-
-        frame.add(text);
-        frame.add(yesButton);
-        frame.add(noButton);
+        }));
 
         frame.setVisible(true);
     }

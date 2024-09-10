@@ -110,7 +110,7 @@ public class GameController {
         }
 
         blockMovementInput();
-        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().showPauseMessage();
+        EnhancedTetrisApp.getInstance().getGamePanel().showPauseMessage();
     }
 
     /**
@@ -123,7 +123,7 @@ public class GameController {
         }
 
         resumeMovementInput();
-        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().hidePauseMessage();
+        EnhancedTetrisApp.getInstance().getGamePanel().hidePauseMessage();
     }
 
     /**

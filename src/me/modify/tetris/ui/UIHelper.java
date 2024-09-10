@@ -1,4 +1,4 @@
-package me.modify.tetris.ui.helper;
+package me.modify.tetris.ui;
 
 import me.modify.tetris.ui.frames.MainFrame;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.awt.event.ActionListener;
 
 /**
- * Helper class for some of the UI in the game.
+ * Helper class for some UI in the game.
  */
 public class UIHelper {
 
@@ -43,7 +43,8 @@ public class UIHelper {
         return label;
     }
 
-    public static JButton getButton(String text, int textSize, Dimension size, ActionListener actionListener, float alignment) {
+    public static JButton getButton(String text, int textSize, Dimension size,
+                                    ActionListener actionListener, float alignment) {
         JButton button = new JButton(text);
         button.setUI(new BasicButtonUI());
         button.setMinimumSize(size);

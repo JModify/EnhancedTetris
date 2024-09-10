@@ -1,8 +1,9 @@
 package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.game.GameConfiguration;
-import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.helper.UIHelper;
+import me.modify.tetris.ui.MenuFacade;
+import me.modify.tetris.ui.MenuType;
+import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -88,7 +89,7 @@ public class ConfigurationPanel extends TetrisPanel {
         labels.add("AI Play (On/Off):");
         labels.add("Extend Mode (On/Off):");
         titleSubPanelHelper(labels, new Font("Arial", Font.BOLD, 16),
-                200, 35, panel);
+                panel);
     }
 
     private void drawConfigInteractives() {
@@ -188,33 +189,19 @@ public class ConfigurationPanel extends TetrisPanel {
     }
 
     private void drawBackButton() {
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
-
-        JButton backButton = new JButton("Back");
-        backButton.setUI(new BasicButtonUI());
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bottomPanel.add(backButton);
-        backButton.addActionListener(e -> {
+        JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), e -> {
             saveConfiguration();
-            getMainFrame().openMainMenu();
+            MenuFacade.openPanel(MenuType.MAIN_MENU);
         });
-
-        bottomPanel.add(Box.createVerticalStrut(10));
-
-        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bottomPanel.add(authorLabel);
 
         panel.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void titleSubPanelHelper(List<String> entries, Font font,
-                                     int panelWidth, int itemYSpacing,
                                      JPanel masterPanel) {
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
-        subPanel.setPreferredSize(new Dimension(panelWidth, 0));
+        subPanel.setPreferredSize(new Dimension(200, 0));
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -225,7 +212,7 @@ public class ConfigurationPanel extends TetrisPanel {
             //label.setHorizontalAlignment(SwingConstants.CENTER);
             gbc.gridx = 0;
             gbc.gridy = y++;
-            gbc.ipady = itemYSpacing;
+            gbc.ipady = 35;
 
             subPanel.add(label, gbc);
         }

@@ -1,8 +1,7 @@
 package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.listeners.ReturnMainMenuActionListener;
-import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.helper.UIHelper;
+import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;

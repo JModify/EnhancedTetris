@@ -2,8 +2,11 @@ package me.modify.tetris.listeners;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.ui.MenuFacade;
+import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.GameQuitConfirmation;
 import me.modify.tetris.ui.frames.MainFrame;
+import me.modify.tetris.ui.frames.PopupFrameFactory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,9 +16,8 @@ public class ExitGameActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
-        MainFrame mainFrame = EnhancedTetrisApp.getInstance().getMainFrame();
         if (gameController.isGameOver()) {
-            mainFrame.openMainMenu();
+            MenuFacade.openPanel(MenuType.MAIN_MENU);
             return;
         }
 
@@ -24,7 +26,6 @@ public class ExitGameActionListener implements ActionListener {
             gameController.pauseGame();
         }
 
-        GameQuitConfirmation gameQuitConfirmation = new GameQuitConfirmation(mainFrame);
-        gameQuitConfirmation.open();
+        PopupFrameFactory.getPopupFrame("Stop Game").open();
     }
 }

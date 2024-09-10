@@ -23,23 +23,9 @@ public class ExitConfirmation extends PopupFrame {
         text.setHorizontalAlignment(SwingConstants.CENTER);
         text.setBounds(0, 10, 300, 20);
 
-        JButton yesButton = new JButton("Yes");
-        yesButton.setUI(new BasicButtonUI());
-        yesButton.setBounds(50, 50, 75, 40);
-        yesButton.setBorder(new BevelBorder(BevelBorder.RAISED));
-        yesButton.setBackground(Color.WHITE);
-        yesButton.addActionListener(e -> System.exit(0));
-
-        JButton noButton = new JButton("No");
-        noButton.setUI(new BasicButtonUI());
-        noButton.setBounds(160, 50, 75, 40);
-        noButton.setBorder(new BevelBorder(BevelBorder.RAISED));
-        noButton.setBackground(Color.WHITE);
-        noButton.addActionListener(e -> frame.dispose());
-
         frame.add(text);
-        frame.add(yesButton);
-        frame.add(noButton);
+        frame.add(getYesButton(e -> System.exit(0)));
+        frame.add(getNoButton(e -> frame.dispose()));
 
         frame.setVisible(true);
     }

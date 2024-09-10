@@ -5,8 +5,7 @@ import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.listeners.ExitGameActionListener;
-import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.helper.UIHelper;
+import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +72,8 @@ public class GamePanel  extends TetrisPanel {
             emptyRight.setPreferredSize(new Dimension(225, 400));
             emptyRight.setBackground(veryLightGray);
 
-            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), new ExitGameActionListener());
+            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50),
+                    new ExitGameActionListener());
             bottomPanel.setBackground(veryLightGray);
 
 
