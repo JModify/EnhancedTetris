@@ -2,7 +2,6 @@ package me.modify.tetris.ui.frames;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameController;
-import me.modify.tetris.ui.panel.MainMenuPanel;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

@@ -7,22 +7,17 @@ import me.modify.tetris.ui.frames.MainFrame;
 import javax.swing.*;
 
 /**
- * TPanel (TetrisPanel) represents a menu's JPanel.
+ * TetrisPanel represents a menu's JPanel.
  */
-public abstract class TPanel {
-
-    /** Reference to the main frame for the game */
-    private final MainFrame mainFrame;
+public abstract class TetrisPanel {
 
     /** Panel for this TetrisPanel */
     protected JPanel panel;
 
     /**
      * Constructs a new TetrisPanel
-     * @param mainFrame reference to main frame.
      */
-    public TPanel(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+    public TetrisPanel() {
         this.panel = new JPanel(null);
     }
 
@@ -39,7 +34,7 @@ public abstract class TPanel {
      * @return main frame reference.
      */
     public MainFrame getMainFrame() {
-        return mainFrame;
+        return EnhancedTetrisApp.getInstance().getMainFrame();
     }
 
     /**
@@ -48,10 +43,10 @@ public abstract class TPanel {
     public abstract void paint();
 
     /**
-     * Method first clears the main frame by removing all elements in it's content pane.
+     * Method first clears the main frame by removing all elements in its content pane.
      * Following this, the method adds this panel to the main frame, revalidates the main frame and then reprints it.
      */
-    public void update() {
+    public void updateFrame() {
         getMainFrame().getJFrame().getContentPane().removeAll();
 
         JFrame mainFrame = getMainFrame().getJFrame();

@@ -21,6 +21,8 @@ public class GameGrid {
     /** Cell placeholder. */
     public final int PLACEHOLDER = 80;
 
+    private Tetromino tetromino;
+
     /** Current x position of the falling tetromino */
     private int x;
 
@@ -156,8 +158,9 @@ public class GameGrid {
             }
         }
 
-        this.x = xCenter;
+        this.x = width / 2;
         this.y = 0;
+        this.tetromino = tetromino;
     }
 
     /**
@@ -165,12 +168,6 @@ public class GameGrid {
      * Does nothing if the rotation is not valid (outside game board or collides with another fixed cell).
      */
     public void rotateTetromino(){
-        Tetromino identifiedTetromino = getTetromino();
-
-        if (identifiedTetromino == null) {
-            return;
-        }
-
         List<Point> points = getTetrominoAsPoints();
         Point pivot = new Point(y, x);
 
@@ -180,7 +177,7 @@ public class GameGrid {
         if(!isRotationValid(rotatedPoints)) {
             return;
         }
-        replaceTetromino(points, rotatedPoints, identifiedTetromino);
+        replaceTetromino(points, rotatedPoints, tetromino);
     }
 
     /**
@@ -298,27 +295,6 @@ public class GameGrid {
             }
         }
         return points;
-    }
-
-    /**
-     * Retrieves the current falling tetromino.
-     * @return Tetromino enum object of the current tetromino.
-     */
-    private Tetromino getTetromino() {
-        List<Point> points = getTetrominoAsPoints();
-        for (Point point : points) {
-            int row = (int) point.getX();
-            int column = (int) point.getY();
-
-            // If the checked cell is a placeholder, ignore it.
-            int cellData = getCell(row, column).getData();
-            if (cellData == PLACEHOLDER) {
-                continue;
-            }
-
-            return Tetromino.getByID(cellData);
-        }
-        return null;
     }
 
     /**

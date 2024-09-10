@@ -2,10 +2,7 @@ package me.modify.tetris.ui.frames;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.listeners.GameKeyInputListener;
-import me.modify.tetris.ui.panel.ConfigurationPanel;
-import me.modify.tetris.ui.panel.GamePanel;
-import me.modify.tetris.ui.panel.HighScoresPanel;
-import me.modify.tetris.ui.panel.MainMenuPanel;
+import me.modify.tetris.ui.panel.*;
 
 import javax.swing.*;
 
@@ -20,13 +17,14 @@ public class MainFrame {
 
     private GameKeyInputListener gameKeyInputListener;
 
+
     public MainFrame() {
         this.frame = new JFrame("Enhanced Tetris");
-        this.configurationPanel = new ConfigurationPanel(this);
-        this.highScoresPanel = new HighScoresPanel(this);
-        this.mainMenuPanel = new MainMenuPanel(this);
+        this.configurationPanel = new ConfigurationPanel();
+        this.highScoresPanel = new HighScoresPanel();
+        this.mainMenuPanel = new MainMenuPanel();
         this.gameKeyInputListener = new GameKeyInputListener(EnhancedTetrisApp.getInstance().getGameController());
-        this.gamePanel = new GamePanel(this);
+        this.gamePanel = new GamePanel();
     }
 
     public void createUI() {
@@ -35,6 +33,7 @@ public class MainFrame {
         frame.setResizable(false);
         frame.setIconImage(new ImageIcon("resources/icon.png").getImage());
         frame.addKeyListener(gameKeyInputListener);
+
         // Centers Main Frame to open in the center of the screen.
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

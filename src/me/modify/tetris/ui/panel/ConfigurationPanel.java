@@ -2,7 +2,7 @@ package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.UIHelper;
+import me.modify.tetris.ui.helper.UIHelper;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurationPanel extends TPanel {
+public class ConfigurationPanel extends TetrisPanel {
 
     private JLabel fieldWidthSelection;
     private JLabel fieldHeightSelection;
@@ -20,10 +20,6 @@ public class ConfigurationPanel extends TPanel {
     private JLabel soundEffectsSelection;
     private JLabel aiPlaySelection;
     private JLabel extendModeSelection;
-
-    public ConfigurationPanel(MainFrame main) {
-        super(main);
-    }
 
     @Override
     public void paint() {
@@ -48,7 +44,7 @@ public class ConfigurationPanel extends TPanel {
             // Draws back button (return to main menu) and author name below it.
             drawBackButton();
 
-            update();
+            updateFrame();
         });
     }
 
@@ -62,7 +58,6 @@ public class ConfigurationPanel extends TPanel {
         slider.setMinorTickSpacing(1);
         slider.setFocusable(false);
         slider.setForeground(Color.DARK_GRAY);
-
 
         return slider;
     }

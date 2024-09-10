@@ -4,24 +4,19 @@ import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.game.GameController;
-import me.modify.tetris.ui.frames.GameQuitConfirmation;
+import me.modify.tetris.listeners.ExitGameActionListener;
 import me.modify.tetris.ui.frames.MainFrame;
+import me.modify.tetris.ui.helper.UIHelper;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.util.Arrays;
 
-public class GamePanel  extends TPanel {
+public class GamePanel  extends TetrisPanel {
 
     private final Color BOARD_BORDER_COLOR = Color.BLACK;
 
     private JPanel boardPanel;
     private JPanel pausePanel;
-
-    public GamePanel(MainFrame mainFrame) {
-        super(mainFrame);
-    }
 
     @Override
     public void paint() {
@@ -78,7 +73,7 @@ public class GamePanel  extends TPanel {
             emptyRight.setPreferredSize(new Dimension(225, 400));
             emptyRight.setBackground(veryLightGray);
 
-            JPanel bottomPanel = getBottomPanel(new Dimension(700, 50));
+            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), new ExitGameActionListener());
             bottomPanel.setBackground(veryLightGray);
 
 
@@ -88,7 +83,7 @@ public class GamePanel  extends TPanel {
             panel.add(emptyRight, BorderLayout.EAST);
             panel.add(bottomPanel, BorderLayout.SOUTH);
 
-            update();
+            updateFrame();
             gameController.startGame();
         });
     }
@@ -108,41 +103,6 @@ public class GamePanel  extends TPanel {
 
         pausePanel.add(pauseLabel);
         pausePanel.add(unpauseLabel);
-    }
-
-    private JPanel getBottomPanel(Dimension dimension) {
-
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
-        bottomPanel.setPreferredSize(dimension);
-
-        JButton backButton = new JButton("Back");
-        backButton.setUI(new BasicButtonUI());
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        backButton.addActionListener(e -> {
-            GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
-            if (gameController.isGameOver()) {
-                getMainFrame().openMainMenu();
-                return;
-            }
-
-            if (!gameController.isPaused()) {
-                gameController.setTempPause(true);
-                gameController.pauseGame();
-            }
-
-            GameQuitConfirmation gameQuitConfirmation = new GameQuitConfirmation(getMainFrame());
-            gameQuitConfirmation.open();
-        });
-
-
-        bottomPanel.add(backButton);
-
-        JLabel authorLabel = new JLabel("Author: Joshua Lavagna-Slater");
-        authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        bottomPanel.add(authorLabel);
-        return bottomPanel;
     }
 
     public void showPauseMessage() {

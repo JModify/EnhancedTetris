@@ -1,17 +1,14 @@
 package me.modify.tetris.ui.panel;
 
+import me.modify.tetris.listeners.ReturnMainMenuActionListener;
 import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.UIHelper;
+import me.modify.tetris.ui.helper.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class HighScoresPanel extends TPanel {
-
-    public HighScoresPanel(MainFrame mainFrame) {
-        super(mainFrame);
-    }
+public class HighScoresPanel extends TetrisPanel {
 
     @Override
     public void paint() {
@@ -34,7 +31,8 @@ public class HighScoresPanel extends TPanel {
             namePanel.setPreferredSize(new Dimension(320, 400));
             addDummyScoresPanel(scorePanel);
 
-            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50), getMainFrame());
+            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50),
+                    new ReturnMainMenuActionListener());
 
             JPanel centerPanel = new JPanel();
             centerPanel.setPreferredSize(new Dimension(50, 400));
@@ -47,7 +45,7 @@ public class HighScoresPanel extends TPanel {
             panel.add(bottomPanel, BorderLayout.SOUTH);
 
 
-            update();
+            updateFrame();
         });
     }
 
