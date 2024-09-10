@@ -528,8 +528,11 @@ public class GameGrid {
 
     /**
      * Loops through entire grid and clears any rows which are full.
+     * @return number of rows cleared
      */
-    public void clearRows() {
+    public int clearRows() {
+        int rowsCleared = 0;
+
         // Loop through every row
         for (int i = 0; i < height; i++) {
 
@@ -551,8 +554,11 @@ public class GameGrid {
             if (full) {
                 clearRow(i);
                 shiftDown(true);
+                rowsCleared++;
             }
         }
+
+        return rowsCleared;
     }
 
     /**

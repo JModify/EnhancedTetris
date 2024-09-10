@@ -49,7 +49,10 @@ public class GameController {
 
             // Clears Tetromino placeholders and any rows that are full.
             grid.clearPlaceholders();
-            grid.clearRows();
+
+            if (grid.clearRows() > 0) {
+                //TODO: Score Logic
+            }
 
             // Attempts to insert a new tetromino. If this fails, the game has been lost.
             Tetromino tetromino = Tetromino.randomTetromino();
@@ -97,14 +100,14 @@ public class GameController {
      * @return
      */
     public boolean isPaused() {
-        return gameState == GameState.PAUSED;
+        return gameState == GameState.PAUSED || gameState == GameState.TEMP_PAUSED;
     }
 
     /**
      * Pauses the game and displays pause text.
      */
-    public void pauseGame() {
-        gameState = GameState.PAUSED;
+    public void pauseGame(boolean tempPause) {
+        gameState = tempPause ? GameState.TEMP_PAUSED : GameState.PAUSED;
         if (timer.isRunning()) {
             timer.stop();
         }
@@ -124,22 +127,6 @@ public class GameController {
 
         resumeMovementInput();
         EnhancedTetrisApp.getInstance().getGamePanel().hidePauseMessage();
-    }
-
-    /**
-     * Flags the pause as a temporary pause due to a click of the "Back" button.
-     * @param tempPause
-     */
-    public void setTempPause(boolean tempPause) {
-        this.tempPause = tempPause;
-    }
-
-    /**
-     * Determines whether the game is paused temporarily.
-     * @return
-     */
-    public boolean isTempPause() {
-        return this.tempPause;
     }
 
     @Deprecated

@@ -11,6 +11,9 @@ public enum GameState {
     /** Game has been paused */
     PAUSED,
 
+    /** Game paused due to click of the back button */
+    TEMP_PAUSED,
+
     /** Game has been lost, user still on menu */
     LOST;
 

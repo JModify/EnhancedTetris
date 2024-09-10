@@ -32,10 +32,7 @@ public class GameQuitConfirmation extends PopupFrame {
 
         frame.add(getNoButton(e -> {
             GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
-            if (gameController.isTempPause()) {
-                gameController.setTempPause(false);
-                gameController.unpauseGame();
-            }
+            gameController.unpauseGame();
 
             frame.dispose();
             mainFrame.getJFrame().requestFocus();

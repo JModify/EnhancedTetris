@@ -73,7 +73,7 @@ public class GameKeyInputListener implements KeyListener {
                     return;
                 }
 
-                gameController.pauseGame();
+                gameController.pauseGame(false);
             }
         }
     }

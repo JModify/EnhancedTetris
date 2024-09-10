@@ -22,8 +22,7 @@ public class ExitGameActionListener implements ActionListener {
         }
 
         if (!gameController.isPaused()) {
-            gameController.setTempPause(true);
-            gameController.pauseGame();
+            gameController.pauseGame(true);
         }
 
         PopupFrameFactory.getPopupFrame("Stop Game").open();
