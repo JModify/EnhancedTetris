@@ -1,17 +1,16 @@
-package me.modify.tetris.ui.frames;
+package me.modify.tetris.ui.frames.popup;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
+import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
-public class GameQuitConfirmation extends PopupFrame {
-    public GameQuitConfirmation() {
+public class GameQuitPopup extends PopupFrame {
+    public GameQuitPopup() {
         super("Stop Game");
     }
 

@@ -5,6 +5,7 @@ import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * TetrisPanel represents a menu's JPanel.
@@ -56,10 +57,10 @@ public abstract class TetrisPanel {
     }
 
     /**
-     * Sets the JPanel of this TetrisPanel to another one.
-     * @param panel other JPanel to set too
+     * Sets the layout for this JPanel to something else.
+     * @param layout layout to set too
      */
-    public void setPanel(JPanel panel) {
-        this.panel = panel;
+    public void setLayout(LayoutManager layout) {
+        this.panel.setLayout(layout);
     }
 }

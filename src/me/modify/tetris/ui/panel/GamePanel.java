@@ -3,7 +3,6 @@ package me.modify.tetris.ui.panel;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.Cell;
 import me.modify.tetris.game.GameConfiguration;
-import me.modify.tetris.game.GameController;
 import me.modify.tetris.listeners.ExitGameActionListener;
 import me.modify.tetris.ui.UIHelper;
 
@@ -12,52 +11,22 @@ import java.awt.*;
 
 public class GamePanel  extends TetrisPanel {
 
-    private final Color BOARD_BORDER_COLOR = Color.BLACK;
-
+    private JPanel cardPanel;
     private JPanel boardPanel;
     private JPanel pausePanel;
 
     @Override
     public void paint() {
-        GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
-
         SwingUtilities.invokeLater(() -> {
-            setPanel(new JPanel(new BorderLayout()));
+            setLayout(new BorderLayout());
 
-            GameConfiguration configuration = getConfiguration();
+            setupGameBoard();
+            setupPauseScreen();
 
-            int rows = configuration.FIELD_HEIGHT_DEFAULT;
-            int columns = configuration.FIELD_WIDTH_DEFAULT;
-
-            boardPanel = new JPanel(new GridLayout(rows,
-                    columns, 0, 0));
-            boardPanel.setBounds(0, 0, 250, 400);
-
-            for (int i = 0; i < (rows * columns); i++) {
-                JPanel jCell = new JPanel(null);
-                jCell.setBackground(Cell.EMPTY_CELL);
-                boardPanel.add(jCell);
-
-                int x = i % columns; // column
-                int y = i / columns; // row
-
-
-                Cell cell = new Cell(x, y, 0, jCell);
-                gameController.getGrid().addCell(cell);
-            }
-
-            pausePanel = new JPanel(null);
-            pausePanel.setOpaque(false);
-            pausePanel.setVisible(false);
-            pausePanel.setBounds(0, 0, 250, 400);
-            pausePanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
-
-            addPauseLabels();
-
-            JPanel overlayPanel = new JPanel();
-            overlayPanel.setLayout(new OverlayLayout(overlayPanel));
-            overlayPanel.add(boardPanel);
-            overlayPanel.add(pausePanel);
+            cardPanel = new JPanel();
+            cardPanel.setLayout(new CardLayout());
+            cardPanel.add(boardPanel, "Board_Panel");
+            cardPanel.add(pausePanel, "Pause_Panel");
 
             Color veryLightGray = new Color(227, 227, 227, 255);
             JPanel topPanel = new JPanel(null);
@@ -77,18 +46,48 @@ public class GamePanel  extends TetrisPanel {
             bottomPanel.setBackground(veryLightGray);
 
 
-            panel.add(overlayPanel, BorderLayout.CENTER);
+            panel.add(cardPanel, BorderLayout.CENTER);
+
             panel.add(topPanel, BorderLayout.NORTH);
             panel.add(leftPanel, BorderLayout.WEST);
             panel.add(emptyRight, BorderLayout.EAST);
             panel.add(bottomPanel, BorderLayout.SOUTH);
 
             updateFrame();
-            gameController.startGame();
+            EnhancedTetrisApp.getInstance().getGameController().startGame();
         });
     }
 
-    private void addPauseLabels() {
+    private void setupGameBoard() {
+        GameConfiguration configuration = getConfiguration();
+
+        int rows = configuration.FIELD_HEIGHT_DEFAULT;
+        int columns = configuration.FIELD_WIDTH_DEFAULT;
+
+        boardPanel = new JPanel(new GridLayout(rows,
+                columns, 0, 0));
+        boardPanel.setBounds(0, 0, 250, 400);
+
+        for (int i = 0; i < (rows * columns); i++) {
+            JPanel jCell = new JPanel(null);
+            jCell.setBackground(Cell.EMPTY_CELL);
+            boardPanel.add(jCell);
+
+            int x = i % columns; // column
+            int y = i / columns; // row
+
+
+            Cell cell = new Cell(x, y, 0, jCell);
+            EnhancedTetrisApp.getInstance().getGameController().getGrid().addCell(cell);
+        }
+    }
+
+    private void setupPauseScreen() {
+        pausePanel = new JPanel(null);
+        pausePanel.setOpaque(false);
+        pausePanel.setBounds(0, 0, 250, 400);
+        pausePanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+
         JLabel pauseLabel = new JLabel("PAUSED");
         pauseLabel.setFont(new Font("Arial", Font.BOLD, 20));
         pauseLabel.setForeground(Color.RED);
@@ -106,12 +105,12 @@ public class GamePanel  extends TetrisPanel {
     }
 
     public void showPauseMessage() {
-        pausePanel.setVisible(true);
-        boardPanel.setVisible(false);
+        CardLayout cl = (CardLayout) cardPanel.getLayout();
+        cl.show(cardPanel, "Pause_Panel");
     }
 
     public void hidePauseMessage() {
-        pausePanel.setVisible(false);
-        boardPanel.setVisible(true);
+        CardLayout cl = (CardLayout) cardPanel.getLayout();
+        cl.show(cardPanel, "Board_Panel");
     }
 }

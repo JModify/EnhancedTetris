@@ -1,18 +1,11 @@
-package me.modify.tetris.ui.frames;
-
-import me.modify.tetris.EnhancedTetrisApp;
+package me.modify.tetris.ui.frames.popup;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
-import javax.swing.plaf.synth.SynthButtonUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class ExitConfirmation extends PopupFrame {
+public class ExitGamePopup extends PopupFrame {
 
-    public ExitConfirmation() {
+    public ExitGamePopup() {
         super("Exit Confirmation");
     }
 

@@ -12,7 +12,7 @@ public class HighScoresPanel extends TetrisPanel {
     @Override
     public void paint() {
         SwingUtilities.invokeLater(() -> {
-            setPanel(new JPanel(new BorderLayout()));
+            setLayout(new BorderLayout());
 
             JPanel titlePanel = new JPanel();
             titlePanel.setPreferredSize(new Dimension(700, 50));

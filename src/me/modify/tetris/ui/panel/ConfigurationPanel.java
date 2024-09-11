@@ -6,7 +6,6 @@ import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ConfigurationPanel extends TetrisPanel {
     @Override
     public void paint() {
         SwingUtilities.invokeLater(() -> {
-            setPanel(new JPanel(new BorderLayout()));
+            setLayout(new BorderLayout());
 
             // Draw Configuration Panel title.
             JLabel configurationTitle = new JLabel("Configuration");

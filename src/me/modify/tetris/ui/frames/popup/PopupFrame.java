@@ -1,4 +1,4 @@
-package me.modify.tetris.ui.frames;
+package me.modify.tetris.ui.frames.popup;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

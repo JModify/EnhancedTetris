@@ -3,7 +3,7 @@ package me.modify.tetris.ui.panel;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
-import me.modify.tetris.ui.frames.PopupFrameFactory;
+import me.modify.tetris.ui.frames.popup.PopupFrameFactory;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class MainMenuPanel extends TetrisPanel {
     @Override
     public void paint() {
         SwingUtilities.invokeLater(() ->{
-            setPanel(new JPanel(new BorderLayout()));
+            setLayout(new BorderLayout());
             panel.add(getTopPanel(), BorderLayout.NORTH);
             panel.add(getCenterPanel(), BorderLayout.CENTER);
             panel.add(getBottomPanel(), BorderLayout.SOUTH);
@@ -49,6 +49,7 @@ public class MainMenuPanel extends TetrisPanel {
         centerPanel.add(Box.createVerticalStrut(BUTTON_SPACING));
         centerPanel.add(getMainMenuButton("High Scores", e -> MenuFacade.openPanel(MenuType.HIGH_SCORES)));
         centerPanel.add(Box.createVerticalStrut(BUTTON_SPACING));
+
         centerPanel.add(getMainMenuButton("Exit", e ->
                 PopupFrameFactory.getPopupFrame("Exit Confirmation").open()));
 

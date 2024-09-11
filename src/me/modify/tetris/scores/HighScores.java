@@ -23,5 +23,13 @@ public class HighScores {
         return getSortedList().stream().limit(10).toList();
     }
 
+    public boolean isHighScore(int score) {
+        return getTopScores().stream().anyMatch(s -> score > s.getScore());
+    }
+
+//    public static Set<Score> loadScores() {
+//
+//    }
+
 
 }

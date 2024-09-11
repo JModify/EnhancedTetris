@@ -1,6 +1,8 @@
 package me.modify.tetris;
 
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.scores.HighScores;
+import me.modify.tetris.scores.Score;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.MainFrame;
@@ -19,6 +21,9 @@ public class EnhancedTetrisApp {
 
     /** Game controller for the game itself */
     private final GameController gameController;
+
+    //TODO: Implement loading this
+    private HighScores highScores;
 
     /** Main frame of the application */
     private final MainFrame mainFrame;
@@ -54,6 +59,9 @@ public class EnhancedTetrisApp {
      */
     public MainFrame getMainFrame() {
         return this.mainFrame;
+    }
+
+    public void loadScores() {
     }
 
     public static void main(String[] args) {
