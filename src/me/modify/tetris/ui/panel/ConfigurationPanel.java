@@ -1,5 +1,6 @@
 package me.modify.tetris.ui.panel;
 
+import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameConfiguration;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
@@ -8,10 +9,11 @@ import me.modify.tetris.ui.UIHelper;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
+import java.io.ObjectInputFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurationPanel extends TetrisPanel {
+public class ConfigurationPanel extends JPanel {
 
     private JLabel fieldWidthSelection;
     private JLabel fieldHeightSelection;
@@ -21,31 +23,29 @@ public class ConfigurationPanel extends TetrisPanel {
     private JLabel aiPlaySelection;
     private JLabel extendModeSelection;
 
+    public ConfigurationPanel() {
+        // Draw Configuration Panel title.
+        JLabel configurationTitle = new JLabel("Configuration");
+        configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
+        add(configurationTitle, BorderLayout.NORTH);
+
+        // Draws labels / titles for given configuration.
+        drawConfigLabels();
+
+        // Draws selections panel which displays current selection for a given configuration.
+        drawConfigSelections();
+
+        // Draws interactive configuration. Includes sliders and checkboxes.
+        drawConfigInteractives();
+
+        // Draws back button (return to main menu) and author name below it.
+        drawBackButton();
+    }
+
     @Override
-    public void init() {
-        SwingUtilities.invokeLater(() -> {
-            setLayout(new BorderLayout());
-
-            // Draw Configuration Panel title.
-            JLabel configurationTitle = new JLabel("Configuration");
-            configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
-            configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
-            add(configurationTitle, BorderLayout.NORTH);
-
-            // Draws labels / titles for given configuration.
-            drawConfigLabels();
-
-            // Draws selections panel which displays current selection for a given configuration.
-            drawConfigSelections();
-
-            // Draws interactive configuration. Includes sliders and checkboxes.
-            drawConfigInteractives();
-
-            // Draws back button (return to main menu) and author name below it.
-            drawBackButton();
-
-            updateFrame();
-        });
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
     }
 
     private JSlider getNumericalSlider(int min, int max, int init) {
@@ -71,10 +71,11 @@ public class ConfigurationPanel extends TetrisPanel {
     private void update(JCheckBox checkBox, JLabel label) {
         boolean selected = checkBox.isSelected();
 
+        GameConfiguration gameConfiguration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
         if (selected) {
-            label.setText(getConfiguration().CHECKBOX_ON);
+            label.setText(gameConfiguration.CHECKBOX_ON);
         } else {
-            label.setText(getConfiguration().CHECKBOX_OFF);
+            label.setText(gameConfiguration.CHECKBOX_OFF);
         }
     }
 
@@ -92,8 +93,9 @@ public class ConfigurationPanel extends TetrisPanel {
     }
 
     private void drawConfigInteractives() {
+
         JPanel interactivesPanel = new JPanel(null);
-        GameConfiguration configuration = getConfiguration();
+        GameConfiguration configuration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
         JSlider fieldWidthSlider = getNumericalSlider(configuration.FIELD_WIDTH_MIN,
                 configuration.FIELD_WIDTH_MAX,
                 configuration.getFieldWidth());
@@ -144,7 +146,7 @@ public class ConfigurationPanel extends TetrisPanel {
 
     private void drawConfigSelections() {
         JPanel selectionsPanel = new JPanel(null);
-        GameConfiguration configuration = getConfiguration();
+        GameConfiguration configuration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
         selectionsPanel.setLayout(new GridBagLayout());
         selectionsPanel.setPreferredSize(new Dimension(100, 0));
 
@@ -220,7 +222,7 @@ public class ConfigurationPanel extends TetrisPanel {
     }
 
     public void saveConfiguration() {
-        GameConfiguration configuration = getConfiguration();
+        GameConfiguration configuration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
 
         try {
             configuration.setFieldWidth(Integer.parseInt(fieldWidthSelection.getText()));

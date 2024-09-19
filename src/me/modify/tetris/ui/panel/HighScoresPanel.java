@@ -7,44 +7,47 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class HighScoresPanel extends TetrisPanel {
+public class HighScoresPanel extends JPanel {
+
+    public HighScoresPanel() {
+        setLayout(new BorderLayout());
+        initSubPanels();
+    }
 
     @Override
-    public void init() {
-        SwingUtilities.invokeLater(() -> {
-            setLayout(new BorderLayout());
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+    }
 
-            JPanel titlePanel = new JPanel();
-            titlePanel.setPreferredSize(new Dimension(700, 50));
-            JLabel titleLabel = new JLabel("High Scores");
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
-            titlePanel.add(titleLabel);
+    private void initSubPanels() {
+        JPanel titlePanel = new JPanel();
+        titlePanel.setPreferredSize(new Dimension(700, 50));
+        JLabel titleLabel = new JLabel("High Scores");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titlePanel.add(titleLabel);
 
-            JPanel namePanel = new JPanel(new GridBagLayout());
-            //namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            namePanel.setPreferredSize(new Dimension(320, 400));
-            addDummyNamePanel(namePanel);
+        JPanel namePanel = new JPanel(new GridBagLayout());
+        //namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        namePanel.setPreferredSize(new Dimension(320, 400));
+        addDummyNamePanel(namePanel);
 
-            JPanel scorePanel = new JPanel(new GridBagLayout());
-            //scorePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            namePanel.setPreferredSize(new Dimension(320, 400));
-            addDummyScoresPanel(scorePanel);
+        JPanel scorePanel = new JPanel(new GridBagLayout());
+        //scorePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        namePanel.setPreferredSize(new Dimension(320, 400));
+        addDummyScoresPanel(scorePanel);
 
-            JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50),
-                    new ReturnMainMenuActionListener());
+        JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50),
+                new ReturnMainMenuActionListener());
 
-            JPanel centerPanel = new JPanel();
-            centerPanel.setPreferredSize(new Dimension(50, 400));
-            centerPanel.add(new JLabel("Text"));
+        JPanel centerPanel = new JPanel();
+        centerPanel.setPreferredSize(new Dimension(50, 400));
+        centerPanel.add(new JLabel("Text"));
 
-            add(titlePanel, BorderLayout.NORTH);
-            add(scorePanel, BorderLayout.EAST);
-            add(centerPanel, BorderLayout.CENTER);
-            add(namePanel, BorderLayout.WEST);
-            add(bottomPanel, BorderLayout.SOUTH);
-
-            updateFrame();
-        });
+        add(titlePanel, BorderLayout.NORTH);
+        add(scorePanel, BorderLayout.EAST);
+        add(centerPanel, BorderLayout.CENTER);
+        add(namePanel, BorderLayout.WEST);
+        add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void addDummyNamePanel(JPanel panel) {

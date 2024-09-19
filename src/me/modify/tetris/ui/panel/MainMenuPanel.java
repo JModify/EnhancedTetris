@@ -10,24 +10,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MainMenuPanel extends TetrisPanel {
+public class MainMenuPanel extends JPanel {
 
     private final int BUTTON_WIDTH = 300;
     private final int BUTTON_HEIGHT = 50;
     private final int BUTTON_SPACING = 25;
     private final int BUTTON_TEXT_SIZE = 20;
 
-    @Override
-    public void init() {
-        SwingUtilities.invokeLater(() ->{
-            setLayout(new BorderLayout());
-            add(getTopPanel(), BorderLayout.NORTH);
-            add(getCenterPanel(), BorderLayout.CENTER);
-            add(getBottomPanel(), BorderLayout.SOUTH);
-            updateFrame();
+    public MainMenuPanel() {
+        setLayout(new BorderLayout());
+        add(getTopPanel(), BorderLayout.NORTH);
+        add(getCenterPanel(), BorderLayout.CENTER);
+        add(getBottomPanel(), BorderLayout.SOUTH);
+    }
 
-            EnhancedTetrisApp.getInstance().getGameController().endGame();
-        });
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
     }
 
     private JPanel getTopPanel() {

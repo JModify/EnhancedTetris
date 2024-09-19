@@ -1,6 +1,8 @@
 package me.modify.tetris.game;
 
 import me.modify.tetris.EnhancedTetrisApp;
+import me.modify.tetris.ui.MenuFacade;
+import me.modify.tetris.ui.MenuType;
 
 import javax.swing.*;
 
@@ -113,7 +115,7 @@ public class GameController {
         }
 
         blockMovementInput();
-        EnhancedTetrisApp.getInstance().getGamePanel().showPauseMessage();
+        //EnhancedTetrisApp.getInstance().getGamePanel().showPauseMessage();
     }
 
     /**
@@ -126,7 +128,7 @@ public class GameController {
         }
 
         resumeMovementInput();
-        EnhancedTetrisApp.getInstance().getGamePanel().hidePauseMessage();
+        MenuFacade.openPanel(MenuType.GAME);
     }
 
     @Deprecated
