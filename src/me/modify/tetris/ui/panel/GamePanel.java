@@ -9,14 +9,13 @@ import me.modify.tetris.ui.UIHelper;
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePanel  extends TetrisPanel {
+public class GamePanel extends TetrisPanel {
 
     private JPanel cardPanel;
     private JPanel boardPanel;
     private JPanel pausePanel;
 
-    @Override
-    public void paint() {
+    public void init() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
 
@@ -46,12 +45,12 @@ public class GamePanel  extends TetrisPanel {
             bottomPanel.setBackground(veryLightGray);
 
 
-            panel.add(cardPanel, BorderLayout.CENTER);
+            add(cardPanel, BorderLayout.CENTER);
 
-            panel.add(topPanel, BorderLayout.NORTH);
-            panel.add(leftPanel, BorderLayout.WEST);
-            panel.add(emptyRight, BorderLayout.EAST);
-            panel.add(bottomPanel, BorderLayout.SOUTH);
+            add(topPanel, BorderLayout.NORTH);
+            add(leftPanel, BorderLayout.WEST);
+            add(emptyRight, BorderLayout.EAST);
+            add(bottomPanel, BorderLayout.SOUTH);
 
             updateFrame();
             EnhancedTetrisApp.getInstance().getGameController().startGame();

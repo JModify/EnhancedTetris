@@ -12,10 +12,10 @@ public class Cell {
     public static final Color EMPTY_CELL = Color.WHITE;
 
     /** Row of the cell */
-    private int x;
+    private int row;
 
     /** Column of the cell */
-    private int y;
+    private int column;
 
     /** Data the cell holds */
     private int data;
@@ -31,8 +31,8 @@ public class Cell {
      * @param panel panel for cell
      */
     public Cell(int row, int column, int data, JPanel panel) {
-        this.x = row;
-        this.y = column;
+        this.row = row;
+        this.column = column;
         this.data = data;
         this.panel = panel;
     }
@@ -42,15 +42,15 @@ public class Cell {
      * @return row of cell
      */
     public int getRow() {
-        return x;
+        return row;
     }
 
     /**
      * Sets the row of the cell
-     * @param x new row to set
+     * @param row new row to set
      */
-    public void setX(int x) {
-        this.x = x;
+    public void setRow(int row) {
+        this.row = row;
     }
 
     /**
@@ -58,15 +58,15 @@ public class Cell {
      * @return column of cell
      */
     public int getColumn() {
-        return y;
+        return column;
     }
 
     /**
      * Sets the column for this cell.
-     * @param y new column to set
+     * @param column new column to set
      */
-    public void setY(int y) {
-        this.y = y;
+    public void setColumn(int column) {
+        this.column = column;
     }
 
     /**
@@ -126,5 +126,22 @@ public class Cell {
         if (data > 0) {
             setData(data * -1);
         }
+    }
+
+    public void swap(Cell otherCell) {
+        int rowCopy = row;
+        int columnCopy = column;
+        int dataCopy = data;
+        Color colourCopy = panel.getBackground();
+
+        setRow(otherCell.getRow());
+        setColumn(otherCell.getColumn());
+        setData(otherCell.getData());
+        setColor(otherCell.getColor());
+
+        otherCell.setRow(rowCopy);
+        otherCell.setColumn(columnCopy);
+        otherCell.setData(dataCopy);
+        otherCell.setColor(colourCopy);
     }
 }

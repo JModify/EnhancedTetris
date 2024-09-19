@@ -18,17 +18,16 @@ public class MainMenuPanel extends TetrisPanel {
     private final int BUTTON_TEXT_SIZE = 20;
 
     @Override
-    public void paint() {
+    public void init() {
         SwingUtilities.invokeLater(() ->{
             setLayout(new BorderLayout());
-            panel.add(getTopPanel(), BorderLayout.NORTH);
-            panel.add(getCenterPanel(), BorderLayout.CENTER);
-            panel.add(getBottomPanel(), BorderLayout.SOUTH);
+            add(getTopPanel(), BorderLayout.NORTH);
+            add(getCenterPanel(), BorderLayout.CENTER);
+            add(getBottomPanel(), BorderLayout.SOUTH);
             updateFrame();
 
             EnhancedTetrisApp.getInstance().getGameController().endGame();
         });
-
     }
 
     private JPanel getTopPanel() {

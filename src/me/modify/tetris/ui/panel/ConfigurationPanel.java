@@ -22,7 +22,7 @@ public class ConfigurationPanel extends TetrisPanel {
     private JLabel extendModeSelection;
 
     @Override
-    public void paint() {
+    public void init() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
 
@@ -30,7 +30,7 @@ public class ConfigurationPanel extends TetrisPanel {
             JLabel configurationTitle = new JLabel("Configuration");
             configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
             configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
-            panel.add(configurationTitle, BorderLayout.NORTH);
+            add(configurationTitle, BorderLayout.NORTH);
 
             // Draws labels / titles for given configuration.
             drawConfigLabels();
@@ -88,7 +88,7 @@ public class ConfigurationPanel extends TetrisPanel {
         labels.add("AI Play (On/Off):");
         labels.add("Extend Mode (On/Off):");
         titleSubPanelHelper(labels, new Font("Arial", Font.BOLD, 16),
-                panel);
+                this);
     }
 
     private void drawConfigInteractives() {
@@ -139,7 +139,7 @@ public class ConfigurationPanel extends TetrisPanel {
         interactivesPanel.add(extendModeCheckBox);
         extendModeCheckBox.addChangeListener(e -> update(extendModeCheckBox, extendModeSelection));
 
-        panel.add(interactivesPanel, BorderLayout.CENTER);
+        add(interactivesPanel, BorderLayout.CENTER);
     }
 
     private void drawConfigSelections() {
@@ -184,7 +184,7 @@ public class ConfigurationPanel extends TetrisPanel {
         gbc.gridy = 7;
         selectionsPanel.add(extendModeSelection, gbc);
 
-        panel.add(selectionsPanel, BorderLayout.EAST);
+        add(selectionsPanel, BorderLayout.EAST);
     }
 
     private void drawBackButton() {
@@ -193,7 +193,7 @@ public class ConfigurationPanel extends TetrisPanel {
             MenuFacade.openPanel(MenuType.MAIN_MENU);
         });
 
-        panel.add(bottomPanel, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void titleSubPanelHelper(List<String> entries, Font font,

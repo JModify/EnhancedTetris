@@ -3,6 +3,7 @@ package me.modify.tetris.game;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GameGrid {
 
@@ -338,7 +339,7 @@ public class GameGrid {
     /**
      * Shifts the current falling tetromino downwards.
      * Game automatically does this every second but player can also use it to make it fall faster.
-     * @param shiftFixedCells whether or not fixed cells should ALSO be shifted down.
+     * @param shiftFixedCells whether fixed cells should ALSO be shifted down.
      */
     public void shiftDown(boolean shiftFixedCells) {
         if (!canMoveDirection(1, 0) && !shiftFixedCells) {
@@ -363,7 +364,9 @@ public class GameGrid {
 
                 // Move current cell data to next cell if it is empty
                 Cell nextCell = grid[nextRow][j];
-                swapCells(cell, nextCell);
+                if(nextCell.getData() == 0 || nextCell.getData() == PLACEHOLDER) {
+                    swapProperties(cell, nextCell);
+                }
             }
         }
 
@@ -396,7 +399,7 @@ public class GameGrid {
 
                 // Move current cell data to next cell
                 Cell nextCell = grid[i][nextColumn];
-                swapCells(cell, nextCell);
+                swapProperties(cell, nextCell);
             }
         }
 
@@ -429,7 +432,7 @@ public class GameGrid {
 
                 // Move current cell data to next cell
                 Cell nextCell = grid[i][nextColumn];
-                swapCells(cell, nextCell);
+                swapProperties(cell, nextCell);
             }
         }
 
@@ -442,7 +445,7 @@ public class GameGrid {
      * @param cell - cell swapping from.
      * @param otherCell - cell swapping too.
      */
-    private void swapCells(Cell cell, Cell otherCell) {
+    private void swapProperties(Cell cell, Cell otherCell) {
         if (otherCell.getData() == 0 || otherCell.getData() == PLACEHOLDER) {
             otherCell.setData(cell.getData());
             otherCell.setColor(cell.getColor());
@@ -478,33 +481,20 @@ public class GameGrid {
      * Clears any placeholders currently on the grid (sets them to be empty).
      */
     public void clearPlaceholders() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Cell cell = grid[i][j];
-
-                // If the cell is a fixed place holder (-80) then
-                // Set it to be empty as it's no longer needed.
-                if (cell.getData() == FIXED_PLACEHOLDER) {
-                    cell.setData(0);
-                }
+        forEachCell(cell -> {
+            if (cell.getData() == FIXED_PLACEHOLDER) {
+                cell.setData(0);
             }
-        }
+        });
     }
 
     /**
      * Sets all cells in the grid to be fixed.
      */
     public void setAllFixed() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Cell cell = grid[i][j];
-
-                // If a cell is not fixed, set it to be fixed.
-                if (!cell.isFixed()) {
-                    cell.setFixed();
-                }
-            }
-        }
+        forEachCell(cell -> {
+            if (!cell.isFixed()) cell.setFixed();
+        });
     }
 
     /**
@@ -512,6 +502,9 @@ public class GameGrid {
      * @return true if all are fixed, else false.
      */
     public boolean allCellsFixed() {
+
+        //return isGridInCondition(cell -> !cell.isFixed());
+
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
@@ -569,6 +562,15 @@ public class GameGrid {
         for (int j = 0; j < width; j++) {
             grid[rowIndex][j].setData(0);
             grid[rowIndex][j].setColor(Cell.EMPTY_CELL);
+        }
+    }
+
+    public void forEachCell(Consumer<Cell> action) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Cell cell = grid[i][j];
+                action.accept(cell);
+            }
         }
     }
 }

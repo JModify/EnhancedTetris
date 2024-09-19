@@ -6,36 +6,36 @@ import java.util.Random;
 
 public enum Tetromino {
 
-    I(1, "I", Color.CYAN, new int[][]{
+    I(1, "I", Color.CYAN, new Point(0, 0), new int[][]{
             {1, 1, 1, 1}
     }),
 
-    J(2, "J", Color.BLUE, new int[][]{
+    J(2, "J", Color.BLUE, new Point(1, 0), new int[][]{
             {2, 80, 80},
             {2, 2, 2}
     }),
 
-    L(3, "L", Color.ORANGE, new int[][]{
+    L(3, "L", Color.ORANGE, new Point(1, 2), new int[][]{
             {80, 80, 3},
             {3, 3, 3}
     }),
 
-    O(4, "O", Color.YELLOW, new int[][]{
+    O(4, "O", Color.YELLOW, new Point(1, 1), new int[][]{
             {4, 4},
             {4, 4}
     }),
 
-    S(5, "S", Color.GREEN, new int[][]{
+    S(5, "S", Color.GREEN, new Point(1, 1), new int[][]{
             {80, 5, 5},
             {5, 5, 80}
     }),
 
-    T(6, "T", Color.MAGENTA, new int[][]{
+    T(6, "T", Color.MAGENTA, new Point(1, 1), new int[][]{
             {80, 6, 80},
             {6, 6, 6}
     }),
 
-    Z(7, "Z", Color.RED,  new int[][]{
+    Z(7, "Z", Color.RED,  new Point(1, 1), new int[][]{
             {7, 7, 80},
             {80, 7, 7}
     });
@@ -52,6 +52,8 @@ public enum Tetromino {
     /** Color of the Tetromino */
     private final Color color;
 
+    private final Point pivot;
+
     /**
      * Constructor for a given Tetromino.
      * Initializes member variables using parsed information.
@@ -60,10 +62,11 @@ public enum Tetromino {
      * @param color color of tetromino
      * @param shape shape of tetromino
      */
-    Tetromino(int id, String name, Color color, int[][] shape) {
+    Tetromino(int id, String name, Color color, Point pivot, int[][] shape) {
         this.id = id;
         this.name = name;
         this.color = color;
+        this.pivot = pivot;
         this.shape = shape;
     }
 
@@ -97,6 +100,10 @@ public enum Tetromino {
      */
     public Color getColor() {
         return color;
+    }
+
+    public Point getPivot() {
+        return this.pivot;
     }
 
     /**

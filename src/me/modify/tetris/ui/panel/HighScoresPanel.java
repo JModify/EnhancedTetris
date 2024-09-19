@@ -10,7 +10,7 @@ import java.util.Random;
 public class HighScoresPanel extends TetrisPanel {
 
     @Override
-    public void paint() {
+    public void init() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
 
@@ -37,12 +37,11 @@ public class HighScoresPanel extends TetrisPanel {
             centerPanel.setPreferredSize(new Dimension(50, 400));
             centerPanel.add(new JLabel("Text"));
 
-            panel.add(titlePanel, BorderLayout.NORTH);
-            panel.add(scorePanel, BorderLayout.EAST);
-            panel.add(centerPanel, BorderLayout.CENTER);
-            panel.add(namePanel, BorderLayout.WEST);
-            panel.add(bottomPanel, BorderLayout.SOUTH);
-
+            add(titlePanel, BorderLayout.NORTH);
+            add(scorePanel, BorderLayout.EAST);
+            add(centerPanel, BorderLayout.CENTER);
+            add(namePanel, BorderLayout.WEST);
+            add(bottomPanel, BorderLayout.SOUTH);
 
             updateFrame();
         });
