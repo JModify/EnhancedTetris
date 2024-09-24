@@ -123,6 +123,6 @@ public enum Tetromino {
      * @return the tetromino under the given id.
      */
     public static Tetromino getByID(int id) {
-        return Arrays.stream(Tetromino.values()).filter(t -> t.getId() == id).findFirst().get();
+        return Arrays.stream(Tetromino.values()).filter(t -> t.getId() == id || t.getId() == -id).findFirst().get();
     }
 }

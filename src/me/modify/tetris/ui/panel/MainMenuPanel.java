@@ -1,9 +1,8 @@
 package me.modify.tetris.ui.panel;
 
-import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
-import me.modify.tetris.ui.frames.popup.PopupFrameFactory;
+import me.modify.tetris.ui.PopupType;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
@@ -18,10 +17,16 @@ public class MainMenuPanel extends JPanel {
     private final int BUTTON_TEXT_SIZE = 20;
 
     public MainMenuPanel() {
-        setLayout(new BorderLayout());
-        add(getTopPanel(), BorderLayout.NORTH);
-        add(getCenterPanel(), BorderLayout.CENTER);
-        add(getBottomPanel(), BorderLayout.SOUTH);
+        init();
+    }
+
+    public void init() {
+        SwingUtilities.invokeLater(() -> {
+            setLayout(new BorderLayout());
+            add(getTopPanel(), BorderLayout.NORTH);
+            add(getCenterPanel(), BorderLayout.CENTER);
+            add(getBottomPanel(), BorderLayout.SOUTH);
+        });
     }
 
     @Override
@@ -41,6 +46,7 @@ public class MainMenuPanel extends JPanel {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
         centerPanel.setPreferredSize(new Dimension(700, 300));
 
+        centerPanel.add(Box.createVerticalStrut(BUTTON_SPACING));
         centerPanel.add(getMainMenuButton("Play", e -> MenuFacade.openPanel(MenuType.GAME)));
         centerPanel.add(Box.createVerticalStrut(BUTTON_SPACING));
         centerPanel.add(getMainMenuButton("Configuration", e -> MenuFacade.openPanel(MenuType.CONFIGURATION)));
@@ -48,8 +54,7 @@ public class MainMenuPanel extends JPanel {
         centerPanel.add(getMainMenuButton("High Scores", e -> MenuFacade.openPanel(MenuType.HIGH_SCORES)));
         centerPanel.add(Box.createVerticalStrut(BUTTON_SPACING));
 
-        centerPanel.add(getMainMenuButton("Exit", e ->
-                PopupFrameFactory.getPopupFrame("Exit Confirmation").open()));
+        centerPanel.add(getMainMenuButton("Exit", e -> MenuFacade.openPopup(PopupType.EXIT_APPLICATION)));
 
         return centerPanel;
     }

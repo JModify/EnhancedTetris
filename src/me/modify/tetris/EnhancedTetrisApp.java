@@ -58,8 +58,8 @@ public class EnhancedTetrisApp {
     public static void main(String[] args) {
 
         // Display splash screen for 3 seconds.
-        TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
-        splashScreen.showSplash();
+//        TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
+//        splashScreen.showSplash();
 
         // Instantiate main frame and open main menu panel.
         SwingUtilities.invokeLater(() -> {

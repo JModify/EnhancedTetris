@@ -10,18 +10,16 @@ import java.util.Random;
 public class HighScoresPanel extends JPanel {
 
     public HighScoresPanel() {
+        init();
+    }
+
+    public void init() {
         setLayout(new BorderLayout());
-        initSubPanels();
-    }
+        setPreferredSize(new Dimension(700, 500));
 
-    @Override
-    public void paintComponents(Graphics g) {
-        super.paintComponents(g);
-    }
-
-    private void initSubPanels() {
         JPanel titlePanel = new JPanel();
         titlePanel.setPreferredSize(new Dimension(700, 50));
+
         JLabel titleLabel = new JLabel("High Scores");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titlePanel.add(titleLabel);
@@ -48,6 +46,11 @@ public class HighScoresPanel extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
         add(namePanel, BorderLayout.WEST);
         add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
     }
 
     private void addDummyNamePanel(JPanel panel) {

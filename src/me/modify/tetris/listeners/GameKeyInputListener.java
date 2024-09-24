@@ -67,11 +67,13 @@ public class GameKeyInputListener implements KeyListener {
             case MOVE_DOWN -> gameController.getGrid().shiftDown(false);
 
             case PAUSE_GAME -> {
-                System.out.println("Triggered");
                 if (gameController.isPaused()) {
                     gameController.unpauseGame();
+                    System.out.println("Game is paused, attempted unpause");
                     return;
                 }
+
+                System.out.println("Game was not paused, paused it.");
 
                 gameController.pauseGame(false);
             }

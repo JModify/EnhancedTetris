@@ -3,6 +3,7 @@ package me.modify.tetris.ui;
 import me.modify.tetris.ui.frames.MainFrame;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class UIHelper {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
         bottomPanel.setPreferredSize(dimension);
-        //bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
         JButton backButton = new JButton("Back");
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,6 +54,13 @@ public class UIHelper {
         button.addActionListener(actionListener);
         button.setAlignmentX(alignment);
         return button;
+    }
+
+    public static JPanel getEmptyPanel(Dimension dimension, Border border) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(dimension);
+        panel.setBorder(border);
+        return panel;
     }
 
 }

@@ -24,23 +24,31 @@ public class ConfigurationPanel extends JPanel {
     private JLabel extendModeSelection;
 
     public ConfigurationPanel() {
-        // Draw Configuration Panel title.
-        JLabel configurationTitle = new JLabel("Configuration");
-        configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
-        add(configurationTitle, BorderLayout.NORTH);
+        init();
+    }
 
-        // Draws labels / titles for given configuration.
-        drawConfigLabels();
+    private void init() {
+        SwingUtilities.invokeLater(() -> {
+            setLayout(new BorderLayout());
 
-        // Draws selections panel which displays current selection for a given configuration.
-        drawConfigSelections();
+            // Draw Configuration Panel title.
+            JLabel configurationTitle = new JLabel("Configuration");
+            configurationTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            configurationTitle.setFont(new Font("Arial", Font.BOLD, 40));
+            add(configurationTitle, BorderLayout.NORTH);
 
-        // Draws interactive configuration. Includes sliders and checkboxes.
-        drawConfigInteractives();
+            // Draws labels / titles for given configuration.
+            drawConfigLabels();
 
-        // Draws back button (return to main menu) and author name below it.
-        drawBackButton();
+            // Draws selections panel which displays current selection for a given configuration.
+            drawConfigSelections();
+
+            // Draws interactive configuration. Includes sliders and checkboxes.
+            drawConfigInteractives();
+
+            // Draws back button (return to main menu) and author name below it.
+            drawBackButton();
+        });
     }
 
     @Override
@@ -88,8 +96,7 @@ public class ConfigurationPanel extends JPanel {
         labels.add("Sound Effect (On/Off):");
         labels.add("AI Play (On/Off):");
         labels.add("Extend Mode (On/Off):");
-        titleSubPanelHelper(labels, new Font("Arial", Font.BOLD, 16),
-                this);
+        titleSubPanelHelper(labels, new Font("Arial", Font.BOLD, 16));
     }
 
     private void drawConfigInteractives() {
@@ -198,8 +205,7 @@ public class ConfigurationPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    private void titleSubPanelHelper(List<String> entries, Font font,
-                                     JPanel masterPanel) {
+    private void titleSubPanelHelper(List<String> entries, Font font) {
         JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
         subPanel.setPreferredSize(new Dimension(200, 0));
@@ -218,7 +224,7 @@ public class ConfigurationPanel extends JPanel {
             subPanel.add(label, gbc);
         }
 
-        masterPanel.add(subPanel, BorderLayout.WEST);
+        add(subPanel, BorderLayout.WEST);
     }
 
     public void saveConfiguration() {

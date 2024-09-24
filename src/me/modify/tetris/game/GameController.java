@@ -1,8 +1,7 @@
 package me.modify.tetris.game;
 
 import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.ui.MenuFacade;
-import me.modify.tetris.ui.MenuType;
+import me.modify.tetris.game.time.GameScheduler;
 
 import javax.swing.*;
 
@@ -24,8 +23,8 @@ public class GameController {
     /** Whether the game was paused due to clicking of the back button or not */
     private boolean tempPause;
 
-    /** Timer executing the flow of the game */
-    private final Timer timer;
+    private int score;
+    private int gameLevel;
 
     /**
      * Creates a new game controller and initializes the grid.
@@ -37,7 +36,7 @@ public class GameController {
         this.gameState = GameState.IDLE;
         this.tempPause = false;
 
-        timer = new Timer(1000, e -> updateGame());
+        GameScheduler.getInstance().addTimer("Game_Update", new Timer(1000, t -> updateGame()));
     }
 
     /**
@@ -59,8 +58,7 @@ public class GameController {
             // Attempts to insert a new tetromino. If this fails, the game has been lost.
             Tetromino tetromino = Tetromino.randomTetromino();
             if (!grid.canInsertTetromino(tetromino)) {
-                gameState = GameState.LOST;
-                endGame();
+                gameOver();
                 return;
             }
             grid.insertTetromino(Tetromino.randomTetromino());
@@ -73,25 +71,32 @@ public class GameController {
         // grid.printGrid();
     }
 
+    public void gameOver() {
+        GameScheduler.getInstance().stopAll();
+        gameState = GameState.LOST;
+    }
+
     /**
      * Ends the game by stopping the timer.
      */
     public void endGame() {
-        if (timer.isRunning()) {
-            timer.stop();
-        }
+        GameScheduler.getInstance().stopAll();
+        grid.clearGrid();
     }
 
     /**
      * Starts a new game and sets the game state to RUNNING.
      */
     public void startGame() {
-        //TODO: Implement configuration to have affect on grid size later.
-        //updateGridSize();
+        grid.updateSize(configuration.getFieldWidth(), configuration.getFieldHeight());
+
+        score = 0;
+        gameLevel = getConfiguration().getGameLevel();
 
         grid.insertTetromino(Tetromino.randomTetromino());
-        EnhancedTetrisApp.getInstance().getMainFrame().getJFrame().requestFocus();
-        timer.start();
+
+        EnhancedTetrisApp.getInstance().getMainFrame().requestFocus();
+        GameScheduler.getInstance().startAll();
 
         gameState = GameState.RUNNING;
         resumeMovementInput();
@@ -99,7 +104,7 @@ public class GameController {
 
     /**
      * Determines whether the game is paused.
-     * @return
+     * @return true if paused otherwise false.
      */
     public boolean isPaused() {
         return gameState == GameState.PAUSED || gameState == GameState.TEMP_PAUSED;
@@ -110,9 +115,7 @@ public class GameController {
      */
     public void pauseGame(boolean tempPause) {
         gameState = tempPause ? GameState.TEMP_PAUSED : GameState.PAUSED;
-        if (timer.isRunning()) {
-            timer.stop();
-        }
+        GameScheduler.getInstance().stopTimer("Game_Update");
 
         blockMovementInput();
         //EnhancedTetrisApp.getInstance().getGamePanel().showPauseMessage();
@@ -123,19 +126,10 @@ public class GameController {
      */
     public void unpauseGame() {
         gameState = GameState.RUNNING;
-        if (!timer.isRunning()) {
-            timer.start();
-        }
+        GameScheduler.getInstance().startTimer("Game_Update");
 
         resumeMovementInput();
-        MenuFacade.openPanel(MenuType.GAME);
-    }
-
-    @Deprecated
-    public void updateGridSize() {
-        int fieldWidth = configuration.getFieldWidth();
-        int fieldHeight = configuration.getFieldHeight();
-        grid.updateSize(fieldWidth, fieldHeight);
+        //MenuFacade.openPanel(MenuType.GAME);
     }
 
     /**

@@ -6,23 +6,22 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public abstract class PopupFrame {
+public abstract class PopupFrame extends JFrame {
 
-    protected JFrame frame;
     public PopupFrame(String title) {
-        this.frame = new JFrame(title);
+        super(title);
     }
 
-    public abstract void paint();
+    public abstract void init();
 
     public void open() {
-        frame.setLayout(null);
-        frame.setSize(300, 150);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        init();
 
-        paint();
+        setLayout(null);
+        setSize(300, 150);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     protected JButton getYesButton(ActionListener actionListener) {
