@@ -2,12 +2,11 @@ package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.*;
+import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.time.GameScheduler;
-import me.modify.tetris.game.time.GameTimer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.UUID;
 
 public class GameBoardPanel extends JPanel {
 
@@ -30,7 +29,9 @@ public class GameBoardPanel extends JPanel {
             int heightPixel = rows * CELL_SIZE;
 
             setPreferredSize(new Dimension(widthPixel, heightPixel));
-            setBorder(BorderFactory.createLineBorder(Color.BLUE));
+            // setBorder(BorderFactory.createLineBorder(Color.BLUE));
+            // setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+            setBorder(BorderFactory.createEtchedBorder(Color.BLUE, Color.BLACK));
 
             gameGrid.fill();
 

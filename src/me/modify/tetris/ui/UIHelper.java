@@ -20,7 +20,7 @@ public class UIHelper {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
         bottomPanel.setPreferredSize(dimension);
-        bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        //bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
         JButton backButton = new JButton("Back");
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -32,6 +32,13 @@ public class UIHelper {
         return bottomPanel;
     }
 
+    public static JPanel getTitlePanel(String text, Font font, Dimension dimension) {
+        JPanel titlePanel = new JPanel();
+        titlePanel.setPreferredSize(dimension);
+        titlePanel.add(UIHelper.getLabel(text, font));
+        return titlePanel;
+    }
+
     /**
      * Retrieves the JLabel using the provided information.
      * @param text text of label
@@ -41,6 +48,13 @@ public class UIHelper {
     public static JLabel getLabel(String text, Font font) {
         JLabel label = new JLabel(text);
         label.setFont(font);
+        return label;
+    }
+
+    public static JLabel getLabel(String text, Font font, float alignment) {
+        JLabel label = new JLabel(text);
+        label.setFont(font);
+        label.setAlignmentX(alignment);
         return label;
     }
 

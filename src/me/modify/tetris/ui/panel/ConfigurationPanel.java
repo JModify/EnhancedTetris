@@ -1,7 +1,7 @@
 package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.game.GameConfiguration;
+import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
@@ -9,7 +9,6 @@ import me.modify.tetris.ui.UIHelper;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
-import java.io.ObjectInputFilter;
 import java.util.ArrayList;
 import java.util.List;
 

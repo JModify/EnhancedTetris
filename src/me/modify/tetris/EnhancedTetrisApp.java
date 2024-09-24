@@ -1,7 +1,10 @@
 package me.modify.tetris;
 
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.game.config.ConfigurationFile;
+import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.scores.HighScores;
+import me.modify.tetris.scores.HighScoresFile;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.MainFrame;
@@ -21,8 +24,8 @@ public class EnhancedTetrisApp {
     /** Game controller for the game itself */
     private final GameController gameController;
 
-    //TODO: Implement loading this
     private HighScores highScores;
+    private GameConfiguration configuration;
 
     /** Main frame of the application */
     private final MainFrame mainFrame;
@@ -32,6 +35,10 @@ public class EnhancedTetrisApp {
      */
     public EnhancedTetrisApp() {
         setInstance(this);
+
+        this.highScores = new HighScores(HighScoresFile.load());
+        this.configuration = ConfigurationFile.load();
+
         this.gameController = new GameController();
         this.mainFrame = new MainFrame();
     }
@@ -52,7 +59,12 @@ public class EnhancedTetrisApp {
         return this.mainFrame;
     }
 
-    public void loadScores() {
+    public HighScores getHighScores() {
+        return highScores;
+    }
+
+    public GameConfiguration getConfiguration() {
+        return configuration;
     }
 
     public static void main(String[] args) {
@@ -84,5 +96,10 @@ public class EnhancedTetrisApp {
      */
     public void setInstance(EnhancedTetrisApp instance) {
         EnhancedTetrisApp.instance = instance;
+    }
+
+    public void saveDataFiles() {
+        HighScoresFile.save(highScores.getScores());
+        ConfigurationFile.save(gameController.getConfiguration());
     }
 }

@@ -88,7 +88,7 @@ public class GameGrid {
                     int x = xCenter + j;
                     int y = yStart + i;
 
-                    if (x >= 0 && x < width && y >= 0 && y < height) {
+                    if (x >= 0 && x < width && y < height) {
                         Cell cell = grid[y][x];
                         if (cell.getData() != 0) {
                             doesFit = false;
@@ -127,7 +127,7 @@ public class GameGrid {
                     // Set the data values of the cells where the shape is
                     // being spawned to the ID of the shape. Also changes color
                     // of cell panel to match shape's color.
-                    if (x >= 0 && x < width && y >= 0 && y < height) {
+                    if (x >= 0 && x < width && y < height) {
                         grid[y][x].setData(shape[i][j]);
                     }
                 }
@@ -536,7 +536,7 @@ public class GameGrid {
      * Retrieves the falling tetromino as a list of points.
      * @return the falling tetromino as a list of points.
      */
-    private java.util.List<Point> getTetrominoAsPoints() {
+    private List<Point> getTetrominoAsPoints() {
         List<Point> points = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {

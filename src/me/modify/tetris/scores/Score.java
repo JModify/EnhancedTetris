@@ -1,8 +1,13 @@
 package me.modify.tetris.scores;
 
+import com.google.gson.annotations.Expose;
+
 public class Score implements Comparable<Score> {
 
+    @Expose
     private String name;
+
+    @Expose
     private int score;
 
     public Score(String name, int score) {

@@ -1,10 +1,10 @@
 package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.game.GameConfiguration;
+import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.ui.MenuFacade;
-import me.modify.tetris.ui.PopupType;
+import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
@@ -27,24 +27,41 @@ public class GamePanel extends JPanel {
             setLayout(new BorderLayout());
             setPreferredSize(new Dimension(getFrameWidth(), getFrameHeight()));
 
-            add(UIHelper.getEmptyPanel(new Dimension(getFrameWidth(), 50),
-                    BorderFactory.createLineBorder(Color.RED)), BorderLayout.NORTH);
+            add(UIHelper.getEmptyPanel(new Dimension(getFrameWidth(), 50), null),
+                    BorderLayout.NORTH);
 
-            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100),
-                    BorderFactory.createLineBorder(Color.RED)), BorderLayout.EAST);
+            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
+                    BorderLayout.EAST);
 
             add(new GameBoardPanel(), BorderLayout.CENTER);
 
-            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100),
-                    BorderFactory.createLineBorder(Color.RED)), BorderLayout.WEST);
+            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
+                    BorderLayout.WEST);
 
             add(UIHelper.getBottomPanel(new Dimension(getFrameWidth(), 50), l -> {
                 GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
+                if (gameController.isGameOver()) {
+                    MenuFacade.openPanel(MenuType.MAIN_MENU);
+                    return;
+                }
+
                 if (!gameController.isPaused()) {
                     gameController.pauseGame(true);
                 }
 
-                MenuFacade.openPopup(PopupType.EXIT_GAME);
+                int exitGamePopup = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to stop the current game?",
+                        "Quit Game",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (exitGamePopup == JOptionPane.YES_OPTION) {
+                    gameController.endGame();
+                    EnhancedTetrisApp.getInstance().getMainFrame().restoreSizeDefault();
+                    MenuFacade.openPanel(MenuType.MAIN_MENU);
+                } else if (exitGamePopup == JOptionPane.NO_OPTION) {
+                    gameController.unpauseGame();
+                    EnhancedTetrisApp.getInstance().getMainFrame().requestFocus();
+                }
             }), BorderLayout.SOUTH);
         });
     }
@@ -61,7 +78,6 @@ public class GamePanel extends JPanel {
      */
     public static int getFrameWidth() {
         GameConfiguration configuration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
-        System.out.println((configuration.getFieldWidth() * 20) + (225 * 2));
         return (configuration.getFieldWidth() * 20) + (225 * 2) + 15;
     }
 
@@ -73,7 +89,6 @@ public class GamePanel extends JPanel {
      */
     public static int getFrameHeight() {
         GameConfiguration configuration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
-        System.out.println((configuration.getFieldHeight() * 20) + (50 * 2));
         return (configuration.getFieldHeight() * 20) + (50 * 2) + 38;
     }
 }

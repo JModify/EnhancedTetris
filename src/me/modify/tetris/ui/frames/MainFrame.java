@@ -2,10 +2,14 @@ package me.modify.tetris.ui.frames;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.listeners.GameKeyInputListener;
+import me.modify.tetris.scores.HighScoresFile;
 import me.modify.tetris.ui.panel.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class MainFrame extends JFrame{
 
@@ -20,7 +24,21 @@ public class MainFrame extends JFrame{
 
     public void init() {
         SwingUtilities.invokeLater(() -> {
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    int response = JOptionPane.showConfirmDialog(null,
+                            "Are you sure you want to exit?",
+                            "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+                    if (response == JOptionPane.YES_OPTION) {
+                        EnhancedTetrisApp.getInstance().saveDataFiles();
+                        System.exit(0);
+                    }
+                }
+            });
+
             setSize(700, 500);
             setResizable(false);
             setIconImage(new ImageIcon("resources/icon.png").getImage());

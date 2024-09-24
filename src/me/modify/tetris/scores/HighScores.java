@@ -1,13 +1,18 @@
 package me.modify.tetris.scores;
 
-import java.io.Serializable;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
+import java.io.*;
 import java.util.*;
 
 public class HighScores {
 
     private Set<Score> scores;
 
-    public HighScores(Set<Score> scores) {
+    public HighScores(Set<Score> scores) {;
         this.scores = scores;
     }
 
@@ -23,13 +28,15 @@ public class HighScores {
         return getSortedList().stream().limit(10).toList();
     }
 
-    public boolean isHighScore(int score) {
-        return getTopScores().stream().anyMatch(s -> score > s.getScore());
+    public Set<Score> getScores() {
+        return scores;
     }
 
-//    public static Set<Score> loadScores() {
-//
-//    }
+    public boolean isHighScore(int score) {
+        if (scores.size() < 10) {
+            return true;
+        }
 
-
+        return getTopScores().stream().anyMatch(s -> score > s.getScore());
+    }
 }

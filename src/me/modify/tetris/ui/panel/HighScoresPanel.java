@@ -1,11 +1,14 @@
 package me.modify.tetris.ui.panel;
 
-import me.modify.tetris.listeners.ReturnMainMenuActionListener;
+import me.modify.tetris.EnhancedTetrisApp;
+import me.modify.tetris.scores.HighScores;
+import me.modify.tetris.scores.Score;
+import me.modify.tetris.ui.MenuFacade;
+import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class HighScoresPanel extends JPanel {
 
@@ -15,82 +18,63 @@ public class HighScoresPanel extends JPanel {
 
     public void init() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(700, 500));
 
-        JPanel titlePanel = new JPanel();
-        titlePanel.setPreferredSize(new Dimension(700, 50));
+        add(UIHelper.getTitlePanel("High Scores",
+                new Font("Arial", Font.BOLD, 34),
+                new Dimension(700, 50)), BorderLayout.NORTH);
 
-        JLabel titleLabel = new JLabel("High Scores");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
-        titlePanel.add(titleLabel);
+        add(getScores(), BorderLayout.EAST);
+        add(getNames(), BorderLayout.WEST);
+        add(Box.createHorizontalStrut(20), BorderLayout.CENTER);
+        add(UIHelper.getBottomPanel(new Dimension(700, 50),
+                l -> MenuFacade.openPanel(MenuType.MAIN_MENU)), BorderLayout.SOUTH);
 
-        JPanel namePanel = new JPanel(new GridBagLayout());
-        //namePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        namePanel.setPreferredSize(new Dimension(320, 400));
-        addDummyNamePanel(namePanel);
-
-        JPanel scorePanel = new JPanel(new GridBagLayout());
-        //scorePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        namePanel.setPreferredSize(new Dimension(320, 400));
-        addDummyScoresPanel(scorePanel);
-
-        JPanel bottomPanel = UIHelper.getBottomPanel(new Dimension(700, 50),
-                new ReturnMainMenuActionListener());
-
-        JPanel centerPanel = new JPanel();
-        centerPanel.setPreferredSize(new Dimension(50, 400));
-        centerPanel.add(new JLabel("Text"));
-
-        add(titlePanel, BorderLayout.NORTH);
-        add(scorePanel, BorderLayout.EAST);
-        add(centerPanel, BorderLayout.CENTER);
-        add(namePanel, BorderLayout.WEST);
-        add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    @Override
-    public void paintComponents(Graphics g) {
-        super.paintComponents(g);
-    }
+    public JPanel getNames() {
+        JPanel names = new JPanel();
+        names.setLayout(new BoxLayout(names, BoxLayout.PAGE_AXIS));
 
-    private void addDummyNamePanel(JPanel panel) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.ipady = 15;
+        names.setPreferredSize(new Dimension(340, 400));
+//        names.setMinimumSize(new Dimension(300, 400));
+//        names.setMaximumSize(new Dimension(300, 400));
 
-        JLabel nameTitle = new JLabel("Name");
-        nameTitle.setFont(new Font("Arial", Font.BOLD, 16));
-        panel.add(nameTitle, gbc);
-        gbc.gridy++;
+        names.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
-        for (int i = 0; i < 10; i++) {
-            JLabel name = new JLabel("Josh");
-            panel.add(name, gbc);
-            gbc.gridy++;
-        }
-    }
+        names.add(UIHelper.getLabel("Names",
+                new Font("Arial", Font.BOLD, 24), CENTER_ALIGNMENT));
 
-    private void addDummyScoresPanel(JPanel panel) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.ipady = 15;
+        HighScores highScores = EnhancedTetrisApp.getInstance().getHighScores();
 
-        JLabel scoresTitle = new JLabel("Scores");
-        scoresTitle.setFont(new Font("Arial", Font.BOLD, 16));
-        panel.add(scoresTitle, gbc);
-        gbc.gridy++;
-
-        for (int i = 0; i < 10; i++) {
-            JLabel name = new JLabel(String.valueOf(new Random().nextInt(100000 - 1000 + 1)));
-            panel.add(name, gbc);
-            gbc.gridy++;
+        for (Score score : highScores.getTopScores()) {
+            names.add(UIHelper.getLabel(score.getName(), new Font("Arial", Font.PLAIN, 12), CENTER_ALIGNMENT));
+            names.add(Box.createVerticalStrut(5));
         }
 
-        // Trick BorderLayout to not make center quadrant prioritise space.
-        JPanel rightSpacer = new JPanel();
-        rightSpacer.setPreferredSize(new Dimension(320, 400));
-        panel.add(rightSpacer);
+        return names;
+    }
+
+    public JPanel getScores() {
+        JPanel scores = new JPanel();
+        scores.setLayout(new BoxLayout(scores, BoxLayout.PAGE_AXIS));
+        scores.setPreferredSize(new Dimension(340, 400));
+//        scores.setMinimumSize(new Dimension(300, 400));
+//        scores.setMaximumSize(new Dimension(300, 400));
+
+        scores.setBorder(BorderFactory.createLineBorder(Color.RED));
+
+        scores.add(UIHelper.getLabel("Score",
+                new Font("Arial", Font.BOLD, 24),
+                CENTER_ALIGNMENT));
+
+        HighScores highScores = EnhancedTetrisApp.getInstance().getHighScores();
+
+        for (Score score : highScores.getTopScores()) {
+            scores.add(UIHelper.getLabel(String.valueOf(score.getScore()),
+                    new Font("Arial", Font.PLAIN, 12), CENTER_ALIGNMENT));
+            scores.add(Box.createVerticalStrut(5));
+        }
+
+        return scores;
     }
 }
