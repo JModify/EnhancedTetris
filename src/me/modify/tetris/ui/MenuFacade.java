@@ -10,7 +10,7 @@ public class MenuFacade {
     public static void openPanel(MenuType type) {
         EnhancedTetrisApp app = EnhancedTetrisApp.getInstance();
 
-        JPanel allPanels = app.getMainFrame().getAllPanels();
+        JPanel allPanels = app.getMainFrame().getCardPanel();
         CardLayout cl = (CardLayout) allPanels.getLayout();
 
         if (type != MenuType.GAME) {
@@ -25,8 +25,11 @@ public class MenuFacade {
                         GamePanel.getFrameHeight());
                 cl.show(allPanels, "Game_Panel");
             }
-            case CONFIGURATION -> cl.show(allPanels, "Configuration_Panel");
+            case CONFIGURATION -> {
+                cl.show(allPanels, "Configuration_Panel");
+            }
             case HIGH_SCORES -> {
+                EnhancedTetrisApp.getInstance().getMainFrame().getHighScoresPanel().updateContentPane();
                 cl.show(allPanels, "High_Scores_Panel");
             }
         }

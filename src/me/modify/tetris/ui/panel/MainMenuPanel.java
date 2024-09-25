@@ -1,10 +1,8 @@
 package me.modify.tetris.ui.panel;
 
-import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.scores.HighScoresFile;
+import me.modify.tetris.listeners.ExitApplicationListener;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
-import me.modify.tetris.ui.PopupType;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
@@ -19,10 +17,10 @@ public class MainMenuPanel extends JPanel {
     private final int BUTTON_TEXT_SIZE = 20;
 
     public MainMenuPanel() {
-        init();
+        initContentPane();
     }
 
-    public void init() {
+    public void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
             add(getTopPanel(), BorderLayout.NORTH);
@@ -56,16 +54,7 @@ public class MainMenuPanel extends JPanel {
         centerPanel.add(getMainMenuButton("High Scores", e -> MenuFacade.openPanel(MenuType.HIGH_SCORES)));
         centerPanel.add(Box.createVerticalStrut(BUTTON_SPACING));
 
-        centerPanel.add(getMainMenuButton("Exit", listener -> {
-            int result = JOptionPane.showConfirmDialog(null,
-                    "Are you sure you want to exit?",
-                    "Exit Confirmation", JOptionPane.YES_NO_OPTION);
-
-            if (result == JOptionPane.YES_OPTION) {
-                EnhancedTetrisApp.getInstance().saveDataFiles();
-                System.exit(0);
-            }
-        }));
+        centerPanel.add(getMainMenuButton("Exit", new ExitApplicationListener()));
 
         return centerPanel;
     }

@@ -6,6 +6,7 @@ import me.modify.tetris.game.GameController;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
+import me.modify.tetris.ui.panel.sub.GameBoardPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,10 +20,10 @@ public class GamePanel extends JPanel {
 
     public GamePanel() {
         gameBoardPanel = new GameBoardPanel();
-        init();
+        initContentPane();
     }
 
-    public void init() {
+    public void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
             setPreferredSize(new Dimension(getFrameWidth(), getFrameHeight()));
@@ -33,7 +34,8 @@ public class GamePanel extends JPanel {
             add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
                     BorderLayout.EAST);
 
-            add(new GameBoardPanel(), BorderLayout.CENTER);
+            gameBoardPanel = new GameBoardPanel();
+            add(gameBoardPanel, BorderLayout.CENTER);
 
             add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
                     BorderLayout.WEST);
@@ -90,5 +92,9 @@ public class GamePanel extends JPanel {
     public static int getFrameHeight() {
         GameConfiguration configuration = EnhancedTetrisApp.getInstance().getGameController().getConfiguration();
         return (configuration.getFieldHeight() * 20) + (50 * 2) + 38;
+    }
+
+    public GameBoardPanel getGameBoardPanel() {
+        return gameBoardPanel;
     }
 }

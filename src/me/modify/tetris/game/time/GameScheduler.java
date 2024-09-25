@@ -9,8 +9,7 @@ import java.util.*;
 public class GameScheduler {
 
     public static GameScheduler instance;
-
-    private List<GameTimer> timers;
+    private final List<GameTimer> timers;
 
     private GameScheduler() {
         timers = new ArrayList<>();
@@ -26,7 +25,7 @@ public class GameScheduler {
 
     public UUID addTimer(String name, Timer timer) {
         UUID id = UUID.randomUUID();
-        GameTimer gameTimer = new GameTimer(name, id, timer);
+        GameTimer gameTimer = new GameTimer(name, timer);
         timers.add(gameTimer);
         return id;
     }
@@ -36,14 +35,6 @@ public class GameScheduler {
                 .filter(t -> t.getName().equals(name))
                 .findAny()
                 .orElseThrow(() -> new UnknownTimerException("Timer with name '" + name + "' not found!"));
-    }
-
-    public void startTimer(UUID id) {
-        for (GameTimer gameTimer : timers) {
-            if (gameTimer.getId().equals(id)) {
-                gameTimer.getTimer().start();
-            }
-        }
     }
 
     public void startTimer(String name) {
@@ -66,6 +57,11 @@ public class GameScheduler {
 
     public void stopAll() {
         timers.forEach(t -> t.getTimer().stop());
+    }
+
+    public void shutdown() {
+        stopAll();
+        timers.clear();
     }
 
     public void startAll() {

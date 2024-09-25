@@ -25,8 +25,9 @@ public class GameController {
 
     private int score;
     private int rowsErased;
-
     private int gameLevel;
+
+    private final int ONE_SECOND = 1000;
 
     /**
      * Creates a new game controller and initializes the grid.
@@ -36,18 +37,15 @@ public class GameController {
         this.grid = new GameGrid(getConfiguration().getFieldWidth(), getConfiguration().getFieldHeight());
         this.gameState = GameState.IDLE;
         this.tempPause = false;
+
         this.score = 0;
         this.rowsErased = 0;
 
-        GameScheduler.getInstance().addTimer("Game_Update", new Timer(1000, t -> updateGame()));
+        GameScheduler.getInstance().addTimer("Game_Shift", new Timer(ONE_SECOND, t -> shiftGrid()));
+        GameScheduler.getInstance().addTimer("Game_Update", new Timer(0, t -> updateGame()));
     }
 
-    /**
-     * Updates the game every second.
-     * Timer executes upon this method.
-     */
-    public void updateGame() {
-
+    private void updateGame() {
         // Determine whether the current falling Tetromino has been placed.
         if (grid.allCellsFixed()) {
 
@@ -61,10 +59,9 @@ public class GameController {
                 score += 300;
             } else if (rowsCleared == 3) {
                 score += 600;
-            } else {
+            } else if(rowsCleared >= 4) {
                 score += 1000;
             }
-
             rowsErased += rowsCleared;
 
             // Attempts to insert a new tetromino. If this fails, the game has been lost.
@@ -75,13 +72,15 @@ public class GameController {
             }
 
             grid.insertTetromino(tetromino);
-            return;
         }
+     }
 
-        // Shift falling Tetromino down if it is not yet placed.
+    /**
+     * Updates the game every second.
+     * Timer executes upon this method.
+     */
+    private void shiftGrid() {
         grid.shiftDown(false);
-
-        // grid.printGrid();
     }
 
     public void gameOver() {
@@ -139,7 +138,7 @@ public class GameController {
      */
     public void pauseGame(boolean tempPause) {
         gameState = tempPause ? GameState.TEMP_PAUSED : GameState.PAUSED;
-        GameScheduler.getInstance().stopTimer("Game_Update");
+        GameScheduler.getInstance().stopTimer("Game_Shift");
 
         blockMovementInput();
         //EnhancedTetrisApp.getInstance().getGamePanel().showPauseMessage();
@@ -150,7 +149,7 @@ public class GameController {
      */
     public void unpauseGame() {
         gameState = GameState.RUNNING;
-        GameScheduler.getInstance().startTimer("Game_Update");
+        GameScheduler.getInstance().startTimer("Game_Shift");
 
         resumeMovementInput();
         //MenuFacade.openPanel(MenuType.GAME);

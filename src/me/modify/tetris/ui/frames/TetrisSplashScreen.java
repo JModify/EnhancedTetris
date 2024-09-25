@@ -1,4 +1,4 @@
-package me.modify.tetris.ui.panel;
+package me.modify.tetris.ui.frames;
 
 import javax.swing.*;
 import java.awt.*;

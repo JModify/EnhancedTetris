@@ -1,4 +1,4 @@
-package me.modify.tetris.ui.panel;
+package me.modify.tetris.ui.panel.sub;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.*;
@@ -35,10 +35,8 @@ public class GameBoardPanel extends JPanel {
 
             gameGrid.fill();
 
-            GameScheduler gameScheduler = GameScheduler.getInstance();
-
             // Started in game controller
-            gameScheduler.addTimer("Board_Update", new Timer(1, l -> repaint()));
+            GameScheduler.getInstance().addTimer("Board_Update", new Timer(0, l -> repaint()));
         });
     }
 

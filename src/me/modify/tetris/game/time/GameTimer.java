@@ -5,12 +5,10 @@ import java.util.UUID;
 
 public class GameTimer {
     private String name;
-    private UUID id;
     private Timer timer;
 
-    public GameTimer(String name, UUID id, Timer timer) {
+    public GameTimer(String name, Timer timer) {
         this.name = name;
-        this.id = id;
         this.timer = timer;
     }
 
@@ -20,14 +18,6 @@ public class GameTimer {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public Timer getTimer() {

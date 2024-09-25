@@ -23,10 +23,10 @@ public class ConfigurationPanel extends JPanel {
     private JLabel extendModeSelection;
 
     public ConfigurationPanel() {
-        init();
+        initContentPane();
     }
 
-    private void init() {
+    private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
 
@@ -48,11 +48,6 @@ public class ConfigurationPanel extends JPanel {
             // Draws back button (return to main menu) and author name below it.
             drawBackButton();
         });
-    }
-
-    @Override
-    public void paintComponents(Graphics g) {
-        super.paintComponents(g);
     }
 
     private JSlider getNumericalSlider(int min, int max, int init) {
