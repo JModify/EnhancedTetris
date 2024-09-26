@@ -80,6 +80,12 @@ public class EnhancedTetrisApp {
 
             MenuFacade.openPanel(MenuType.MAIN_MENU);
         });
+
+        // Save data files in event of another graceful application exit.
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            EnhancedTetrisApp.getInstance().saveDataFiles();
+            System.out.println("[SHUTDOWN] All data files successfully saved.");
+        }));
     }
 
     /**

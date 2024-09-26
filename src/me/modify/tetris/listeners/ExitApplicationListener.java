@@ -26,7 +26,6 @@ public class ExitApplicationListener extends WindowAdapter implements ActionList
                 "Exit Confirmation", JOptionPane.YES_NO_OPTION);
         if (response == JOptionPane.YES_OPTION) {
             GameScheduler.getInstance().shutdown();
-            EnhancedTetrisApp.getInstance().saveDataFiles();
             System.exit(0);
         }
     }

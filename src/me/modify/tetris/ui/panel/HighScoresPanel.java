@@ -9,8 +9,12 @@ import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 
 public class HighScoresPanel extends JPanel {
+
+    private JPanel scoresPanel;
+    private JPanel namesPanel;
 
     public HighScoresPanel() {
         initContentPane();
@@ -24,8 +28,11 @@ public class HighScoresPanel extends JPanel {
                     new Font("Arial", Font.BOLD, 34),
                     new Dimension(700, 50)), BorderLayout.NORTH);
 
-            add(getScores(), BorderLayout.EAST);
-            add(getNames(), BorderLayout.WEST);
+            scoresPanel = getScores();
+            namesPanel = getNames();
+
+            add(scoresPanel, BorderLayout.EAST);
+            add(namesPanel, BorderLayout.WEST);
 
             add(Box.createHorizontalStrut(20), BorderLayout.CENTER);
             add(UIHelper.getBottomPanel(new Dimension(700, 50),
@@ -48,9 +55,10 @@ public class HighScoresPanel extends JPanel {
 
         HighScores highScores = EnhancedTetrisApp.getInstance().getHighScores();
 
+        namesPanel.add(Box.createVerticalStrut(10));
         for (Score score : highScores.getTopScores()) {
-            namesPanel.add(UIHelper.getLabel(score.getName(), new Font("Arial", Font.PLAIN, 12), CENTER_ALIGNMENT));
-            namesPanel.add(Box.createVerticalStrut(5));
+            namesPanel.add(UIHelper.getLabel(score.getName(), new Font("Arial", Font.PLAIN, 18), CENTER_ALIGNMENT));
+            namesPanel.add(Box.createVerticalStrut(10));
         }
 
         return namesPanel;
@@ -69,17 +77,31 @@ public class HighScoresPanel extends JPanel {
 
         HighScores highScores = EnhancedTetrisApp.getInstance().getHighScores();
 
+        scoresPanel.add(Box.createVerticalStrut(10));
+
         for (Score score : highScores.getTopScores()) {
             scoresPanel.add(UIHelper.getLabel(String.valueOf(score.getScore()),
-                    new Font("Arial", Font.PLAIN, 12), CENTER_ALIGNMENT));
-            scoresPanel.add(Box.createVerticalStrut(5));
+                    new Font("Arial", Font.PLAIN, 18), CENTER_ALIGNMENT));
+            scoresPanel.add(Box.createVerticalStrut(10));
         }
 
         return scoresPanel;
     }
 
-    public void updateContentPane() {
-        removeAll();
-        initContentPane();
+    /**
+     * Updates the high scores dynamically by refreshing the panel.
+     */
+    public void updateHighScores() {
+        SwingUtilities.invokeLater(() -> {
+            remove(scoresPanel);
+            remove(namesPanel);
+            scoresPanel = getScores();
+            namesPanel = getNames();
+
+            add(scoresPanel, BorderLayout.EAST);
+            add(namesPanel, BorderLayout.WEST);
+            revalidate();
+            repaint();
+        });
     }
 }

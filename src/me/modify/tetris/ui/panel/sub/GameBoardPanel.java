@@ -6,6 +6,7 @@ import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.time.GameScheduler;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 
 public class GameBoardPanel extends JPanel {
@@ -13,10 +14,10 @@ public class GameBoardPanel extends JPanel {
     private final int CELL_SIZE = 20;
 
     public GameBoardPanel(){
-        init();
+        initContentPane();
     }
 
-    private void init() {
+    private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             EnhancedTetrisApp app = EnhancedTetrisApp.getInstance();
             GameGrid gameGrid = app.getGameController().getGrid();
@@ -31,7 +32,7 @@ public class GameBoardPanel extends JPanel {
             setPreferredSize(new Dimension(widthPixel, heightPixel));
             // setBorder(BorderFactory.createLineBorder(Color.BLUE));
             // setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-            setBorder(BorderFactory.createEtchedBorder(Color.BLUE, Color.BLACK));
+            setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
             gameGrid.fill();
 
@@ -84,7 +85,7 @@ public class GameBoardPanel extends JPanel {
 //                EnhancedTetrisApp.getInstance().getGameController().getGrid().addCell(cell);
             }
         }
-
-
     }
+
+
 }

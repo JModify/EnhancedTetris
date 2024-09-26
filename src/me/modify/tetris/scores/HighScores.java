@@ -17,7 +17,9 @@ public class HighScores {
     }
 
     private List<Score> getSortedList() {
-        return scores.stream().sorted().toList();
+        List<Score> scoresList = new ArrayList<>(scores);
+        scoresList.sort(Collections.reverseOrder());
+        return scoresList;
     }
 
     public void addScore(Score score) {

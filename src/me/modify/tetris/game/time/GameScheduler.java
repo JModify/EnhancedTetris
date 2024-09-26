@@ -23,11 +23,10 @@ public class GameScheduler {
         return instance;
     }
 
-    public UUID addTimer(String name, Timer timer) {
-        UUID id = UUID.randomUUID();
+    public GameTimer addTimer(String name, Timer timer) {
         GameTimer gameTimer = new GameTimer(name, timer);
         timers.add(gameTimer);
-        return id;
+        return gameTimer;
     }
 
     private GameTimer getTimer(String name) throws UnknownTimerException {
@@ -46,6 +45,10 @@ public class GameScheduler {
         }
     }
 
+    public void startTimer(GameTimer gameTimer) {
+        gameTimer.getTimer().start();
+    }
+
     public void stopTimer(String name) {
         try {
             GameTimer timer = getTimer(name);
@@ -57,6 +60,17 @@ public class GameScheduler {
 
     public void stopAll() {
         timers.forEach(t -> t.getTimer().stop());
+    }
+
+    public void deleteTimer(String name) {
+        try {
+            GameTimer gameTimer = getTimer(name);
+            gameTimer.getTimer().stop();
+
+            timers.remove(gameTimer);
+        } catch (UnknownTimerException ignored) {
+            // Ignore since deleting a timer which does not exist should not be an issue.
+        }
     }
 
     public void shutdown() {

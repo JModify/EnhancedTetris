@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class HighScoresFile {
-    public static final String path = System.getProperty("user.home") + "/Desktop/Tetris-HighScores.json";
+
+    private static boolean debug = false;
+    private  static final String path = System.getProperty("user.home") + "/Desktop/Tetris-HighScores.json";
     private static final Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
@@ -21,7 +23,9 @@ public class HighScoresFile {
         if (!file.exists()) {
             try {
                 if (file.createNewFile()) {
-                    System.out.println("Created new high scores file.");
+                    if (debug) {
+                        System.out.println("[DEBUG] Created new high scores file on READ.");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -33,7 +37,14 @@ public class HighScoresFile {
             Score[] deserialized = gson.fromJson(reader, Score[].class);
 
             if (deserialized == null || deserialized.length == 0) {
+                if (debug) {
+                    System.out.println("[DEBUG] High scores deserialization was empty, returning empty high scores data.");
+                }
                 return new HashSet<>();
+            }
+
+            if (debug) {
+                System.out.println("[DEBUG] High scores deserialization successful. Data has been read.");
             }
             return new HashSet<>(Arrays.asList(deserialized));
         } catch (IOException e) {
@@ -47,7 +58,9 @@ public class HighScoresFile {
         if (!file.exists()) {
             try {
                 if (file.createNewFile()) {
-                    System.out.println("Created new high scores file.");
+                    if (debug) {
+                        System.out.println("[DEBUG] Created new high scores file on SAVE.");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -59,7 +72,10 @@ public class HighScoresFile {
         // Save the JSON string to a file on the desktop
         try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(serialized);
-            System.out.println("High score saved to TetrisHighScores.json on your desktop.");
+
+            if (debug) {
+                System.out.println("[DEBUG] Saved high scores data file.");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

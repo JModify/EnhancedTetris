@@ -3,10 +3,12 @@ package me.modify.tetris.game;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.time.GameScheduler;
+import me.modify.tetris.game.time.GameTimer;
 import me.modify.tetris.scores.HighScores;
 import me.modify.tetris.scores.Score;
 
 import javax.swing.*;
+import java.util.UUID;
 
 /**
  * GameController controls the flow of the game and contains the repeating Timer
@@ -25,9 +27,9 @@ public class GameController {
 
     private int score;
     private int rowsErased;
-    private int gameLevel;
+    private GameLevel gameLevel;
 
-    private final int ONE_SECOND = 1000;
+    private Tetromino nextTetromino;
 
     /**
      * Creates a new game controller and initializes the grid.
@@ -38,14 +40,11 @@ public class GameController {
         this.gameState = GameState.IDLE;
         this.tempPause = false;
 
-        this.score = 0;
-        this.rowsErased = 0;
-
-        GameScheduler.getInstance().addTimer("Game_Shift", new Timer(ONE_SECOND, t -> shiftGrid()));
         GameScheduler.getInstance().addTimer("Game_Update", new Timer(0, t -> updateGame()));
     }
 
     private void updateGame() {
+
         // Determine whether the current falling Tetromino has been placed.
         if (grid.allCellsFixed()) {
 
@@ -54,15 +53,26 @@ public class GameController {
 
             int rowsCleared = grid.clearRows();
             if (rowsCleared == 1) {
-                score += 100;
+                addScore(100);
             } else if (rowsCleared == 2) {
-                score += 300;
+                addScore(300);
             } else if (rowsCleared == 3) {
-                score += 600;
+                addScore(600);
             } else if(rowsCleared >= 4) {
-                score += 1000;
+                addScore(1000);
             }
-            rowsErased += rowsCleared;
+
+            if (rowsCleared > 0) {
+                rowsErased += rowsCleared;
+
+                // Rows erased is not equal to 0 and player has erased 10 more rows
+                if (rowsErased != 0 && rowsErased % 10 == 0) {
+                    System.out.println("Rows erased " + rowsErased + " is divisible by 10!!");
+                    if (gameLevel.getLevelNum() != getConfiguration().GAME_LEVEL_MAX) {
+                        increaseLevel();
+                    }
+                }
+            }
 
             // Attempts to insert a new tetromino. If this fails, the game has been lost.
             Tetromino tetromino = Tetromino.randomTetromino();
@@ -71,8 +81,23 @@ public class GameController {
                 return;
             }
 
-            grid.insertTetromino(tetromino);
+            grid.insertTetromino(nextTetromino);
+            nextTetromino = Tetromino.randomTetromino();
+
+            // Update info panel at the end of each block falling.
+            EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanel();
         }
+     }
+
+
+
+     private void increaseLevel() {
+        gameLevel = GameLevel.nextLevel(gameLevel);
+
+        GameScheduler.getInstance().deleteTimer("Game_Shift");
+        GameTimer gameTimer = GameScheduler.getInstance().addTimer("Game_Shift",
+                new Timer(gameLevel.getFallSpeed(), t -> shiftGrid()));
+        GameScheduler.getInstance().startTimer(gameTimer);
      }
 
     /**
@@ -114,9 +139,17 @@ public class GameController {
 
         score = 0;
         rowsErased = 0;
-        gameLevel = getConfiguration().getGameLevel();
+        gameLevel = GameLevel.getByLevel(getConfiguration().getGameLevel());
 
         grid.insertTetromino(Tetromino.randomTetromino());
+        nextTetromino = Tetromino.randomTetromino();
+
+        GameScheduler.getInstance().deleteTimer("Game_Shift");
+        GameScheduler.getInstance().addTimer("Game_Shift", new Timer(gameLevel.getFallSpeed(),
+                t -> shiftGrid()));
+
+        // Update info panel to show next tetromino upon start up.
+        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanel();
 
         EnhancedTetrisApp.getInstance().getMainFrame().requestFocus();
         GameScheduler.getInstance().startAll();
@@ -193,5 +226,21 @@ public class GameController {
 
     public int getScore() {
         return score;
+    }
+
+    public GameLevel getGameLevel() {
+        if(gameLevel == null) {
+            return GameLevel.getByLevel(getConfiguration().getGameLevel());
+        }
+
+        return gameLevel;
+    }
+
+    public int getRowsErased() {
+        return rowsErased;
+    }
+
+    public Tetromino getNextTetromino() {
+        return nextTetromino;
     }
 }

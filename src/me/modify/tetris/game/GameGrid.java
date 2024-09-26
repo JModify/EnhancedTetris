@@ -13,7 +13,6 @@ public class GameGrid {
     private int height;
 
     private Tetromino currentTetromino;
-    private Tetromino nextTetromino;
 
     private int x;
     private int y;

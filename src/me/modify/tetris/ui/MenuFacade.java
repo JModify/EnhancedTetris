@@ -29,7 +29,7 @@ public class MenuFacade {
                 cl.show(allPanels, "Configuration_Panel");
             }
             case HIGH_SCORES -> {
-                EnhancedTetrisApp.getInstance().getMainFrame().getHighScoresPanel().updateContentPane();
+                EnhancedTetrisApp.getInstance().getMainFrame().getHighScoresPanel().updateHighScores();
                 cl.show(allPanels, "High_Scores_Panel");
             }
         }

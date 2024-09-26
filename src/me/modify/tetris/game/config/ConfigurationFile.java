@@ -14,8 +14,7 @@ import java.util.Set;
 
 public class ConfigurationFile {
 
-    private static boolean debug = true;
-
+    private static boolean debug = false;
     private static final String path = System.getProperty("user.home") + "/Desktop/Tetris-Configuration.json";
     private static final Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
@@ -43,7 +42,7 @@ public class ConfigurationFile {
 
             if (deserialized == null) {
                 if (debug) {
-                    System.out.println("[DEBUG] Deserialization was null, returning empty configuration.");
+                    System.out.println("[DEBUG] Game Configuration deserialization was null, returning empty configuration.");
                 }
                 return new GameConfiguration();
             }
@@ -63,7 +62,9 @@ public class ConfigurationFile {
         if (!file.exists()) {
             try {
                 if (file.createNewFile()) {
-                    System.out.println("Created new configuration file.");
+                    if (debug) {
+                        System.out.println("[DEBUG] Created new game configuration file.");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -75,6 +76,10 @@ public class ConfigurationFile {
         // Save the JSON string to a file on the desktop
         try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(serialized);
+
+            if (debug) {
+                System.out.println("[DEBUG] Saved game configuration data file.");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
