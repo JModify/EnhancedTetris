@@ -1,6 +1,8 @@
 package me.modify.tetris.game.score;
 
 import com.google.gson.annotations.Expose;
+import me.modify.tetris.EnhancedTetrisApp;
+import me.modify.tetris.game.config.GameConfiguration;
 
 public class Score implements Comparable<Score> {
 
@@ -10,25 +12,35 @@ public class Score implements Comparable<Score> {
     @Expose
     private int score;
 
+    @Expose
+    private String config;
+
     public Score(String name, int score) {
         this.name = name;
         this.score = score;
+        this.config = getConfigString();
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public String getConfig() {
+        return config;
+    }
+
+    private String getConfigString() {
+        GameConfiguration configuration = EnhancedTetrisApp.getInstance().getConfiguration();
+        return configuration.getFieldWidth() +
+                "x" +
+                configuration.getFieldHeight() +
+                "(" + configuration.getGameLevel() + ")" +
+                " Human" +
+                " Single";
     }
 
     @Override

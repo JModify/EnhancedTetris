@@ -35,4 +35,8 @@ public class HighScores {
 
         return getTopScores().stream().anyMatch(s -> score > s.getScore());
     }
+
+    public void clearHighScores() {
+        scores.clear();
+    }
 }

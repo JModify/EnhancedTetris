@@ -37,20 +37,6 @@ public class MainFrame extends JFrame{
         SwingUtilities.invokeLater(() -> {
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-            addWindowListener(new ExitApplicationListener());
-//            addWindowListener(new WindowAdapter() {
-//                @Override
-//                public void windowClosing(WindowEvent e) {
-//                    int response = JOptionPane.showConfirmDialog(null,
-//                            "Are you sure you want to exit?",
-//                            "Exit Confirmation", JOptionPane.YES_NO_OPTION);
-//                    if (response == JOptionPane.YES_OPTION) {
-//                        EnhancedTetrisApp.getInstance().saveDataFiles();
-//                        System.exit(0);
-//                    }
-//                }
-//            });
-
             setSize(700, 500);
             setResizable(false);
             setIconImage(new ImageIcon("resources/icon.png").getImage());
