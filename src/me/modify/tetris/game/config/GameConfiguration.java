@@ -1,14 +1,6 @@
 package me.modify.tetris.game.config;
 
 import com.google.gson.annotations.Expose;
-import me.modify.tetris.scores.Score;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * GameConfiguration holds all data for the configuration of the game.

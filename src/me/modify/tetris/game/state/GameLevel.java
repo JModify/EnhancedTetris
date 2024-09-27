@@ -1,4 +1,4 @@
-package me.modify.tetris.game;
+package me.modify.tetris.game.state;
 
 public enum GameLevel {
 

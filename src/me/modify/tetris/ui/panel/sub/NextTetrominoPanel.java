@@ -1,6 +1,6 @@
 package me.modify.tetris.ui.panel.sub;
 
-import me.modify.tetris.game.Tetromino;
+import me.modify.tetris.game.state.Tetromino;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

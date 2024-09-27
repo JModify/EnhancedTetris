@@ -1,5 +1,9 @@
 package me.modify.tetris.game;
 
+import me.modify.tetris.game.state.Cell;
+import me.modify.tetris.game.state.RotatedPoint;
+import me.modify.tetris.game.state.Tetromino;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +21,6 @@ public class GameGrid {
     private int x;
     private int y;
 
-    /** Fixed cell placeholder */
-    public final int FIXED_PLACEHOLDER = -80;
-
-    /** Cell placeholder. */
-    public final int PLACEHOLDER = 80;
-
     public GameGrid(int width, int height) {
         grid = new Cell[height][width];
         this.width = width;
@@ -32,7 +30,7 @@ public class GameGrid {
     public void fill() {
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
-                Cell cell = new Cell(r, c, 0);
+                Cell cell = new Cell(r, c, Cell.EMPTY_CELL);
                 grid[r][c] = cell;
             }
         }
@@ -165,7 +163,7 @@ public class GameGrid {
 
             // If cell is a placeholder and the direction is going down. Disregard check.
             Cell cell = grid[row][column];
-            if (cell.getData() == PLACEHOLDER && rowOffset == 1) {
+            if (cell.getData() == Cell.PLACEHOLDER && rowOffset == 1) {
                 continue;
             }
 
@@ -204,7 +202,7 @@ public class GameGrid {
 
                 // Move current cell data to next cell if it is empty
                 Cell nextCell = grid[nextRow][j];
-                if(nextCell.getData() == 0 || nextCell.getData() == PLACEHOLDER) {
+                if(nextCell.getData() == 0 || nextCell.getData() == Cell.PLACEHOLDER) {
                     swapProperties(cell, nextCell);
                 }
             }
@@ -286,13 +284,10 @@ public class GameGrid {
      * @param otherCell - cell swapping too.
      */
     private void swapProperties(Cell cell, Cell otherCell) {
-        if (otherCell.getData() == 0 || otherCell.getData() == PLACEHOLDER) {
-
+        if (otherCell.getData() == 0 || otherCell.getData() == Cell.PLACEHOLDER) {
             int otherCellDataCopy = otherCell.getData();
             otherCell.setData(cell.getData());
-            //otherCell.setColor(cell.getColor());
             cell.setData(otherCellDataCopy);
-            //cell.setColor(Cell.EMPTY_CELL);
         }
     }
 
@@ -307,7 +302,7 @@ public class GameGrid {
         }
 
         // Handle case where cell is empty.
-        if (cell.getData() == 0) {
+        if (cell.getData() == Cell.EMPTY_CELL) {
             return false;
         }
 
@@ -324,8 +319,8 @@ public class GameGrid {
      */
     public void clearPlaceholders() {
         forEachCell(cell -> {
-            if (cell.getData() == FIXED_PLACEHOLDER) {
-                cell.setData(0);
+            if (cell.getData() == Cell.FIXED_PLACEHOLDER) {
+                cell.setData(Cell.EMPTY_CELL);
             }
         });
     }
@@ -402,7 +397,7 @@ public class GameGrid {
      */
     private void clearRow(int rowIndex) {
         for (int j = 0; j < width; j++) {
-            grid[rowIndex][j].setData(0);
+            grid[rowIndex][j].setData(Cell.EMPTY_CELL);
             //grid[rowIndex][j].setColor(Cell.EMPTY_CELL);
         }
     }
@@ -418,7 +413,7 @@ public class GameGrid {
 
     public void clearGrid(){
         forEachCell(cell -> {
-            cell.setData(0);
+            cell.setData(Cell.EMPTY_CELL);
         });
     }
 
@@ -486,7 +481,7 @@ public class GameGrid {
         int x = point.x - pivot.x;
         int y = point.y - pivot.y;
 
-        boolean placeholder = grid[(int) point.getX()][(int) point.getY()].getData() == PLACEHOLDER;
+        boolean placeholder = grid[(int) point.getX()][(int) point.getY()].getData() == Cell.PLACEHOLDER;
 
         int rotatedX = pivot.x + y;
         int rotatedY = pivot.y - x;
@@ -508,7 +503,7 @@ public class GameGrid {
             int column = (int) point.getY();
 
             Cell cell = grid[row][column];
-            cell.setData(0);
+            cell.setData(Cell.EMPTY_CELL);
             //cell.setColor(Cell.EMPTY_CELL);
         }
 
@@ -521,7 +516,7 @@ public class GameGrid {
 
             // Only update cells that are empty or placeholders (not fixed cells)
             if (rotatedPoint.isPlaceholder()) {
-                cell.setData(80);
+                cell.setData(Cell.PLACEHOLDER);
                 //cell.setColor(Cell.EMPTY_CELL);
                 continue;
             }
@@ -542,7 +537,7 @@ public class GameGrid {
             for (int j = 0; j < width; j++) {
                 Cell cell = grid[i][j];
 
-                if (cell.getData() == 0) {
+                if (cell.getData() == Cell.EMPTY_CELL) {
                     continue;
                 }
 

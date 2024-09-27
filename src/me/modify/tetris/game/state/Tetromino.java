@@ -1,4 +1,4 @@
-package me.modify.tetris.game;
+package me.modify.tetris.game.state;
 
 import java.awt.*;
 import java.util.Arrays;

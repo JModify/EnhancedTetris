@@ -3,12 +3,11 @@ package me.modify.tetris;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.game.config.ConfigurationFile;
 import me.modify.tetris.game.config.GameConfiguration;
-import me.modify.tetris.scores.HighScores;
-import me.modify.tetris.scores.HighScoresFile;
+import me.modify.tetris.game.score.HighScores;
+import me.modify.tetris.game.score.HighScoresFile;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.MainFrame;
-import me.modify.tetris.ui.panel.*;
 
 import javax.swing.*;
 

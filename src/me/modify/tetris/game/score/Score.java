@@ -1,4 +1,4 @@
-package me.modify.tetris.scores;
+package me.modify.tetris.game.score;
 
 import com.google.gson.annotations.Expose;
 

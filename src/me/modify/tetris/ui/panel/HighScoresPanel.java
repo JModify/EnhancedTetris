@@ -1,15 +1,14 @@
 package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.scores.HighScores;
-import me.modify.tetris.scores.Score;
+import me.modify.tetris.game.score.HighScores;
+import me.modify.tetris.game.score.Score;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collections;
 
 public class HighScoresPanel extends JPanel {
 

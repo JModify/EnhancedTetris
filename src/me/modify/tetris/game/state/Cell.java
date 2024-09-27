@@ -1,10 +1,14 @@
-package me.modify.tetris.game;
+package me.modify.tetris.game.state;
 
 import java.awt.*;
 
 public class Cell {
 
-    public static final Color EMPTY_CELL = Color.WHITE;
+    public static final Color EMPTY_CELL_COLOR = Color.WHITE;
+
+    public static final int EMPTY_CELL = 0;
+    public static final int PLACEHOLDER = 80;
+    public static final int FIXED_PLACEHOLDER = -80;
 
     private int x, y, data;
     public Cell(int x, int y, int data) {

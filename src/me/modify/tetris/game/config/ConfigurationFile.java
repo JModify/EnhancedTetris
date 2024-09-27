@@ -2,15 +2,11 @@ package me.modify.tetris.game.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.modify.tetris.scores.Score;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ConfigurationFile {
 

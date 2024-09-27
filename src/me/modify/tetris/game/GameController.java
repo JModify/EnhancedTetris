@@ -2,13 +2,15 @@ package me.modify.tetris.game;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.config.GameConfiguration;
+import me.modify.tetris.game.state.GameLevel;
+import me.modify.tetris.game.state.GameState;
+import me.modify.tetris.game.state.Tetromino;
 import me.modify.tetris.game.time.GameScheduler;
 import me.modify.tetris.game.time.GameTimer;
-import me.modify.tetris.scores.HighScores;
-import me.modify.tetris.scores.Score;
+import me.modify.tetris.game.score.HighScores;
+import me.modify.tetris.game.score.Score;
 
 import javax.swing.*;
-import java.util.UUID;
 
 /**
  * GameController controls the flow of the game and contains the repeating Timer

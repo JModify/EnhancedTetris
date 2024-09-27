@@ -1,10 +1,6 @@
 package me.modify.tetris.listeners;
 
-import me.modify.tetris.EnhancedTetrisApp;
-import me.modify.tetris.game.config.ConfigurationFile;
-import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.time.GameScheduler;
-import me.modify.tetris.scores.HighScoresFile;
 
 import javax.swing.*;
 import java.awt.event.*;

@@ -3,10 +3,11 @@ package me.modify.tetris.ui.panel.sub;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.*;
 import me.modify.tetris.game.config.GameConfiguration;
+import me.modify.tetris.game.state.Cell;
+import me.modify.tetris.game.state.Tetromino;
 import me.modify.tetris.game.time.GameScheduler;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
 
 public class GameBoardPanel extends JPanel {
@@ -74,7 +75,7 @@ public class GameBoardPanel extends JPanel {
                 Cell cell = controller.getGrid().getCell(j, i);
 
                 if (cell.getData() == 0 || cell.getData() == 80 || cell.getData() == -80) {
-                    g.setColor(Cell.EMPTY_CELL);
+                    g.setColor(Cell.EMPTY_CELL_COLOR);
                 } else {
                     g.setColor(Tetromino.getByID(cell.getData()).getColor());
                 }
