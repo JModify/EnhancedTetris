@@ -1,5 +1,7 @@
 package me.modify.tetris;
 
+import me.modify.tetris.audio.MusicPlayer;
+import me.modify.tetris.audio.SoundHandler;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.game.config.ConfigurationFile;
 import me.modify.tetris.game.config.GameConfiguration;
@@ -8,6 +10,7 @@ import me.modify.tetris.game.score.HighScoresFile;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.MainFrame;
+import me.modify.tetris.ui.frames.TetrisSplashScreen;
 
 import javax.swing.*;
 
@@ -29,6 +32,9 @@ public class EnhancedTetrisApp {
     /** Main frame of the application */
     private final MainFrame mainFrame;
 
+
+    private MusicPlayer musicPlayer;
+
     /**
      * Constructs a new EnhancedTetrisApp and initializes the game controller.
      */
@@ -40,6 +46,7 @@ public class EnhancedTetrisApp {
 
         this.gameController = new GameController();
         this.mainFrame = new MainFrame();
+        this.musicPlayer = new MusicPlayer();
     }
 
     /**
@@ -69,12 +76,15 @@ public class EnhancedTetrisApp {
     public static void main(String[] args) {
 
         // Display splash screen for 3 seconds.
-//        TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
-//        splashScreen.showSplash();
+
+        EnhancedTetrisApp main = new EnhancedTetrisApp();
+        main.getMusicPlayer().setRepeat(true);
+
+        TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
+        splashScreen.showSplash();
 
         // Instantiate main frame and open main menu panel.
         SwingUtilities.invokeLater(() -> {
-            EnhancedTetrisApp main = new EnhancedTetrisApp();
             main.getMainFrame().init();
 
             MenuFacade.openPanel(MenuType.MAIN_MENU);
@@ -85,6 +95,8 @@ public class EnhancedTetrisApp {
             EnhancedTetrisApp.getInstance().saveDataFiles();
             System.out.println("[SHUTDOWN] All data files successfully saved.");
         }));
+
+//        main.getMusicPlayer().pause();
     }
 
     /**
@@ -106,5 +118,9 @@ public class EnhancedTetrisApp {
     public void saveDataFiles() {
         HighScoresFile.save(highScores.getScores());
         ConfigurationFile.save(gameController.getConfiguration());
+    }
+
+    public synchronized MusicPlayer getMusicPlayer() {
+        return musicPlayer;
     }
 }

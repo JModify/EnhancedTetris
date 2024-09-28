@@ -49,6 +49,7 @@ public class GamePanel extends JPanel {
             add(UIHelper.getBottomPanel(new Dimension(getFrameWidth(), 50), l -> {
                 GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
                 if (gameController.isGameOver()) {
+                    EnhancedTetrisApp.getInstance().getMusicPlayer().stop();
                     MenuFacade.openPanel(MenuType.MAIN_MENU);
                     return;
                 }
@@ -65,6 +66,7 @@ public class GamePanel extends JPanel {
                 if (exitGamePopup == JOptionPane.YES_OPTION) {
                     gameController.endGame();
                     EnhancedTetrisApp.getInstance().getMainFrame().restoreSizeDefault();
+                    EnhancedTetrisApp.getInstance().getMusicPlayer().stop();
                     MenuFacade.openPanel(MenuType.MAIN_MENU);
                 } else if (exitGamePopup == JOptionPane.NO_OPTION) {
                     gameController.unpauseGame();
