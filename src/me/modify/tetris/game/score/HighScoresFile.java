@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Handles saving and loading to the Tetris high scores file.
+ */
 public class HighScoresFile {
 
     private static boolean debug = false;

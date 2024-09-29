@@ -18,6 +18,10 @@ public class GameBoardPanel extends JPanel {
         initContentPane();
     }
 
+    /**
+     * Initializes the game board panel.
+     * Fills grid with empty cells and calculates correct sizing for the board.
+     */
     private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             EnhancedTetrisApp app = EnhancedTetrisApp.getInstance();
@@ -31,17 +35,20 @@ public class GameBoardPanel extends JPanel {
             int heightPixel = rows * CELL_SIZE;
 
             setPreferredSize(new Dimension(widthPixel, heightPixel));
-            // setBorder(BorderFactory.createLineBorder(Color.BLUE));
-            // setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
             setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
+            // Fills grid with empty cells.
             gameGrid.fill();
 
-            // Started in game controller
+            // Board update timer is added here and started in GameController when the game starts.
             GameScheduler.getInstance().addTimer("Board_Update", new Timer(0, l -> repaint()));
         });
     }
 
+    /**
+     * Handles all visual drawings for the game board.
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -81,9 +88,6 @@ public class GameBoardPanel extends JPanel {
                 }
 
                 g.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-
-//                // Add cell to grid
-//                EnhancedTetrisApp.getInstance().getGameController().getGrid().addCell(cell);
             }
         }
     }

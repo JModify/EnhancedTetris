@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Helper class used to load sound effect files into a cache in the main class.
+ */
 public class SoundEffectLoader {
 
     public static void loadSoundEffects(Map<String, Clip> soundEffects) {

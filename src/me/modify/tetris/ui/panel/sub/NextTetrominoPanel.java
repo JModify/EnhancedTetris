@@ -1,5 +1,6 @@
 package me.modify.tetris.ui.panel.sub;
 
+import me.modify.tetris.game.state.Cell;
 import me.modify.tetris.game.state.Tetromino;
 
 import javax.swing.*;
@@ -16,6 +17,9 @@ public class NextTetrominoPanel extends JPanel {
         initContentPane();
     }
 
+    /**
+     * Initializes the next tetromino panel.
+     */
     private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setPreferredSize((new Dimension(180, 60)));
@@ -26,6 +30,10 @@ public class NextTetrominoPanel extends JPanel {
         });
     }
 
+    /**
+     * Handles painting for the next tetromino panel.
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -41,6 +49,7 @@ public class NextTetrominoPanel extends JPanel {
 
         int cellSize = 20;
 
+        // For each cell in the next tetromino shape, paint a square with it's respective colour.
         for (int j = 0; j < shape[0].length; j++) {
             for (int i = 0; i < shape.length; i++) {
 
@@ -49,7 +58,8 @@ public class NextTetrominoPanel extends JPanel {
 
                 int id = shape[i][j];
 
-                if (id == 80) {
+                // Check if the cell is a placeholder, and if it is, paint the cell transparently (same as background).
+                if (id == Cell.PLACEHOLDER) {
                     g.setColor(previewBackground);
                 } else {
                     g.setColor(tetromino.getColor());

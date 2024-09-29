@@ -11,51 +11,63 @@ import java.util.function.Consumer;
 
 public class GameGrid {
 
+    // Array of cells making up the grid itself.
     private Cell[][] grid;
 
+    // Total number of columns in the grid (width).
     private int width;
+
+    // Total number of rows in the grid (height).
     private int height;
 
+    // Current falling Tetromino inside the grid.
     private Tetromino currentTetromino;
 
+    // X value of the Tetromino's position.
     private int x;
+
+    // Y location of the Tetromino's position.
     private int y;
 
+    /**
+     * Initializes the grid.
+     * @param width width of grid (columns)
+     * @param height height of grid (rows)
+     */
     public GameGrid(int width, int height) {
         grid = new Cell[height][width];
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * Fills this grid with empty cells.
+     */
     public void fill() {
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
-                Cell cell = new Cell(r, c, Cell.EMPTY_CELL);
+                Cell cell = new Cell(Cell.EMPTY_CELL);
                 grid[r][c] = cell;
             }
         }
     }
 
+    /**
+     * Retrieves the cell located at the given row and column
+     * @param row row of cell to retrieve.
+     * @param column columns of cell to retrieve.
+     * @return cell at specified row and column.
+     */
     public Cell getCell(int row, int column) {
         return grid[row][column];
     }
 
-    public void paint(Graphics g) {
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c < width; c++) {
-                int CELL_SIZE = 20;
-                int x = c * CELL_SIZE;
-                int y = r * CELL_SIZE;
-
-                Cell cell = grid[r][c];
-                if (cell.getData() == currentTetromino.getId()) {
-                    g.setColor(currentTetromino.getColor());
-                    g.drawRect(x, y, CELL_SIZE, CELL_SIZE);
-                }
-            }
-        }
-    }
-
+    /**
+     * Updates sizing for this grid. Does not adjust frame/panel sizing only internally
+     * Fills the grid with empty cells once resized.
+     * @param width new width of grid.
+     * @param height new height of grid.
+     */
     public void updateSize(int width, int height) {
         this.grid = new Cell[height][width];
         this.width = width;
@@ -196,7 +208,6 @@ public class GameGrid {
                 // Handle case where next row is out of bounds.
                 int nextRow = i + 1;
                 if (nextRow >= height || grid[nextRow][j] == null) {
-                    //cell.setFixed();
                     continue;
                 }
 
@@ -307,11 +318,7 @@ public class GameGrid {
         }
 
         // Handle case where cell is a fixed piece or placeholder.
-        if (cell.getData() < 0) {
-            return false;
-        }
-
-        return true;
+        return cell.getData() >= 0;
     }
 
     /**
@@ -398,7 +405,6 @@ public class GameGrid {
     private void clearRow(int rowIndex) {
         for (int j = 0; j < width; j++) {
             grid[rowIndex][j].setData(Cell.EMPTY_CELL);
-            //grid[rowIndex][j].setColor(Cell.EMPTY_CELL);
         }
     }
 
@@ -520,12 +526,10 @@ public class GameGrid {
             // Only update cells that are empty or placeholders (not fixed cells)
             if (rotatedPoint.isPlaceholder()) {
                 cell.setData(Cell.PLACEHOLDER);
-                //cell.setColor(Cell.EMPTY_CELL);
                 continue;
             }
 
             cell.setData(currentTetromino.getId());
-            //cell.setColor(tetromino.getColor());
         }
     }
 

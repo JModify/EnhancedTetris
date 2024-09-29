@@ -6,7 +6,7 @@ import java.awt.*;
 public class TetrisSplashScreen extends JWindow {
 
     /** Splash screen duration in milliseconds */
-    private int duration;
+    private final int duration;
 
     /**
      * Creates a new TetrisSplashScreen

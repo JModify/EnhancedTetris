@@ -37,15 +37,11 @@ public class GameKeyInputListener implements KeyListener {
     /** Blocks the listener from listening */
     private boolean blockInput;
 
-    /** Game controller for the current game */
-    private final GameController gameController;
 
     /**
      * Creates a new GameKeyInputListener instance.
-     * @param gameController game controller for current game.
      */
-    public GameKeyInputListener(GameController gameController) {
-        this.gameController = gameController;
+    public GameKeyInputListener() {
         this.blockInput = false;
     }
 
@@ -61,17 +57,17 @@ public class GameKeyInputListener implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int pressed = e.getKeyCode();
 
+        // If game movement is blocked due to pause, return and do nothing.
         if (blockInput && pressed != PAUSE_GAME) {
             return;
         }
 
+        // Check if the pressed button is a movement key and play movement sound effect.
         if (isMovementKey(pressed)) {
             SoundEffectFactory.createSoundEffect(Effect.MOVE).play();
         }
 
-        if (pressed == TOGGLE_EFFECTS || pressed == TOGGLE_MUSIC) {
-            EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
-        }
+        GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
 
         switch(pressed) {
             case ROTATE_CLOCKWISE -> gameController.getGrid().rotateTetromino();
@@ -83,22 +79,23 @@ public class GameKeyInputListener implements KeyListener {
             case MOVE_DOWN -> gameController.getGrid().shiftDown(false);
 
             case TOGGLE_EFFECTS -> EnhancedTetrisApp.getInstance().getConfiguration().toggleSound();
+
             case TOGGLE_MUSIC -> {
 
                 EnhancedTetrisApp app = EnhancedTetrisApp.getInstance();
                 GameConfiguration configuration = app.getConfiguration();
 
+                // Current music setting
                 boolean isMusic = configuration.isMusic();
 
+                // Update music setting and stop/start music player.
                 if (isMusic) {
                     configuration.setMusic(false);
-                    EnhancedTetrisApp.getInstance().getMusicPlayer().stop();
+                    app.getMusicPlayer().stop();
                 } else {
                     configuration.setMusic(true);
-                    EnhancedTetrisApp.getInstance().getMusicPlayer().start();
+                    app.getMusicPlayer().start();
                 }
-
-                EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
             }
 
             case PAUSE_GAME -> {
@@ -109,6 +106,11 @@ public class GameKeyInputListener implements KeyListener {
 
                 gameController.pauseGame(false);
             }
+        }
+
+        // Update the game panel's information data to show change in music/sound effects settings.
+        if (pressed == TOGGLE_EFFECTS || pressed == TOGGLE_MUSIC) {
+            EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
         }
     }
 

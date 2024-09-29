@@ -2,6 +2,10 @@ package me.modify.tetris.game.score;
 
 import java.util.*;
 
+/**
+ * Acts as a cache for the high scores when the game is running.
+ * Saved to a JSON file when it is not - to be loaded upon next launch.
+ */
 public class HighScores {
 
     private Set<Score> scores;

@@ -3,6 +3,7 @@ package me.modify.tetris.ui.panel;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.listeners.ExitGameListener;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.UIHelper;
@@ -27,6 +28,10 @@ public class GamePanel extends JPanel {
         initContentPane();
     }
 
+    /**
+     * Initializes the game panel.
+     * Additionally defines the back button functionality for the game panel using ExitGameListener.
+     */
     public void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
@@ -34,9 +39,6 @@ public class GamePanel extends JPanel {
 
             add(UIHelper.getEmptyPanel(new Dimension(getFrameWidth(), 50), null),
                     BorderLayout.NORTH);
-
-//            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
-//                    BorderLayout.EAST);
 
             gameBoardPanel = new GameBoardPanel();
             infoPanel = getInfoPanel();
@@ -47,36 +49,8 @@ public class GamePanel extends JPanel {
 
             add(gameBoardPanel, BorderLayout.CENTER);
 
-//            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
-//                    BorderLayout.WEST);
-
-            add(UIHelper.getBottomPanel(new Dimension(getFrameWidth(), 50), l -> {
-                GameController gameController = EnhancedTetrisApp.getInstance().getGameController();
-                if (gameController.isGameOver()) {
-                    EnhancedTetrisApp.getInstance().getMusicPlayer().stop();
-                    MenuFacade.openPanel(MenuType.MAIN_MENU);
-                    return;
-                }
-
-                if (!gameController.isPaused()) {
-                    gameController.pauseGame(true);
-                }
-
-                int exitGamePopup = JOptionPane.showConfirmDialog(null,
-                        "Are you sure you want to stop the current game?",
-                        "Quit Game",
-                        JOptionPane.YES_NO_OPTION);
-
-                if (exitGamePopup == JOptionPane.YES_OPTION) {
-                    gameController.endGame();
-                    EnhancedTetrisApp.getInstance().getMainFrame().restoreSizeDefault();
-                    EnhancedTetrisApp.getInstance().getMusicPlayer().stop();
-                    MenuFacade.openPanel(MenuType.MAIN_MENU);
-                } else if (exitGamePopup == JOptionPane.NO_OPTION) {
-                    gameController.unpauseGame();
-                    EnhancedTetrisApp.getInstance().getMainFrame().requestFocus();
-                }
-            }), BorderLayout.SOUTH);
+            add(UIHelper.getBottomPanel(new Dimension(getFrameWidth(), 50), new ExitGameListener()),
+                    BorderLayout.SOUTH);
         });
     }
 
@@ -112,28 +86,26 @@ public class GamePanel extends JPanel {
         nextTetrominoPanel.setAlignmentX(CENTER_ALIGNMENT);
         infoPanel.add(nextTetrominoPanel);
 
-        //add(infoPanel, BorderLayout.WEST);
         return infoPanel;
     }
 
     public JPanel getRightPanel() {
-        JPanel rightpanel = new JPanel();
-        rightpanel.setLayout(new BoxLayout(rightpanel, BoxLayout.PAGE_AXIS));
-        rightpanel.setPreferredSize(new Dimension(225, getFrameHeight() - 100));
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+        rightPanel.setPreferredSize(new Dimension(225, getFrameHeight() - 100));
 
         GameConfiguration configuration = EnhancedTetrisApp.getInstance().getConfiguration();
 
         Font titleFont = new Font("Arial", Font.BOLD, 24);
-        rightpanel.add(UIHelper.getLabel("Sound", titleFont, CENTER_ALIGNMENT));
+        rightPanel.add(UIHelper.getLabel("Sound", titleFont, CENTER_ALIGNMENT));
 
         Font fieldFont = new Font("Arial", Font.PLAIN, 24);
-        rightpanel.add((UIHelper.getLabel("Music: " + (configuration.isMusic() ? "ON" : "OFF"),
+        rightPanel.add((UIHelper.getLabel("Music: " + (configuration.isMusic() ? "ON" : "OFF"),
                 fieldFont, CENTER_ALIGNMENT)));
-        rightpanel.add(Box.createVerticalStrut(4));
-        rightpanel.add((UIHelper.getLabel("Effects: " + (configuration.isSoundEffects() ? "ON" : "OFF"),
+        rightPanel.add(Box.createVerticalStrut(4));
+        rightPanel.add((UIHelper.getLabel("Effects: " + (configuration.isSoundEffects() ? "ON" : "OFF"),
                 fieldFont, CENTER_ALIGNMENT)));
-        //add(rightpanel, BorderLayout.EAST);
-        return rightpanel;
+        return rightPanel;
     }
 
     /**
@@ -158,10 +130,11 @@ public class GamePanel extends JPanel {
         return (configuration.getFieldHeight() * 20) + (50 * 2) + 38;
     }
 
-    public GameBoardPanel getGameBoardPanel() {
-        return gameBoardPanel;
-    }
-
+    /**
+     * Update the information panels.
+     * Called in GameController when a new tetromino is spawned in.
+     * Called in GameKeyInputListener when the player toggles sound effects or music.
+     */
     public void updateInfoPanels() {
         SwingUtilities.invokeLater(() -> {
             remove(infoPanel);

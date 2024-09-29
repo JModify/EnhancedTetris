@@ -1,25 +1,25 @@
 package me.modify.tetris.ui.frames;
 
-import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.listeners.ExitApplicationListener;
 import me.modify.tetris.listeners.GameKeyInputListener;
 import me.modify.tetris.ui.panel.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame{
 
-    private JPanel cardPanel;
+    /** Card panel containing all main panels */
+    private final JPanel cardPanel;
 
-    private ConfigurationPanel configurationPanel;
-    private MainMenuPanel mainMenuPanel;
-    private HighScoresPanel highScoresPanel;
-    private GamePanel gamePanel;
+    /* References to all main panels */
+    private final ConfigurationPanel configurationPanel;
+    private final MainMenuPanel mainMenuPanel;
+    private final HighScoresPanel highScoresPanel;
+    private final GamePanel gamePanel;
 
-    private GameKeyInputListener gameKeyInputListener;
+    /** Game key input listener reference */
+    private final GameKeyInputListener gameKeyInputListener;
 
     public MainFrame() {
         super("Enhanced Tetris");
@@ -30,9 +30,12 @@ public class MainFrame extends JFrame{
         this.configurationPanel = new ConfigurationPanel();
         this.highScoresPanel = new HighScoresPanel();
 
-        this.gameKeyInputListener = new GameKeyInputListener(EnhancedTetrisApp.getInstance().getGameController());
+        this.gameKeyInputListener = new GameKeyInputListener();
     }
 
+    /**
+     * Initializes main frame and all panels. Also sets other important properties for the main frame.
+     */
     public void init() {
         SwingUtilities.invokeLater(() -> {
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -57,6 +60,9 @@ public class MainFrame extends JFrame{
         });
     }
 
+    /**
+     * Restores the main frame to it's default sizing.
+     */
     public void restoreSizeDefault() {
         setSize(700, 500);
         revalidate();
@@ -66,6 +72,12 @@ public class MainFrame extends JFrame{
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Resizes the main frame to the desired size.
+     * Used for game panels of different sized game boards.
+     * @param width width to set frame too.
+     * @param height height to set frame too.
+     */
     public void resizeFrame(int width, int height) {
         setSize(width, height);
         revalidate();
@@ -75,30 +87,34 @@ public class MainFrame extends JFrame{
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Retrieves the main frame's card panel.
+     * @return the card panel
+     */
     public JPanel getCardPanel() {
         return this.cardPanel;
     }
 
-    public GameKeyInputListener getMovementListener() {
+    /**
+     * Retrieves the key input listener for the frame.
+     * @return the movement listener.
+     */
+    public GameKeyInputListener getGameInputListener() {
         return gameKeyInputListener;
     }
 
-    public GameKeyInputListener getGameKeyInputListener() {
-        return gameKeyInputListener;
-    }
-
-    public ConfigurationPanel getConfigurationPanel() {
-        return configurationPanel;
-    }
-
-    public MainMenuPanel getMainMenuPanel() {
-        return mainMenuPanel;
-    }
-
+    /**
+     * Retrieves the game's high score panel.
+     * @return the high score panel.
+     */
     public HighScoresPanel getHighScoresPanel() {
         return highScoresPanel;
     }
 
+    /**
+     * Retrieves the tetris game panel reference.
+     * @return the game panel reference.
+     */
     public GamePanel getGamePanel() {
         return gamePanel;
     }

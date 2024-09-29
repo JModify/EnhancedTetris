@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.util.UUID;
 
 public class GameTimer {
-    private String name;
-    private Timer timer;
+    private final String name;
+    private final Timer timer;
 
     public GameTimer(String name, Timer timer) {
         this.name = name;
@@ -16,15 +16,7 @@ public class GameTimer {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Timer getTimer() {
         return timer;
-    }
-
-    public void setTimer(Timer timer) {
-        this.timer = timer;
     }
 }

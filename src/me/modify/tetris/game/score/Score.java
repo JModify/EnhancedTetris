@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.config.GameConfiguration;
 
+/**
+ * Represents a game score with associated data at the time the score was achieved.
+ */
 public class Score implements Comparable<Score> {
 
     @Expose

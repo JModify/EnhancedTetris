@@ -43,6 +43,9 @@ public class GameController {
         GameScheduler.getInstance().addTimer("Game_Update", new Timer(0, t -> updateGame()));
     }
 
+    /**
+     * Updates the game. Should be called at a constant rate to keep visuals relevant.
+     */
     private void updateGame() {
 
         // Determine whether the current falling Tetromino has been placed.
@@ -92,6 +95,11 @@ public class GameController {
         }
      }
 
+    /**
+     * Determines if the player has leveled up.
+     * A player should level up every 10 rows they clear UNLESS they are already at the maximum level.
+     * @return true if level up has occurred, false otherwise.
+     */
      private boolean requiresLevelUp() {
         if (gameLevel.getLevelNum() == getConfiguration().GAME_LEVEL_MAX) {
             return false;
@@ -100,6 +108,8 @@ public class GameController {
         int nextThreshold = GameLevel.nextLevel(gameLevel).getThreshold();
         int startLevel = getConfiguration().getGameLevel();
 
+        // Calculates if the player has reached the threshold for the next level based on initial level and the
+         // number of rows they have erased in total.
         return (rowsErased + ((startLevel - 1) * 10)) >= nextThreshold;
      }
 
@@ -122,6 +132,9 @@ public class GameController {
         grid.shiftDown(false);
     }
 
+    /**
+     * Executes end of game logic. Sets the game state to lost and adds high score if necessary.
+     */
     public void gameOver() {
         SoundEffectFactory.createSoundEffect(Effect.GAME_OVER).play();
         GameScheduler.getInstance().stopAll();
@@ -190,7 +203,6 @@ public class GameController {
         GameScheduler.getInstance().stopTimer("Game_Shift");
 
         blockMovementInput();
-        //EnhancedTetrisApp.getInstance().getGamePanel().showPauseMessage();
     }
 
     /**
@@ -201,7 +213,6 @@ public class GameController {
         GameScheduler.getInstance().startTimer("Game_Shift");
 
         resumeMovementInput();
-        //MenuFacade.openPanel(MenuType.GAME);
     }
 
     /**
@@ -222,28 +233,43 @@ public class GameController {
 
     /**
      * Determines if the game is over (game state is set to LOST).
-     * @return
+     * @return true if game is over, else false.
      */
     public boolean isGameOver() {
         return gameState == GameState.LOST;
     }
 
+    /**
+     * Blocks user being able to move the current tetromino. Used in paused state.
+     */
     public void blockMovementInput() {
-        EnhancedTetrisApp.getInstance().getMainFrame().getMovementListener().setBlockInput(true);
+        EnhancedTetrisApp.getInstance().getMainFrame().getGameInputListener().setBlockInput(true);
     }
 
+    /**
+     * Allows user to continue moving falling tetromino.
+     */
     public void resumeMovementInput() {
-        EnhancedTetrisApp.getInstance().getMainFrame().getMovementListener().setBlockInput(false);
+        EnhancedTetrisApp.getInstance().getMainFrame().getGameInputListener().setBlockInput(false);
     }
 
+    /** Adds a certain amount of score to this game */
     public void addScore(int amount) {
         score += amount;
     }
 
+    /**
+     * Retrieves the current score for this game.
+     * @return current score.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Retrieves the current level for this game.
+     * @return the game level.
+     */
     public GameLevel getGameLevel() {
         if(gameLevel == null) {
             return GameLevel.getByLevel(getConfiguration().getGameLevel());
@@ -252,10 +278,18 @@ public class GameController {
         return gameLevel;
     }
 
+    /**
+     * Retrieves the total number of erased rows for this game.
+     * @return number or rows erased.
+     */
     public int getRowsErased() {
         return rowsErased;
     }
 
+    /**
+     * Retrieves the next Tetromino to be inserted into the grid.
+     * @return the next tetromino.
+     */
     public Tetromino getNextTetromino() {
         return nextTetromino;
     }

@@ -15,12 +15,17 @@ import java.awt.event.ActionListener;
  */
 public class UIHelper {
 
+    /**
+     * Creates the bottom panel used in most game panels.
+     * Includes author of application and a back button with an action listener.
+     * @param dimension dimension of this panel.
+     * @param buttonActionListener listener for associated back button.
+     * @return
+     */
     public static JPanel getBottomPanel(Dimension dimension, ActionListener buttonActionListener) {
-
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.PAGE_AXIS));
         bottomPanel.setPreferredSize(dimension);
-        //bottomPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
         JButton backButton = new JButton("Back");
         backButton.setUI(new BasicButtonUI());
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -30,13 +35,6 @@ public class UIHelper {
         authorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         bottomPanel.add(authorLabel);
         return bottomPanel;
-    }
-
-    public static JPanel getTitlePanel(String text, Font font, Dimension dimension) {
-        JPanel titlePanel = new JPanel();
-        titlePanel.setPreferredSize(dimension);
-        titlePanel.add(UIHelper.getLabel(text, font));
-        return titlePanel;
     }
 
     /**

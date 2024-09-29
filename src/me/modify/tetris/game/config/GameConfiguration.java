@@ -123,10 +123,6 @@ public class GameConfiguration {
         this.extendMode = extendMode;
     }
 
-    public void toggleMusic() {
-        this.music = !music;
-    }
-
     public void toggleSound() {
         this.soundEffects = !soundEffects;
     }

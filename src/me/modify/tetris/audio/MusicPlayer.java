@@ -6,6 +6,11 @@ import me.modify.tetris.EnhancedTetrisApp;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+/**
+ * Acts as a manager for all music in the game.
+ * Initializes, stops and starts music file.
+ */
 public class MusicPlayer implements Runnable {
 
     private final String filePath = "resources/audios/background.mp3";

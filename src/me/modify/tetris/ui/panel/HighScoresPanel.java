@@ -26,6 +26,9 @@ public class HighScoresPanel extends JPanel {
         initContentPane();
     }
 
+    /**
+     * Initializes the high scores panel.
+     */
     public void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
@@ -118,8 +121,6 @@ public class HighScoresPanel extends JPanel {
         scoresPanel = new JPanel();
         scoresPanel.setLayout(new BoxLayout(scoresPanel, BoxLayout.PAGE_AXIS));
         scoresPanel.setPreferredSize(new Dimension(130, 400));
-
-        //scoresPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
 
         scoresPanel.add(UIHelper.getLabel("Score",
                 new Font("Arial", Font.BOLD, 22),

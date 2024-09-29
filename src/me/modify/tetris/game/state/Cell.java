@@ -10,33 +10,24 @@ public class Cell {
     public static final int PLACEHOLDER = 80;
     public static final int FIXED_PLACEHOLDER = -80;
 
-    private int x, y, data;
-    public Cell(int x, int y, int data) {
-        this.x = x;
-        this.y = y;
+    private int data;
+
+    public Cell(int data) {
         this.data = data;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
+    /**
+     * Retrieves the data stored in this cell.
+     * @return the data stored
+     */
     public int getData() {
         return data;
     }
 
+    /**
+     * Sets the data for this cell.
+     * @param data data to set too.
+     */
     public void setData(int data) {
         this.data = data;
     }

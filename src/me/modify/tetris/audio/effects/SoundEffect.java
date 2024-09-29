@@ -4,6 +4,9 @@ import me.modify.tetris.EnhancedTetrisApp;
 
 import javax.sound.sampled.Clip;
 
+/**
+ * Represents a sound effect in the given file directory.
+ */
 public abstract class SoundEffect {
 
     public static final String FILE_DIRECTORY = "resources/audios";
@@ -14,6 +17,9 @@ public abstract class SoundEffect {
         this.fileName = fileName;
     }
 
+    /**
+     * Plays the sound effect on a new thread.
+     */
     public void play() {
         EnhancedTetrisApp app = EnhancedTetrisApp.getInstance();
         if (app.getConfiguration().isSoundEffects()) {

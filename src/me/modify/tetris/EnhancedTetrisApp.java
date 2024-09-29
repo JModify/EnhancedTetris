@@ -29,15 +29,21 @@ public class EnhancedTetrisApp {
     /** Game controller for the game itself */
     private final GameController gameController;
 
+    /** High scores data for the game */
     private final HighScores highScores;
+
+    /** Game configuration data */
     private final GameConfiguration configuration;
 
     /** Main frame of the application */
     private final MainFrame mainFrame;
 
-
+    /** Music player management reference */
     private final MusicPlayer musicPlayer;
+
+    /** Map containing loaded game sound effects with their file names */
     private final Map<String, Clip> soundEffects;
+
     /**
      * Constructs a new EnhancedTetrisApp and initializes the game controller.
      */
@@ -54,11 +60,19 @@ public class EnhancedTetrisApp {
     }
 
     /**
-     * Retrieves the game controller.
-     * @return game controller
+     * Retrieves the main class instance (this).
+     * @return main class instance.
      */
-    public GameController getGameController() {
-        return gameController;
+    public static EnhancedTetrisApp getInstance() {
+        return instance;
+    }
+
+    /**
+     * Sets the main class instance.
+     * @param instance instance to set too.
+     */
+    public void setInstance(EnhancedTetrisApp instance) {
+        EnhancedTetrisApp.instance = instance;
     }
 
     /**
@@ -69,14 +83,54 @@ public class EnhancedTetrisApp {
         return this.mainFrame;
     }
 
+    /**
+     * Retrieves the game controller.
+     * @return game controller
+     */
+    public GameController getGameController() {
+        return gameController;
+    }
+
+    /** Retrieves a the high scores access class for the game */
     public HighScores getHighScores() {
         return highScores;
     }
 
+    /** Retrieves the game's configuration */
     public GameConfiguration getConfiguration() {
         return configuration;
     }
 
+    public MusicPlayer getMusicPlayer() {
+        return musicPlayer;
+    }
+
+    public Map<String, Clip> getSoundEffects() {
+        return soundEffects;
+    }
+
+    /** Helper method which saves all data to their respective files */
+    private void saveDataFiles() {
+        HighScoresFile.save(highScores.getScores());
+        ConfigurationFile.save(gameController.getConfiguration());
+    }
+
+    /**
+     * Shutdown method for the application.
+     * Closes all audio files and saves game data.
+     */
+    public void shutdown() {
+        for (Clip clip : soundEffects.values()) {
+            clip.close();
+        }
+        musicPlayer.stop();
+        saveDataFiles();
+    }
+
+    /**
+     * Main method called upon application start.
+     * @param args application arguments.
+     */
     public static void main(String[] args) {
         EnhancedTetrisApp main = new EnhancedTetrisApp();
 
@@ -101,42 +155,5 @@ public class EnhancedTetrisApp {
             System.out.println("[SHUTDOWN] All data files successfully saved.");
         }));
 
-    }
-
-    /**
-     * Retrieves the main class instance (this).
-     * @return main class instance.
-     */
-    public static EnhancedTetrisApp getInstance() {
-        return instance;
-    }
-
-    /**
-     * Sets the main class instance.
-     * @param instance instance to set too.
-     */
-    public void setInstance(EnhancedTetrisApp instance) {
-        EnhancedTetrisApp.instance = instance;
-    }
-
-    private void saveDataFiles() {
-        HighScoresFile.save(highScores.getScores());
-        ConfigurationFile.save(gameController.getConfiguration());
-    }
-
-    public synchronized MusicPlayer getMusicPlayer() {
-        return musicPlayer;
-    }
-
-    public Map<String, Clip> getSoundEffects() {
-        return soundEffects;
-    }
-
-    public void shutdown() {
-        for (Clip clip : soundEffects.values()) {
-            clip.close();
-        }
-        //musicPlayer.stop();
-        saveDataFiles();
     }
 }

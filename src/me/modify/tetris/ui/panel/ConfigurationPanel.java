@@ -26,6 +26,9 @@ public class ConfigurationPanel extends JPanel {
         initContentPane();
     }
 
+    /**
+     * Initialize the configuration panel.
+     */
     private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());

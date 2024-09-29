@@ -13,8 +13,13 @@ public enum GameLevel {
     NINE(9, 80,200),
     TEN(10, 90,100);
 
+    /** Numerical value of this game level */
     private final int level;
+
+    /** Falling speed in MS at this game level */
     private final int fallSpeed;
+
+    /** Threshold required to reach next level */
     private final int threshold;
 
     GameLevel(int level, int threshold, int fallSpeed) {
@@ -31,6 +36,15 @@ public enum GameLevel {
         return fallSpeed;
     }
 
+    public int getThreshold() {
+        return threshold;
+    }
+
+    /**
+     * Retrieves the game level by numerical value.
+     * @param level the game level as an integer.
+     * @return the respective GameLevel object.
+     */
     public static GameLevel getByLevel(int level) {
         for (GameLevel gameLevel : values()) {
             if (gameLevel.getLevelNum() == level) {
@@ -40,10 +54,12 @@ public enum GameLevel {
         return null;
     }
 
-    public int getThreshold() {
-        return threshold;
-    }
-
+    /**
+     * Determines the next game level by adding 1 to the numerical value then
+     * finding the game level with this value.
+     * @param level current game level
+     * @return the next game level
+     */
     public static GameLevel nextLevel(GameLevel level) {
         for (GameLevel gameLevel : values()) {
             if ((level.getLevelNum() + 1) == gameLevel.getLevelNum()) {
@@ -51,7 +67,7 @@ public enum GameLevel {
             }
         }
 
-        // If at max return max.
+        // If game level is already at it's maximum (10) return that.
         return GameLevel.TEN;
     }
 }
