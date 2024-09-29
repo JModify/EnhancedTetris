@@ -67,12 +67,22 @@ public class GameController {
             if (rowsCleared > 0) {
                 rowsErased += rowsCleared;
 
+                // Handle game level up.
                 // Rows erased is not equal to 0 and player has erased 10 more rows
-                if (rowsErased != 0 && rowsErased % 10 == 0) {
-                    System.out.println("Rows erased " + rowsErased + " is divisible by 10!!");
+                if (requiresLevelUp()) {
+                    System.out.println("Rows erased is a multiple of 10");
                     if (gameLevel.getLevelNum() != getConfiguration().GAME_LEVEL_MAX) {
+
+                        System.out.println("Game level is not maxed, attempting level up.");
                         increaseLevel();
+
+                        // Play level up sound if row clear results in level up
+                        EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("level-up");
                     }
+                } else {
+                    System.out.println("Cleared row");
+                    // PLay row clear sound if the clear did not result in a level up
+                    EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("erase-line");
                 }
             }
 
@@ -91,6 +101,12 @@ public class GameController {
         }
      }
 
+     private boolean requiresLevelUp() {
+        int nextThreshold = GameLevel.nextLevel(gameLevel).getThreshold();
+        int startLevel = getConfiguration().getGameLevel();
+
+         return (rowsErased + ((startLevel - 1) * 10)) >= nextThreshold;
+     }
 
 
      private void increaseLevel() {
@@ -100,6 +116,7 @@ public class GameController {
         GameTimer gameTimer = GameScheduler.getInstance().addTimer("Game_Shift",
                 new Timer(gameLevel.getFallSpeed(), t -> shiftGrid()));
         GameScheduler.getInstance().startTimer(gameTimer);
+        System.out.println("Level up!");
      }
 
     /**
@@ -111,6 +128,7 @@ public class GameController {
     }
 
     public void gameOver() {
+        EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("game-finish");
         GameScheduler.getInstance().stopAll();
         gameState = GameState.LOST;
 

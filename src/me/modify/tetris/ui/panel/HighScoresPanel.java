@@ -2,6 +2,7 @@ package me.modify.tetris.ui.panel;
 
 import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.score.HighScores;
+import me.modify.tetris.game.score.HighScoresFile;
 import me.modify.tetris.game.score.Score;
 import me.modify.tetris.ui.MenuFacade;
 import me.modify.tetris.ui.MenuType;
@@ -65,7 +66,9 @@ public class HighScoresPanel extends JPanel {
                     "High Score Clear", JOptionPane.YES_NO_OPTION);
 
             if (response == JOptionPane.YES_OPTION) {
+                HighScores highScores = EnhancedTetrisApp.getInstance().getHighScores();
                 EnhancedTetrisApp.getInstance().getHighScores().clearHighScores();
+                HighScoresFile.save(highScores.getScores());
                 updateHighScores();
             }
         };

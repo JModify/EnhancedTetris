@@ -2,22 +2,24 @@ package me.modify.tetris.game.state;
 
 public enum GameLevel {
 
-    ONE(1, 1000),
-    TWO(2, 900),
-    THREE(3, 800),
-    FOUR(4, 700),
-    FIVE(5, 600),
-    SIX(6, 500),
-    SEVEN(7, 400),
-    EIGHT(8, 300),
-    NINE(9, 200),
-    TEN(10, 100);
+    ONE(1,0, 1000),
+    TWO(2, 10,900),
+    THREE(3, 20,800),
+    FOUR(4, 30,700),
+    FIVE(5, 40,600),
+    SIX(6, 50,500),
+    SEVEN(7, 60,400),
+    EIGHT(8, 70,300),
+    NINE(9, 80,200),
+    TEN(10, 90,100);
 
     private final int level;
     private final int fallSpeed;
+    private final int threshold;
 
-    GameLevel(int level, int fallSpeed) {
+    GameLevel(int level, int threshold, int fallSpeed) {
         this.level = level;
+        this.threshold = threshold;
         this.fallSpeed = fallSpeed;
     }
 
@@ -36,6 +38,10 @@ public enum GameLevel {
             }
         }
         return null;
+    }
+
+    public int getThreshold() {
+        return threshold;
     }
 
     public static GameLevel nextLevel(GameLevel level) {

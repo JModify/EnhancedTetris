@@ -1,9 +1,12 @@
 package me.modify.tetris.listeners;
 
+import me.modify.tetris.EnhancedTetrisApp;
 import me.modify.tetris.game.GameController;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Listens for all game related keyboard inputs.
@@ -57,6 +60,10 @@ public class GameKeyInputListener implements KeyListener {
             return;
         }
 
+        if (isMovementKey(pressed)) {
+            EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("move-turn");
+        }
+
         switch(pressed) {
             case ROTATE_CLOCKWISE -> gameController.getGrid().rotateTetromino();
 
@@ -69,11 +76,8 @@ public class GameKeyInputListener implements KeyListener {
             case PAUSE_GAME -> {
                 if (gameController.isPaused()) {
                     gameController.unpauseGame();
-                    System.out.println("Game is paused, attempted unpause");
                     return;
                 }
-
-                System.out.println("Game was not paused, paused it.");
 
                 gameController.pauseGame(false);
             }
@@ -87,5 +91,9 @@ public class GameKeyInputListener implements KeyListener {
 
     public void setBlockInput(boolean blockInput) {
         this.blockInput = blockInput;
+    }
+
+    private boolean isMovementKey(int keyCode) {
+        return keyCode == MOVE_DOWN || keyCode == MOVE_LEFT || keyCode == MOVE_RIGHT || keyCode == ROTATE_CLOCKWISE;
     }
 }

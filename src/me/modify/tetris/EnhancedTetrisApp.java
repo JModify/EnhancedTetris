@@ -1,7 +1,7 @@
 package me.modify.tetris;
 
 import me.modify.tetris.audio.MusicPlayer;
-import me.modify.tetris.audio.SoundHandler;
+import me.modify.tetris.audio.SoundEffectPlayer;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.game.config.ConfigurationFile;
 import me.modify.tetris.game.config.GameConfiguration;
@@ -26,14 +26,15 @@ public class EnhancedTetrisApp {
     /** Game controller for the game itself */
     private final GameController gameController;
 
-    private HighScores highScores;
-    private GameConfiguration configuration;
+    private final HighScores highScores;
+    private final GameConfiguration configuration;
 
     /** Main frame of the application */
     private final MainFrame mainFrame;
 
 
-    private MusicPlayer musicPlayer;
+    private final MusicPlayer musicPlayer;
+    private final SoundEffectPlayer soundEffectPlayer;
 
     /**
      * Constructs a new EnhancedTetrisApp and initializes the game controller.
@@ -47,6 +48,7 @@ public class EnhancedTetrisApp {
         this.gameController = new GameController();
         this.mainFrame = new MainFrame();
         this.musicPlayer = new MusicPlayer();
+        this.soundEffectPlayer = new SoundEffectPlayer();
     }
 
     /**
@@ -74,14 +76,21 @@ public class EnhancedTetrisApp {
     }
 
     public static void main(String[] args) {
+        EnhancedTetrisApp main = new EnhancedTetrisApp();
+
+        // Load sound files
+        String[] soundFiles = {
+                "move-turn",
+                "level-up",
+                "erase-line",
+                "game-finish"
+        };
+        main.getSoundEffectPlayer().loadSoundEffects(soundFiles);
 
         // Display splash screen for 3 seconds.
-
-        EnhancedTetrisApp main = new EnhancedTetrisApp();
-        main.getMusicPlayer().setRepeat(true);
-
         TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
         splashScreen.showSplash();
+
 
         // Instantiate main frame and open main menu panel.
         SwingUtilities.invokeLater(() -> {
@@ -96,7 +105,6 @@ public class EnhancedTetrisApp {
             System.out.println("[SHUTDOWN] All data files successfully saved.");
         }));
 
-//        main.getMusicPlayer().pause();
     }
 
     /**
@@ -122,5 +130,9 @@ public class EnhancedTetrisApp {
 
     public synchronized MusicPlayer getMusicPlayer() {
         return musicPlayer;
+    }
+
+    public SoundEffectPlayer getSoundEffectPlayer() {
+        return soundEffectPlayer;
     }
 }

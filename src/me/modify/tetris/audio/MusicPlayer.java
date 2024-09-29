@@ -18,7 +18,7 @@ public class MusicPlayer implements Runnable {
     public MusicPlayer() {
         this.isPaused = false;
         this.isStopped = false;
-        this.repeat = false;
+        this.repeat = true;
     }
     private synchronized void initPlayer(){
         try {
