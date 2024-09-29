@@ -32,7 +32,7 @@ public class GamePanel extends JPanel {
      * Initializes the game panel.
      * Additionally defines the back button functionality for the game panel using ExitGameListener.
      */
-    public void initContentPane() {
+    private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
             setPreferredSize(new Dimension(getFrameWidth(), getFrameHeight()));

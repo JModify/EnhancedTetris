@@ -254,7 +254,7 @@ public class GameController {
     }
 
     /** Adds a certain amount of score to this game */
-    public void addScore(int amount) {
+    private void addScore(int amount) {
         score += amount;
     }
 

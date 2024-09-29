@@ -62,6 +62,10 @@ public class GameGrid {
         return grid[row][column];
     }
 
+    public void addCell(int row, int column, Cell cell) {
+        grid[row][column] = cell;
+    }
+
     /**
      * Updates sizing for this grid. Does not adjust frame/panel sizing only internally
      * Fills the grid with empty cells once resized.
@@ -294,7 +298,7 @@ public class GameGrid {
      * @param cell - cell swapping from.
      * @param otherCell - cell swapping too.
      */
-    private void swapProperties(Cell cell, Cell otherCell) {
+    public void swapProperties(Cell cell, Cell otherCell) {
         if (otherCell.getData() == 0 || otherCell.getData() == Cell.PLACEHOLDER) {
             int otherCellDataCopy = otherCell.getData();
             otherCell.setData(cell.getData());

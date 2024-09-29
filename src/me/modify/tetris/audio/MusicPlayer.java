@@ -2,7 +2,6 @@ package me.modify.tetris.audio;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
-import me.modify.tetris.EnhancedTetrisApp;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,13 +16,14 @@ public class MusicPlayer implements Runnable {
     private Thread musicThread;
 
     private Player player;
-    private boolean isStopped;
+    private volatile boolean isStopped;
     private boolean repeat;
 
     public MusicPlayer() {
         this.isStopped = false;
         this.repeat = true;
     }
+
     private synchronized void initPlayer(){
         try {
             FileInputStream fileInputStream = new

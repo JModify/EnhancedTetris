@@ -119,8 +119,6 @@ public enum Tetromino {
         return Arrays.stream(Tetromino.values()).filter(t -> t.getId() == id || t.getId() == -id).findFirst().get();
     }
 
-
-
     public static boolean doesRotate(Tetromino tetromino) {
         return !tetromino.getName().equalsIgnoreCase("O");
     }

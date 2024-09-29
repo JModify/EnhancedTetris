@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class GameScheduler {
 
-    public static GameScheduler instance;
+    private static GameScheduler instance;
     private final List<GameTimer> timers;
 
     private GameScheduler() {

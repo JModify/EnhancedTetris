@@ -20,7 +20,7 @@ public class MainMenuPanel extends JPanel {
         initContentPane();
     }
 
-    public void initContentPane() {
+    private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
             add(getTopPanel(), BorderLayout.NORTH);

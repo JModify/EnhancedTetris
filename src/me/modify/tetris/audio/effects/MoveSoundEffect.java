@@ -7,4 +7,5 @@ public class MoveSoundEffect extends SoundEffect {
     public MoveSoundEffect() {
         super("move-turn.wav");
     }
+
 }

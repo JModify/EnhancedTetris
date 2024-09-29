@@ -78,7 +78,9 @@ public class GameKeyInputListener implements KeyListener {
 
             case MOVE_DOWN -> gameController.getGrid().shiftDown(false);
 
-            case TOGGLE_EFFECTS -> EnhancedTetrisApp.getInstance().getConfiguration().toggleSound();
+            case TOGGLE_EFFECTS -> {
+                EnhancedTetrisApp.getInstance().getConfiguration().toggleSound();
+            }
 
             case TOGGLE_MUSIC -> {
 

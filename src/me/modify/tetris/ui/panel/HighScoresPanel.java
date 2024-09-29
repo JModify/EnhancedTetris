@@ -29,7 +29,7 @@ public class HighScoresPanel extends JPanel {
     /**
      * Initializes the high scores panel.
      */
-    public void initContentPane() {
+    private void initContentPane() {
         SwingUtilities.invokeLater(() -> {
             setLayout(new BorderLayout());
 
