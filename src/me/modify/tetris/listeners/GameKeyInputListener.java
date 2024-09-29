@@ -1,12 +1,13 @@
 package me.modify.tetris.listeners;
 
 import me.modify.tetris.EnhancedTetrisApp;
+import me.modify.tetris.audio.effects.Effect;
+import me.modify.tetris.audio.effects.SoundEffectFactory;
 import me.modify.tetris.game.GameController;
+import me.modify.tetris.game.config.GameConfiguration;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 /**
  * Listens for all game related keyboard inputs.
@@ -28,6 +29,10 @@ public class GameKeyInputListener implements KeyListener {
 
     /** Pause the game key */
     private final char PAUSE_GAME = KeyEvent.VK_P;
+
+    private final char TOGGLE_MUSIC = KeyEvent.VK_M;
+
+    private final char TOGGLE_EFFECTS = KeyEvent.VK_S;
 
     /** Blocks the listener from listening */
     private boolean blockInput;
@@ -61,7 +66,11 @@ public class GameKeyInputListener implements KeyListener {
         }
 
         if (isMovementKey(pressed)) {
-            EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("move-turn");
+            SoundEffectFactory.createSoundEffect(Effect.MOVE).play();
+        }
+
+        if (pressed == TOGGLE_EFFECTS || pressed == TOGGLE_MUSIC) {
+            EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
         }
 
         switch(pressed) {
@@ -72,6 +81,25 @@ public class GameKeyInputListener implements KeyListener {
             case MOVE_RIGHT -> gameController.getGrid().shiftRight();
 
             case MOVE_DOWN -> gameController.getGrid().shiftDown(false);
+
+            case TOGGLE_EFFECTS -> EnhancedTetrisApp.getInstance().getConfiguration().toggleSound();
+            case TOGGLE_MUSIC -> {
+
+                EnhancedTetrisApp app = EnhancedTetrisApp.getInstance();
+                GameConfiguration configuration = app.getConfiguration();
+
+                boolean isMusic = configuration.isMusic();
+
+                if (isMusic) {
+                    configuration.setMusic(false);
+                    EnhancedTetrisApp.getInstance().getMusicPlayer().stop();
+                } else {
+                    configuration.setMusic(true);
+                    EnhancedTetrisApp.getInstance().getMusicPlayer().start();
+                }
+
+                EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
+            }
 
             case PAUSE_GAME -> {
                 if (gameController.isPaused()) {
@@ -94,6 +122,6 @@ public class GameKeyInputListener implements KeyListener {
     }
 
     private boolean isMovementKey(int keyCode) {
-        return keyCode == MOVE_DOWN || keyCode == MOVE_LEFT || keyCode == MOVE_RIGHT || keyCode == ROTATE_CLOCKWISE;
+        return keyCode == MOVE_LEFT || keyCode == MOVE_RIGHT || keyCode == ROTATE_CLOCKWISE;
     }
 }

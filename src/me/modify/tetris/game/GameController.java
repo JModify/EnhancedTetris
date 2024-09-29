@@ -1,6 +1,8 @@
 package me.modify.tetris.game;
 
 import me.modify.tetris.EnhancedTetrisApp;
+import me.modify.tetris.audio.effects.Effect;
+import me.modify.tetris.audio.effects.SoundEffectFactory;
 import me.modify.tetris.game.config.GameConfiguration;
 import me.modify.tetris.game.state.GameLevel;
 import me.modify.tetris.game.state.GameState;
@@ -24,9 +26,6 @@ public class GameController {
     /** Current state the game is in */
     private GameState gameState;
 
-    /** Whether the game was paused due to clicking of the back button or not */
-    private boolean tempPause;
-
     private int score;
     private int rowsErased;
     private GameLevel gameLevel;
@@ -40,7 +39,6 @@ public class GameController {
     public GameController() {
         this.grid = new GameGrid(getConfiguration().getFieldWidth(), getConfiguration().getFieldHeight());
         this.gameState = GameState.IDLE;
-        this.tempPause = false;
 
         GameScheduler.getInstance().addTimer("Game_Update", new Timer(0, t -> updateGame()));
     }
@@ -67,22 +65,15 @@ public class GameController {
             if (rowsCleared > 0) {
                 rowsErased += rowsCleared;
 
-                // Handle game level up.
-                // Rows erased is not equal to 0 and player has erased 10 more rows
+                // Handle game level up if game requires it
                 if (requiresLevelUp()) {
-                    System.out.println("Rows erased is a multiple of 10");
-                    if (gameLevel.getLevelNum() != getConfiguration().GAME_LEVEL_MAX) {
+                    increaseLevel();
 
-                        System.out.println("Game level is not maxed, attempting level up.");
-                        increaseLevel();
-
-                        // Play level up sound if row clear results in level up
-                        EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("level-up");
-                    }
+                    // Play level up sound if row clear results in level up
+                    SoundEffectFactory.createSoundEffect(Effect.LEVEL_UP).play();
                 } else {
-                    System.out.println("Cleared row");
-                    // PLay row clear sound if the clear did not result in a level up
-                    EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("erase-line");
+                    // PLay row clear sound if the row clear(s) did not result in a level up
+                    SoundEffectFactory.createSoundEffect(Effect.ROW_CLEAR).play();
                 }
             }
 
@@ -97,15 +88,19 @@ public class GameController {
             nextTetromino = Tetromino.randomTetromino();
 
             // Update info panel at the end of each block falling.
-            EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanel();
+            EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
         }
      }
 
      private boolean requiresLevelUp() {
+        if (gameLevel.getLevelNum() == getConfiguration().GAME_LEVEL_MAX) {
+            return false;
+        }
+
         int nextThreshold = GameLevel.nextLevel(gameLevel).getThreshold();
         int startLevel = getConfiguration().getGameLevel();
 
-         return (rowsErased + ((startLevel - 1) * 10)) >= nextThreshold;
+        return (rowsErased + ((startLevel - 1) * 10)) >= nextThreshold;
      }
 
 
@@ -128,8 +123,9 @@ public class GameController {
     }
 
     public void gameOver() {
-        EnhancedTetrisApp.getInstance().getSoundEffectPlayer().playSound("game-finish");
+        SoundEffectFactory.createSoundEffect(Effect.GAME_OVER).play();
         GameScheduler.getInstance().stopAll();
+
         gameState = GameState.LOST;
 
         HighScores highScores = EnhancedTetrisApp.getInstance().getHighScores();
@@ -169,7 +165,7 @@ public class GameController {
                 t -> shiftGrid()));
 
         // Update info panel to show next tetromino upon start up.
-        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanel();
+        EnhancedTetrisApp.getInstance().getMainFrame().getGamePanel().updateInfoPanels();
 
         EnhancedTetrisApp.getInstance().getMainFrame().requestFocus();
         GameScheduler.getInstance().startAll();

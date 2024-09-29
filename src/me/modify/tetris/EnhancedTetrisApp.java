@@ -1,7 +1,7 @@
 package me.modify.tetris;
 
 import me.modify.tetris.audio.MusicPlayer;
-import me.modify.tetris.audio.SoundEffectPlayer;
+import me.modify.tetris.audio.SoundEffectLoader;
 import me.modify.tetris.game.GameController;
 import me.modify.tetris.game.config.ConfigurationFile;
 import me.modify.tetris.game.config.GameConfiguration;
@@ -12,7 +12,10 @@ import me.modify.tetris.ui.MenuType;
 import me.modify.tetris.ui.frames.MainFrame;
 import me.modify.tetris.ui.frames.TetrisSplashScreen;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Main class for application.
@@ -34,8 +37,7 @@ public class EnhancedTetrisApp {
 
 
     private final MusicPlayer musicPlayer;
-    private final SoundEffectPlayer soundEffectPlayer;
-
+    private final Map<String, Clip> soundEffects;
     /**
      * Constructs a new EnhancedTetrisApp and initializes the game controller.
      */
@@ -48,7 +50,7 @@ public class EnhancedTetrisApp {
         this.gameController = new GameController();
         this.mainFrame = new MainFrame();
         this.musicPlayer = new MusicPlayer();
-        this.soundEffectPlayer = new SoundEffectPlayer();
+        this.soundEffects = new HashMap<>();
     }
 
     /**
@@ -79,13 +81,7 @@ public class EnhancedTetrisApp {
         EnhancedTetrisApp main = new EnhancedTetrisApp();
 
         // Load sound files
-        String[] soundFiles = {
-                "move-turn",
-                "level-up",
-                "erase-line",
-                "game-finish"
-        };
-        main.getSoundEffectPlayer().loadSoundEffects(soundFiles);
+        SoundEffectLoader.loadSoundEffects(main.getSoundEffects());
 
         // Display splash screen for 3 seconds.
         TetrisSplashScreen splashScreen = new TetrisSplashScreen(3000);
@@ -101,7 +97,7 @@ public class EnhancedTetrisApp {
 
         // Save data files in event of another graceful application exit.
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            EnhancedTetrisApp.getInstance().saveDataFiles();
+            main.shutdown();
             System.out.println("[SHUTDOWN] All data files successfully saved.");
         }));
 
@@ -123,7 +119,7 @@ public class EnhancedTetrisApp {
         EnhancedTetrisApp.instance = instance;
     }
 
-    public void saveDataFiles() {
+    private void saveDataFiles() {
         HighScoresFile.save(highScores.getScores());
         ConfigurationFile.save(gameController.getConfiguration());
     }
@@ -132,7 +128,15 @@ public class EnhancedTetrisApp {
         return musicPlayer;
     }
 
-    public SoundEffectPlayer getSoundEffectPlayer() {
-        return soundEffectPlayer;
+    public Map<String, Clip> getSoundEffects() {
+        return soundEffects;
+    }
+
+    public void shutdown() {
+        for (Clip clip : soundEffects.values()) {
+            clip.close();
+        }
+        //musicPlayer.stop();
+        saveDataFiles();
     }
 }

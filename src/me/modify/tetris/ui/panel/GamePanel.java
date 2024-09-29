@@ -20,6 +20,7 @@ public class GamePanel extends JPanel {
     private GameBoardPanel gameBoardPanel;
 
     private JPanel infoPanel;
+    private JPanel rightPanel;
 
     public GamePanel() {
         gameBoardPanel = new GameBoardPanel();
@@ -34,13 +35,16 @@ public class GamePanel extends JPanel {
             add(UIHelper.getEmptyPanel(new Dimension(getFrameWidth(), 50), null),
                     BorderLayout.NORTH);
 
-            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
-                    BorderLayout.EAST);
+//            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
+//                    BorderLayout.EAST);
 
             gameBoardPanel = new GameBoardPanel();
             infoPanel = getInfoPanel();
+            rightPanel = getRightPanel();
 
             add(infoPanel, BorderLayout.WEST);
+            add(rightPanel, BorderLayout.EAST);
+
             add(gameBoardPanel, BorderLayout.CENTER);
 
 //            add(UIHelper.getEmptyPanel(new Dimension(225, getFrameHeight() - 100), null),
@@ -108,8 +112,28 @@ public class GamePanel extends JPanel {
         nextTetrominoPanel.setAlignmentX(CENTER_ALIGNMENT);
         infoPanel.add(nextTetrominoPanel);
 
-        add(infoPanel, BorderLayout.WEST);
+        //add(infoPanel, BorderLayout.WEST);
         return infoPanel;
+    }
+
+    public JPanel getRightPanel() {
+        JPanel rightpanel = new JPanel();
+        rightpanel.setLayout(new BoxLayout(rightpanel, BoxLayout.PAGE_AXIS));
+        rightpanel.setPreferredSize(new Dimension(225, getFrameHeight() - 100));
+
+        GameConfiguration configuration = EnhancedTetrisApp.getInstance().getConfiguration();
+
+        Font titleFont = new Font("Arial", Font.BOLD, 24);
+        rightpanel.add(UIHelper.getLabel("Sound", titleFont, CENTER_ALIGNMENT));
+
+        Font fieldFont = new Font("Arial", Font.PLAIN, 24);
+        rightpanel.add((UIHelper.getLabel("Music: " + (configuration.isMusic() ? "ON" : "OFF"),
+                fieldFont, CENTER_ALIGNMENT)));
+        rightpanel.add(Box.createVerticalStrut(4));
+        rightpanel.add((UIHelper.getLabel("Effects: " + (configuration.isSoundEffects() ? "ON" : "OFF"),
+                fieldFont, CENTER_ALIGNMENT)));
+        //add(rightpanel, BorderLayout.EAST);
+        return rightpanel;
     }
 
     /**
@@ -138,12 +162,16 @@ public class GamePanel extends JPanel {
         return gameBoardPanel;
     }
 
-    public void updateInfoPanel() {
+    public void updateInfoPanels() {
         SwingUtilities.invokeLater(() -> {
             remove(infoPanel);
+            remove(rightPanel);
 
             infoPanel = getInfoPanel();
+            rightPanel = getRightPanel();
+
             add(infoPanel, BorderLayout.WEST);
+            add(rightPanel, BorderLayout.EAST);
 
             revalidate();
             repaint();

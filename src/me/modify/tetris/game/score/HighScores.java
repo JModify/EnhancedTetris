@@ -18,6 +18,7 @@ public class HighScores {
 
     public void addScore(Score score) {
         scores.add(score);
+        HighScoresFile.save(scores);
     }
 
     public List<Score> getTopScores() {
@@ -29,7 +30,13 @@ public class HighScores {
     }
 
     public boolean isHighScore(int score) {
-        if (scores.size() < 10) {
+        // Do not count 0 score attempts onto top score leaderboard
+        if (score == 0) {
+            return false;
+        }
+
+        // Score is greater than 0 and top scores is not full
+        if (score > 0 && getTopScores().size() < 10) {
             return true;
         }
 

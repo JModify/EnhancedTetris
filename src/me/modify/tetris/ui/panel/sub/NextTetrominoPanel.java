@@ -59,8 +59,4 @@ public class NextTetrominoPanel extends JPanel {
 
         }
     }
-
-    public void setTetromino(Tetromino tetromino) {
-        this.tetromino = tetromino;
-    }
 }

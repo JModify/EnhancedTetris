@@ -422,16 +422,20 @@ public class GameGrid {
      * Does nothing if the rotation is not valid (outside game board or collides with another fixed cell).
      */
     public void rotateTetromino(){
-        java.util.List<Point> points = getTetrominoAsPoints();
+        if (!Tetromino.doesRotate(currentTetromino)) {
+            return;
+        }
+
+        List<Point> points = getTetrominoAsPoints();
         Point pivot = new Point(y, x);
 
-        java.util.List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
+        List<RotatedPoint> rotatedPoints = points.stream().map(p -> rotatePoint(p, pivot)).toList();
 
         // If the rotation is not valid, return the method and do nothing.
         if(!isRotationValid(rotatedPoints)) {
             return;
         }
-        replaceTetromino(points, rotatedPoints, currentTetromino);
+        replaceTetromino(points, rotatedPoints);
     }
 
     /**
@@ -441,7 +445,7 @@ public class GameGrid {
      * @param rotatedPoints list of rotated points
      * @return true if rotation is valid, else false.
      */
-    private boolean isRotationValid(java.util.List<RotatedPoint> rotatedPoints) {
+    private boolean isRotationValid(List<RotatedPoint> rotatedPoints) {
         for(RotatedPoint rotatedPoint : rotatedPoints) {
             int row = (int) rotatedPoint.getPoint().getX();
             int column = (int) rotatedPoint.getPoint().getY();
@@ -493,9 +497,8 @@ public class GameGrid {
      * Replaces the falling tetromino on the grid with the rotated version of it.
      * @param tetrominoPoints original tetromino as points
      * @param replacementPoints rotated tetromino as points
-     * @param tetromino tetromino object, used to preserve placeholders.
      */
-    private void replaceTetromino(java.util.List<Point> tetrominoPoints, java.util.List<RotatedPoint> replacementPoints, Tetromino tetromino) {
+    private void replaceTetromino(List<Point> tetrominoPoints, List<RotatedPoint> replacementPoints) {
 
         // Clear tetromino at current points, but preserve placeholders.
         for (Point point : tetrominoPoints) {
@@ -521,7 +524,7 @@ public class GameGrid {
                 continue;
             }
 
-            cell.setData(tetromino.getId());
+            cell.setData(currentTetromino.getId());
             //cell.setColor(tetromino.getColor());
         }
     }

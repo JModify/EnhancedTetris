@@ -37,6 +37,8 @@ public class MainFrame extends JFrame{
         SwingUtilities.invokeLater(() -> {
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+            addWindowListener(new ExitApplicationListener());
+
             setSize(700, 500);
             setResizable(false);
             setIconImage(new ImageIcon("resources/icon.png").getImage());
